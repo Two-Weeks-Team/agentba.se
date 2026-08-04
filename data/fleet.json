@@ -1,0 +1,209 @@
+{
+  "$comment": "Counted from social-seeding-v2/packages/agents-adk/src/ss_agents/agents/*.py (excluding __init__). Gates and autonomy levels read from packages/contracts/src/policy.ts. Stages from packages/contracts/src/campaign.ts.",
+  "capturedAt": "2026-08-04",
+  "source": "social-seeding-v2",
+  "counts": {
+    "domain": 16,
+    "meta": 3,
+    "watchdog": 3,
+    "total": 22
+  },
+  "agents": [
+    {
+      "id": "sourcing",
+      "tier": "domain",
+      "role": "Brief to ranked candidates"
+    },
+    {
+      "id": "vetting",
+      "tier": "domain",
+      "role": "Fit score and brand-safety flags"
+    },
+    {
+      "id": "outreach_writer",
+      "tier": "domain",
+      "role": "Grounded personalised outreach"
+    },
+    {
+      "id": "conversation",
+      "tier": "domain",
+      "role": "Classify and answer replies"
+    },
+    {
+      "id": "conversation_responder",
+      "tier": "domain",
+      "role": "Draft the reply that goes out"
+    },
+    {
+      "id": "logistics",
+      "tier": "domain",
+      "role": "Create and track shipments"
+    },
+    {
+      "id": "content_verify",
+      "tier": "domain",
+      "role": "Find the post, match the brief"
+    },
+    {
+      "id": "analyst",
+      "tier": "domain",
+      "role": "Compile and narrate the report"
+    },
+    {
+      "id": "research",
+      "tier": "domain",
+      "role": "Site to sales analysis"
+    },
+    {
+      "id": "intake",
+      "tier": "domain",
+      "role": "One line to a valid brief"
+    },
+    {
+      "id": "lead_outreach_writer",
+      "tier": "domain",
+      "role": "Outbound to brands"
+    },
+    {
+      "id": "payment_mandate",
+      "tier": "domain",
+      "role": "Authorise spend against a mandate"
+    },
+    {
+      "id": "compliance",
+      "tier": "domain",
+      "role": "Disclosure and policy checks"
+    },
+    {
+      "id": "creative",
+      "tier": "domain",
+      "role": "Brief-aligned creative direction"
+    },
+    {
+      "id": "a11y",
+      "tier": "domain",
+      "role": "Accessible copy and structure"
+    },
+    {
+      "id": "customer_success",
+      "tier": "domain",
+      "role": "Activation and retention"
+    },
+    {
+      "id": "coordinator",
+      "tier": "meta",
+      "role": "Route work across the fleet"
+    },
+    {
+      "id": "critic",
+      "tier": "meta",
+      "role": "Score before anything ships"
+    },
+    {
+      "id": "optimizer",
+      "tier": "meta",
+      "role": "Tune what the critic scored"
+    },
+    {
+      "id": "anomaly_watch",
+      "tier": "watchdog",
+      "role": "Flag runs that drift"
+    },
+    {
+      "id": "cost_watch",
+      "tier": "watchdog",
+      "role": "Stop spend before the cap"
+    },
+    {
+      "id": "security_watch",
+      "tier": "watchdog",
+      "role": "Watch the trust boundary"
+    }
+  ],
+  "stages": [
+    {
+      "id": "overview",
+      "order": 1,
+      "label": "Brief accepted, plan generated"
+    },
+    {
+      "id": "sourcing",
+      "order": 2,
+      "label": "Find and vet creators"
+    },
+    {
+      "id": "outreach",
+      "order": 3,
+      "label": "Write, send, handle replies"
+    },
+    {
+      "id": "shipping",
+      "order": 4,
+      "label": "Ship samples"
+    },
+    {
+      "id": "content_review",
+      "order": 5,
+      "label": "Verify posts went live"
+    },
+    {
+      "id": "performance",
+      "order": 6,
+      "label": "Compile the report"
+    }
+  ],
+  "gates": [
+    {
+      "id": "approveShortlist",
+      "requiredHitl": false,
+      "note": "after sourcing + vetting"
+    },
+    {
+      "id": "approveOutreachSend",
+      "requiredHitl": false,
+      "note": "before sending each batch"
+    },
+    {
+      "id": "approveReplyResponse",
+      "requiredHitl": false,
+      "note": "before sending a drafted reply"
+    },
+    {
+      "id": "approveShipment",
+      "requiredHitl": true,
+      "note": "before creating a shipment"
+    },
+    {
+      "id": "approveStageAdvance",
+      "requiredHitl": false,
+      "note": "moving the campaign to the next stage"
+    },
+    {
+      "id": "approveContent",
+      "requiredHitl": true,
+      "note": "final sign-off on a verified post"
+    },
+    {
+      "id": "approveBudget",
+      "requiredHitl": true,
+      "note": "releasing spend, executing a contract"
+    }
+  ],
+  "autonomyLevels": [
+    {
+      "id": "copilot",
+      "isDefault": false,
+      "label": "agents only propose; a human clicks every action"
+    },
+    {
+      "id": "checkpointed",
+      "isDefault": true,
+      "label": "agents act, each stage has an approval gate"
+    },
+    {
+      "id": "autonomous",
+      "isDefault": false,
+      "label": "agents act end to end; escalate on policy exceptions"
+    }
+  ]
+}

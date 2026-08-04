@@ -1,0 +1,23 @@
+{
+  "$comment": "Frozen. A completed campaign is a historical record; these values are never recomputed. Source: social-seeding-v2/README.md.",
+  "maintained": "frozen",
+  "measuredAt": "2026-06-01",
+  "campaign": { "codename": "Wooliliwoo", "vertical": "K-beauty", "market": "Mexico" },
+  "funnel": [
+    { "id": "outreach", "count": 37, "label": "outreach sent" },
+    { "id": "conversations", "count": 21, "label": "conversations" },
+    { "id": "samples", "count": 21, "label": "samples shipped" },
+    { "id": "delivered", "count": 19, "label": "delivered" },
+    { "id": "posted", "count": 17, "label": "posted" },
+    { "id": "verified", "count": 16, "label": "verified" }
+  ],
+  "headline": {
+    "verifiedPosts": 16,
+    "targetPosts": 10,
+    "attainmentPct": 160,
+    "views": 59498,
+    "engagementRatePct": 7.9,
+    "unapprovedSends": 0
+  },
+  "creatorPool": 174000
+}

@@ -1,0 +1,15 @@
+{
+  "$comment": "Refreshed by .github/workflows/snapshot.yml from a repository_dispatch sent by the source repo's CI. Source: social-seeding-v2/README.md.",
+  "maintained": "ci",
+  "measuredAt": "2026-08-04",
+  "pytestPassing": 3000,
+  "tsTests": 596,
+  "ciGatesPerPr": 5,
+  "gateNames": [
+    "verify-build (lint, build, type-check)",
+    "TypeScript unit suite",
+    "offline Python suite + golden-eval holdout gate",
+    "submission artifact suite",
+    "checksum-pinned secret scan"
+  ]
+}

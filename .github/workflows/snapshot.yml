@@ -1,0 +1,55 @@
+name: Refresh snapshot
+
+# Figures come to this repo rather than being pulled from it. The source repo
+# is private and its CI runs on a self-hosted runner, so a pull model would
+# make this site depend on infrastructure it cannot see. A push carries the
+# numbers straight from the run that produced them.
+
+on:
+  repository_dispatch:
+    types: [metrics]
+  schedule:
+    - cron: "17 21 * * 0" # Monday 06:17 KST
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: snapshot
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+      - name: Merge dispatched figures
+        if: github.event_name == 'repository_dispatch'
+        run: pnpm tsx scripts/update-snapshot.ts
+        env:
+          PAYLOAD: ${{ toJSON(github.event.client_payload) }}
+
+      # Nothing is committed unless it still passes. A snapshot that breaks an
+      # invariant is a bad number, not a new one.
+      - run: pnpm test
+
+      - name: Commit if changed
+        run: |
+          git config user.name  "agentbase-snapshot[bot]"
+          git config user.email "noreply@agentba.se"
+          if git diff --quiet -- data/; then
+            echo "no change"
+          else
+            git add data/
+            git commit -m "chore(data): refresh snapshot"
+            git push
+          fi

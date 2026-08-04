@@ -1,0 +1,741 @@
+/* ---------------------------------------------------------------------------
+   Layout. Swiss grid, hard 1px rules, no shadows, radius 2px.
+   The visual language is a control display, not a marketing page.
+--------------------------------------------------------------------------- */
+
+.wrap {
+  max-inline-size: 76rem;
+  margin-inline: auto;
+  padding-inline: var(--spacing-gutter);
+}
+
+.skip {
+  position: absolute;
+  inset-inline-start: -9999px;
+}
+.skip:focus {
+  position: fixed;
+  inset-block-start: 0.5rem;
+  inset-inline-start: 0.5rem;
+  z-index: 20;
+  padding: 0.5rem 0.75rem;
+  background: var(--color-paper);
+  color: var(--color-void);
+}
+
+/* ── top bar ─────────────────────────────────────────────────────────── */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  max-inline-size: 76rem;
+  margin-inline: auto;
+  padding: 1rem var(--spacing-gutter);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+}
+.topbar__mark {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+.topbar__dot {
+  color: var(--color-sig-run);
+}
+.topbar__right {
+  display: flex;
+  gap: 1.25rem;
+  color: var(--color-chalk);
+}
+
+/* ── hero ────────────────────────────────────────────────────────────── */
+
+.hero {
+  max-inline-size: 76rem;
+  margin-inline: auto;
+  padding-inline: var(--spacing-gutter);
+  padding-block-end: clamp(3rem, 8vw, 6rem);
+}
+
+/* Fixed aspect: the swarm can never shift the headline. */
+.hero__viz {
+  position: relative;
+  inline-size: 100%;
+  aspect-ratio: 160 / 60;
+  touch-action: pan-y; /* never swallow a scroll gesture */
+}
+
+.viz-static,
+.viz-live {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+.viz-static--apac {
+  display: none;
+}
+
+.viz-live {
+  opacity: 0;
+  transition: opacity 600ms ease;
+}
+.viz-live[data-live="true"] {
+  opacity: 1;
+}
+/* Once the canvas is live the SVG is redundant weight on every repaint. */
+.viz-live[data-live="true"] ~ .viz-static,
+.hero__viz:has(.viz-live[data-live="true"]) .viz-static {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 600ms ease;
+}
+
+.hero__hint {
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline-end: 0;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-graphite-2);
+}
+
+.hero__copy {
+  margin-block-start: clamp(1.5rem, 4vw, 3rem);
+  max-inline-size: 46rem;
+}
+
+.hero__h1 {
+  margin: 0.5rem 0 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.25rem, 6.5vw, 4.75rem);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.hero__sub {
+  margin: 1.25rem 0 0;
+  max-inline-size: 42rem;
+  font-size: clamp(1rem, 1.6vw, 1.1875rem);
+  line-height: 1.6;
+  color: var(--color-chalk);
+}
+
+.hero__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2.5rem;
+  margin: 2.25rem 0 0;
+  padding-block-start: 1.5rem;
+  border-block-start: 1px solid var(--color-line-dark);
+}
+.hero__stat-value {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1;
+}
+.hero__stat-label {
+  margin: 0.375rem 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  color: var(--color-ink-3);
+}
+
+.hero__legend {
+  margin: 1.75rem 0 0;
+  max-inline-size: 40rem;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--color-graphite-2);
+}
+
+/* ── section frame ───────────────────────────────────────────────────── */
+
+.sec {
+  padding-block: clamp(3.5rem, 8vw, 6rem) 0;
+}
+.sec .rule {
+  margin: 0 0 1.5rem;
+}
+.sec__h2 {
+  margin: 0.75rem 0 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.5rem, 3.4vw, 2.5rem);
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+  max-inline-size: 40rem;
+}
+.sec__lede {
+  margin: 1.125rem 0 0;
+  max-inline-size: 44rem;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--color-chalk);
+}
+
+.wf__title {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin: 0 0 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-ink-3);
+}
+
+/* ── 01 fleet ────────────────────────────────────────────────────────── */
+
+.fleet {
+  display: grid;
+  gap: 2.5rem;
+  margin-block-start: 2.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+}
+.fleet__group-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.fleet__dot {
+  inline-size: 8px;
+  block-size: 8px;
+}
+.fleet__dot[data-tier="domain"] {
+  background: var(--color-sig-run);
+}
+.fleet__dot[data-tier="meta"] {
+  background: var(--color-chalk);
+}
+.fleet__dot[data-tier="watchdog"] {
+  background: var(--color-sig-watch);
+}
+.fleet__count {
+  margin-inline-start: auto;
+  color: var(--color-ink-3);
+}
+.fleet__group-note {
+  margin: 0.5rem 0 1rem;
+  font-size: 0.8125rem;
+  color: var(--color-ink-3);
+}
+.fleet__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-block-start: 1px solid var(--color-line-dark);
+}
+.fleet__item {
+  display: grid;
+  gap: 0.125rem;
+  padding-block: 0.5rem;
+  border-block-end: 1px solid var(--color-line-dark);
+}
+.fleet__id {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--color-paper);
+}
+.fleet__role {
+  font-size: 0.75rem;
+  color: var(--color-ink-3);
+}
+
+/* ── 02 ledger ───────────────────────────────────────────────────────── */
+
+.ledger {
+  margin: 2.5rem 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: ledger;
+}
+.ledger__row {
+  display: grid;
+  gap: 0.75rem 1.5rem;
+  padding-block: 1.25rem;
+  border-block-start: 1px solid var(--color-line-dark);
+  grid-template-columns: 1fr;
+}
+.ledger__label {
+  display: block;
+  margin-block-end: 0.375rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-graphite-2);
+}
+.ledger__quote {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  line-height: 1.4;
+  color: var(--color-ink-3);
+  text-decoration-color: var(--color-sig-halt);
+  text-decoration-thickness: 1px;
+}
+.ledger__arrow {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+.ledger__stage {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  padding: 0.125rem 0.375rem;
+  border: 1px solid var(--color-line-dark);
+  color: var(--color-graphite-2);
+}
+.ledger__line {
+  flex: 1;
+  block-size: 1px;
+  background: var(--color-line-dark);
+}
+.ledger__agent {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  color: var(--color-sig-run);
+}
+.ledger__desc {
+  display: block;
+  margin-block-start: 0.375rem;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--color-chalk);
+}
+.ledger__footnote {
+  margin: 1.75rem 0 0;
+  padding-block-start: 1.25rem;
+  border-block-start: 1px solid var(--color-line-dark);
+  font-size: 1rem;
+  color: var(--color-chalk);
+}
+.ledger__source {
+  margin: 0.5rem 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-graphite-2);
+}
+
+/* ── 03 workflow ─────────────────────────────────────────────────────── */
+
+.wf {
+  display: grid;
+  gap: 2.5rem;
+  margin-block-start: 2.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+}
+.wf__stages,
+.wf__gates,
+.wf__levels {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-block-start: 1px solid var(--color-line-dark);
+}
+.wf__stage,
+.wf__gate,
+.wf__level {
+  display: grid;
+  gap: 0.125rem;
+  padding-block: 0.625rem;
+  border-block-end: 1px solid var(--color-line-dark);
+}
+.wf__stage {
+  grid-template-columns: 2rem 1fr;
+  align-items: baseline;
+  column-gap: 0.625rem;
+}
+.wf__order {
+  color: var(--color-graphite-2);
+  font-size: 0.75rem;
+}
+.wf__stage-id,
+.wf__gate-id,
+.wf__level-id {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+}
+.wf__stage-label,
+.wf__gate-note,
+.wf__level-label {
+  grid-column: 2;
+  font-size: 0.75rem;
+  color: var(--color-ink-3);
+}
+.wf__gate-note,
+.wf__level-label {
+  grid-column: 1;
+}
+.wf__gate[data-required="true"] .wf__gate-id {
+  color: var(--color-sig-halt);
+}
+.wf__req,
+.wf__default {
+  justify-self: start;
+  padding: 0.0625rem 0.375rem;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.wf__req {
+  border: 1px solid var(--color-sig-halt);
+  color: var(--color-sig-halt);
+}
+.wf__default {
+  border: 1px solid var(--color-sig-ok);
+  color: var(--color-sig-ok);
+}
+.wf__level[data-default="true"] .wf__level-id {
+  color: var(--color-sig-ok);
+}
+
+/* ── 04 pilot ────────────────────────────────────────────────────────── */
+
+.pilot {
+  display: grid;
+  gap: 3rem;
+  margin-block-start: 2.5rem;
+  grid-template-columns: 1fr;
+}
+.funnel {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.funnel__row {
+  display: grid;
+  grid-template-columns: 10rem 1fr 3rem;
+  align-items: center;
+  gap: 0.75rem;
+  padding-block: 0.4375rem;
+}
+.funnel__label {
+  font-size: 0.75rem;
+  color: var(--color-ink-3);
+}
+.funnel__bar {
+  block-size: 10px;
+  background: var(--color-sig-run);
+  min-inline-size: 2px;
+}
+.funnel__count {
+  text-align: end;
+  font-size: 0.875rem;
+}
+.pilot__stats {
+  display: grid;
+  gap: 1.5rem 2rem;
+  margin: 0;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+}
+.pilot__value {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  font-weight: 600;
+  line-height: 1;
+}
+.pilot__label {
+  margin: 0.5rem 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-ink-3);
+}
+.pilot__note {
+  display: block;
+  color: var(--color-graphite-2);
+}
+
+/* ── 05 economics ────────────────────────────────────────────────────── */
+
+.scope-note {
+  margin: 1.5rem 0 0;
+  padding: 0.875rem 1rem;
+  max-inline-size: 44rem;
+  border-inline-start: 2px solid var(--color-sig-watch);
+  background: rgb(111 168 199 / 0.07);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--color-chalk);
+}
+.econ {
+  display: grid;
+  gap: 1px;
+  margin-block-start: 2rem;
+  background: var(--color-line-dark);
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+}
+.econ__col {
+  padding: 1.5rem;
+  background: var(--color-void);
+}
+.econ__col[data-ours="true"] {
+  background: var(--color-void-2);
+}
+.econ__who {
+  margin: 0 0 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-ink-3);
+}
+.econ__col[data-ours="true"] .econ__who {
+  color: var(--color-sig-run);
+}
+.econ__figure {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 600;
+  line-height: 1;
+}
+.econ__figure--second {
+  margin-block-start: 1.5rem;
+}
+.econ__caption {
+  margin: 0.375rem 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-graphite-2);
+}
+.econ__detail {
+  margin: 0.5rem 0 0;
+  font-size: 0.75rem;
+  color: var(--color-ink-3);
+}
+.econ__excluded {
+  margin: 1.25rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--color-graphite-2);
+}
+
+/* ── 06 company ──────────────────────────────────────────────────────── */
+
+.company {
+  display: grid;
+  gap: 2.5rem;
+  margin-block-start: 2.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+}
+.company__count {
+  margin-inline-start: auto;
+}
+.company__gates {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: g;
+  border-block-start: 1px solid var(--color-line-dark);
+}
+.company__gate {
+  counter-increment: g;
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  gap: 0.625rem;
+  padding-block: 0.625rem;
+  border-block-end: 1px solid var(--color-line-dark);
+  font-size: 0.8125rem;
+  color: var(--color-chalk);
+}
+.company__gate::before {
+  content: counter(g, decimal-leading-zero);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-graphite-2);
+}
+.company__tests {
+  display: flex;
+  gap: 2.5rem;
+  margin: 0;
+}
+.company__test-value {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 600;
+  line-height: 1;
+}
+.company__test-label {
+  margin: 0.375rem 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-graphite-2);
+}
+.company__site-note {
+  margin: 2rem 0 0;
+  padding-block-start: 1.25rem;
+  border-block-start: 1px solid var(--color-line-dark);
+  max-inline-size: 46rem;
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--color-chalk);
+}
+
+/* ── 07 geo ──────────────────────────────────────────────────────────── */
+
+.geo {
+  display: grid;
+  gap: 2.5rem;
+  margin-block-start: 2.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+}
+.geo__key {
+  inline-size: 8px;
+  block-size: 8px;
+  border-radius: 50%;
+}
+.geo__key--op {
+  background: var(--color-sig-run);
+}
+.geo__key--mk {
+  border: 1px solid var(--color-sig-watch);
+}
+.geo__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-block-start: 1px solid var(--color-line-dark);
+}
+.geo__item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding-block: 0.5rem;
+  border-block-end: 1px solid var(--color-line-dark);
+  font-size: 0.9375rem;
+}
+.geo__cc {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--color-graphite-2);
+}
+.geo__hq {
+  padding: 0.0625rem 0.375rem;
+  border: 1px solid var(--color-sig-run);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-sig-run);
+}
+.geo__users {
+  margin-inline-start: auto;
+  font-size: 0.75rem;
+  color: var(--color-ink-3);
+}
+.geo__note,
+.geo__source {
+  margin: 0 0 0.75rem;
+  font-size: 0.75rem;
+  color: var(--color-graphite-2);
+}
+.geo__source {
+  margin: 0.75rem 0 0;
+}
+
+/* ── footer ──────────────────────────────────────────────────────────── */
+
+.foot {
+  max-inline-size: 76rem;
+  margin: clamp(4rem, 10vw, 7rem) auto 0;
+  padding: 0 var(--spacing-gutter) 3rem;
+  font-size: 0.875rem;
+}
+.foot__grid {
+  display: grid;
+  gap: 2rem;
+  padding-block-start: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+}
+.foot__mark {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.125rem;
+  letter-spacing: -0.02em;
+}
+.foot__line {
+  margin: 0.5rem 0;
+  color: var(--color-ink-3);
+}
+.foot__links p {
+  margin: 0 0 0.5rem;
+}
+.foot__label {
+  display: inline-block;
+  inline-size: 5rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-graphite-2);
+}
+.foot__snapshot,
+.foot__rights {
+  margin: 1.5rem 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--color-graphite-2);
+}
+.foot__rights {
+  margin-block-start: 0.375rem;
+}
+
+.notfound {
+  padding-block: 6rem;
+}
+
+/* ── responsive ──────────────────────────────────────────────────────── */
+
+@media (min-width: 48rem) {
+  .ledger__row {
+    grid-template-columns: 1fr 8rem 1fr;
+    align-items: center;
+  }
+  .pilot {
+    grid-template-columns: 1.2fr 1fr;
+  }
+}
+
+@media (max-width: 47.99rem) {
+  /* Matches VIEW_APAC's lon/lat span, so the static SVG is not letterboxed
+     against the canvas the moment they cross-fade. */
+  .hero__viz {
+    aspect-ratio: 62 / 60;
+  }
+  .viz-static--world {
+    display: none;
+  }
+  .viz-static--apac {
+    display: block;
+  }
+  .funnel__row {
+    grid-template-columns: 7.5rem 1fr 2.5rem;
+  }
+  .funnel__label {
+    font-size: 0.6875rem;
+  }
+}

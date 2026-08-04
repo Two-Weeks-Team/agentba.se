@@ -1,0 +1,124 @@
+{
+  "$comment": "Markers are drawn independently of the dot grid, so a country that resolves to two dots still gets a legible label. `operating` is where campaign work has run; `market` is TikTok audience scale we can reach, not a claim of past work. labelDy nudges a label off a neighbour's; it does not move the marker.",
+  "maintained": "manual",
+  "capturedAt": "2026-08-04",
+  "operating": [
+    {
+      "id": "seoul",
+      "city": "Seoul",
+      "cityKo": "서울",
+      "country": "KR",
+      "lat": 37.5665,
+      "lon": 126.978,
+      "hq": true
+    },
+    {
+      "id": "tokyo",
+      "city": "Tokyo",
+      "cityKo": "도쿄",
+      "country": "JP",
+      "lat": 35.6762,
+      "lon": 139.6503,
+      "labelDy": 11
+    },
+    {
+      "id": "ulaanbaatar",
+      "city": "Ulaanbaatar",
+      "cityKo": "울란바토르",
+      "country": "MN",
+      "lat": 47.8864,
+      "lon": 106.9057
+    },
+    {
+      "id": "mexico-city",
+      "city": "Mexico City",
+      "cityKo": "멕시코시티",
+      "country": "MX",
+      "lat": 19.4326,
+      "lon": -99.1332
+    },
+    {
+      "id": "hanoi",
+      "city": "Hanoi",
+      "cityKo": "하노이",
+      "country": "VN",
+      "lat": 21.0285,
+      "lon": 105.8542
+    },
+    {
+      "id": "bangkok",
+      "city": "Bangkok",
+      "cityKo": "방콕",
+      "country": "TH",
+      "lat": 13.7563,
+      "lon": 100.5018,
+      "labelDy": 11
+    },
+    {
+      "id": "san-francisco",
+      "city": "San Francisco",
+      "cityKo": "샌프란시스코",
+      "country": "US",
+      "lat": 37.7749,
+      "lon": -122.4194
+    },
+    {
+      "id": "new-york",
+      "city": "New York",
+      "cityKo": "뉴욕",
+      "country": "US",
+      "lat": 40.7128,
+      "lon": -74.006
+    },
+    {
+      "id": "paris",
+      "city": "Paris",
+      "cityKo": "파리",
+      "country": "FR",
+      "lat": 48.8566,
+      "lon": 2.3522
+    },
+    {
+      "id": "milan",
+      "city": "Milan",
+      "cityKo": "밀라노",
+      "country": "IT",
+      "lat": 45.4642,
+      "lon": 9.19,
+      "labelDy": 11
+    }
+  ],
+  "market": [
+    {
+      "id": "jakarta",
+      "city": "Jakarta",
+      "cityKo": "자카르타",
+      "country": "ID",
+      "lat": -6.2088,
+      "lon": 106.8456,
+      "tiktokUsersM": 180.1
+    },
+    {
+      "id": "sao-paulo",
+      "city": "São Paulo",
+      "cityKo": "상파울루",
+      "country": "BR",
+      "lat": -23.5505,
+      "lon": -46.6333,
+      "tiktokUsersM": 130.8
+    },
+    {
+      "id": "manila",
+      "city": "Manila",
+      "cityKo": "마닐라",
+      "country": "PH",
+      "lat": 14.5995,
+      "lon": 120.9842,
+      "tiktokUsersM": 56.1
+    }
+  ],
+  "marketSource": {
+    "label": "TikTok users by country, 2026",
+    "url": "https://worldpopulationreview.com/country-rankings/tiktok-users-by-country"
+  }
+}

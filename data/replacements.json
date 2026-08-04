@@ -1,0 +1,57 @@
+{
+  "$comment": "The `was` strings are quoted verbatim from the 'Replaces (v1)' column of social-seeding-v2/docs/AGENTS.md, written before this website existed. Do not rewrite them to read better.",
+  "capturedAt": "2026-08-04",
+  "source": "social-seeding-v2/docs/AGENTS.md",
+  "rows": [
+    {
+      "was": "the human clicking Search + Step 2",
+      "agent": "sourcing",
+      "stage": "sourcing",
+      "now": "Brief in, ranked candidates out, de-duped against the blacklist and every prior campaign."
+    },
+    {
+      "was": "the human eyeballing Step 2's table",
+      "agent": "vetting",
+      "stage": "sourcing",
+      "now": "Pulls each profile, computes engagement and average views, scores fit, raises brand-safety flags."
+    },
+    {
+      "was": "\"AI 작성\" button + the human reviewing",
+      "agent": "outreach_writer",
+      "stage": "outreach",
+      "now": "Writes multiple angles, runs a four-judge tournament, checks spam score, returns one draft.",
+      "koInSource": true
+    },
+    {
+      "was": "the human reading the Replies tab",
+      "agent": "conversation",
+      "stage": "outreach",
+      "now": "Classifies every reply, extracts the address or the rate, drafts the response or escalates."
+    },
+    {
+      "was": "the human in Step 4",
+      "agent": "logistics",
+      "stage": "shipping",
+      "now": "Creates the shipment, watches tracking, handles the exceptions."
+    },
+    {
+      "was": "the human in Step 5",
+      "agent": "content_verify",
+      "stage": "content_review",
+      "now": "Polls for the post, matches it against the campaign brief, computes what it did."
+    },
+    {
+      "was": "the human in Step 6",
+      "agent": "analyst",
+      "stage": "performance",
+      "now": "Compiles the report and writes the narrative around it."
+    },
+    {
+      "was": "the 6-tab campaign-create form",
+      "agent": "intake",
+      "stage": "overview",
+      "now": "A short conversation that turns a one-line ask into a valid campaign brief."
+    }
+  ],
+  "netNew": 14
+}

@@ -1,0 +1,124 @@
+@import "tailwindcss";
+@import "./layout.css";
+
+/* ---------------------------------------------------------------------------
+   Design tokens — "Newsprint & Signal"
+   Achromatic base; colour carries agent state and nothing else.
+
+   Hard rules, enforced by tests/no-banned-claims.test.ts:
+   - No indigo/violet family (#6366f1 … #8b5cf6). It is the loudest "AI slop"
+     tell in 2026 and this is a company that must not look auto-generated.
+   - No gradients in the hero. Flat void, signal dots.
+   - Signal colours never carry body text. Dots, labels, rules only.
+   - Monospace is the display face, not the caption face.
+--------------------------------------------------------------------------- */
+
+@theme {
+  /* base — achromatic */
+  --color-void: #0e0e0c;
+  --color-void-2: #16150f;
+  --color-paper: #f2efe6;
+  --color-paper-2: #e4dfd1;
+  --color-ink: #16150f;
+  --color-ink-2: #4a473c;
+  --color-ink-3: #6f6b5c;
+  --color-graphite: #3a382f;
+  --color-graphite-2: #5a574a;
+  --color-chalk: #c9c5b6;
+  --color-line: #d8d2c2;
+  --color-line-dark: #2a2822;
+
+  /* signal — agent state only */
+  --color-sig-run: #e8b23a;
+  --color-sig-ok: #4e9a5f;
+  --color-sig-watch: #6fa8c7;
+  --color-sig-halt: #c9503c;
+
+  /* type */
+  --font-display: var(--font-martian), ui-monospace, "SFMono-Regular", monospace;
+  --font-mono: var(--font-jetbrains), ui-monospace, "SFMono-Regular", monospace;
+  --font-sans: var(--font-instrument), var(--font-ko), -apple-system,
+    BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+
+  /* rhythm */
+  --radius-card: 2px;
+  --spacing-gutter: 1.5rem;
+}
+
+@layer base {
+  :root {
+    color-scheme: dark;
+    /* Numbers must never reflow as they animate or localise. */
+    font-variant-numeric: tabular-nums;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-void);
+    color: var(--color-paper);
+    font-family: var(--font-sans);
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Korean must not break mid-word. */
+  :lang(ko) {
+    word-break: keep-all;
+    line-break: strict;
+  }
+
+  ::selection {
+    background: var(--color-sig-run);
+    color: var(--color-void);
+  }
+
+  /* Never the default bright blue. */
+  :focus-visible {
+    outline: 2px solid var(--color-sig-run);
+    outline-offset: 3px;
+  }
+
+  a {
+    color: inherit;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+}
+
+@layer components {
+  /* Section frame: "01 — The Fleet" numbering, Cognition/Swiss editorial. */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-ink-3);
+  }
+
+  .rule {
+    border: 0;
+    border-top: 1px solid var(--color-line-dark);
+  }
+
+  /* Tabular figures for every measured number. */
+  .num {
+    font-family: var(--font-display);
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1, "zero" 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

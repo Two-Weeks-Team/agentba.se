@@ -1,0 +1,65 @@
+name: DNS drift
+
+# The site can be rebuilt in an afternoon. The Google Workspace mail records
+# cannot — a deletion is silent, and mail that bounces while nobody is looking
+# is gone. This job is the tripwire.
+
+on:
+  schedule:
+    - cron: "23 1 * * *" # 10:23 KST
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Resolve
+        id: dns
+        run: |
+          set -euo pipefail
+          fail=""
+          note() { echo "- $1" >> report.md; }
+          echo "## agentba.se DNS check — $(date -u +%FT%TZ)" > report.md
+
+          mx=$(dig +short MX agentba.se @1.1.1.1 | sort | tr '\n' ' ')
+          echo "MX: $mx"
+          for host in aspmx.l.google.com alt1.aspmx.l.google.com alt2.aspmx.l.google.com; do
+            case "$mx" in *"$host"*) ;; *) fail="yes"; note "MISSING MX $host" ;; esac
+          done
+          note "MX: \`$mx\`"
+
+          spf=$(dig +short TXT agentba.se @1.1.1.1 | grep -c 'v=spf1' || true)
+          [ "$spf" -ge 1 ] || { fail="yes"; note "MISSING SPF record"; }
+          note "SPF records: $spf"
+
+          a=$(dig +short A agentba.se @1.1.1.1 | sort | tr '\n' ' ')
+          note "A: \`$a\`"
+          aaaa=$(dig +short AAAA agentba.se @1.1.1.1 | tr '\n' ' ')
+          note "AAAA: \`${aaaa:-none}\`"
+
+          code=$(curl -so /dev/null -w '%{http_code}' --max-time 20 https://agentba.se || echo 000)
+          note "https://agentba.se → $code"
+          case "$code" in 200|30*) ;; *) fail="yes"; note "SITE NOT SERVING ($code)" ;; esac
+
+          if curl -sI --max-time 20 https://agentba.se | grep -qi '^cf-ray:'; then
+            fail="yes"; note "Cloudflare proxy is ON — expected DNS-only in front of Vercel"
+          fi
+
+          echo "fail=$fail" >> "$GITHUB_OUTPUT"
+          cat report.md
+
+      - name: Open an issue on drift
+        if: steps.dns.outputs.fail == 'yes'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue create \
+            --title "DNS drift detected on agentba.se" \
+            --body-file report.md \
+            --repo "${{ github.repository }}" \
+            --label "" || true
