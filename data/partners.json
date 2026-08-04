@@ -1,0 +1,16 @@
+{
+  "$comment": "Mirrors what socialseed.ing publishes, at company level. Backers are named support; the stack is what the agents actually run on.",
+  "maintained": "manual",
+  "capturedAt": "2026-08-04",
+  "backers": [{ "id": "elevenlabs", "name": "ElevenLabs Grants" }],
+  "stack": [
+    { "id": "google-cloud", "name": "Google Cloud" },
+    { "id": "gemini", "name": "Google Gemini" },
+    { "id": "openai", "name": "OpenAI" },
+    { "id": "vercel", "name": "Vercel" },
+    { "id": "nextjs", "name": "Next.js" },
+    { "id": "mongodb", "name": "MongoDB" },
+    { "id": "go", "name": "Go" },
+    { "id": "tailwind", "name": "Tailwind CSS" }
+  ]
+}

@@ -1,4 +1,6 @@
 import fleet from "@/data/fleet.json";
+import people from "@/data/people.json";
+import products from "@/data/products.json";
 import { SITE, getContent, type Locale } from "@/lib/i18n";
 
 /**
@@ -6,7 +8,8 @@ import { SITE, getContent, type Locale } from "@/lib/i18n";
  *
  * They are software. Marking them as people would encode, in structured data,
  * exactly the confusion this site exists to clear up — and search engines
- * treat fake Person entities as a spam signal.
+ * treat fabricated Person entities as a spam signal. The only Person entries
+ * here are the two actual people.
  */
 export function JsonLd({ locale }: { locale: Locale }) {
   const t = getContent(locale);
@@ -17,18 +20,19 @@ export function JsonLd({ locale }: { locale: Locale }) {
       "@id": `${SITE}/#org`,
       name: "AgentBase",
       url: SITE,
-      email: "sejun@2weeks.co",
       description: t.meta.description,
       foundingLocation: {
         "@type": "Place",
         address: { "@type": "PostalAddress", addressLocality: "Seoul", addressCountry: "KR" },
       },
-      sameAs: ["https://github.com/Two-Weeks-Team", "https://socialseed.ing"],
-      knowsAbout: [
-        "autonomous agents",
-        "agent orchestration",
-        "influencer campaign operations",
-      ],
+      founder: people.people.map((p) => ({
+        "@type": "Person",
+        name: p.name,
+        jobTitle: p.role,
+        email: p.email,
+      })),
+      sameAs: ["https://github.com/Two-Weeks-Team", ...products.products.map((p) => p.url)],
+      knowsAbout: ["autonomous agents", "agent orchestration", "operations automation"],
     },
     {
       "@type": "WebSite",

@@ -1,13 +1,12 @@
 import fleet from "@/data/fleet.json";
+import people from "@/data/people.json";
 import { getContent, type Locale } from "@/lib/i18n";
 
 const REPO = "https://github.com/Two-Weeks-Team/agentba.se";
-const CONTACT = "sejun@2weeks.co";
 
 /**
- * No job titles. The repository documents conflict on who holds which, and a
- * title with no source behind it is exactly the kind of claim this site is
- * built to avoid.
+ * Two named people with working addresses, rather than a shared inbox. A
+ * company that says it runs on agents should still be reachable by a person.
  */
 export function Footer({ locale }: { locale: Locale }) {
   const t = getContent(locale).footer;
@@ -20,26 +19,27 @@ export function Footer({ locale }: { locale: Locale }) {
         <div>
           <p className="foot__mark">{t.wordmark}</p>
           <p className="foot__line">{t.line}</p>
-          <p>
-            <a href="https://socialseed.ing" rel="noopener">
-              {t.product}
-            </a>
-          </p>
         </div>
+
+        <ul className="foot__people">
+          {people.people.map((p) => (
+            <li key={p.id} className="foot__person">
+              <span className="foot__role">{p.role}</span>
+              <span className="foot__name">{locale === "ko" ? p.nameKo : p.name}</span>
+              <a className="foot__email" href={`mailto:${p.email}`}>
+                {p.email}
+              </a>
+            </li>
+          ))}
+        </ul>
 
         <div className="foot__links">
           <p>
-            <span className="foot__label">{t.repoLabel}</span>
             <a href={REPO} rel="noopener">
-              Two-Weeks-Team/agentba.se
+              {t.repoLabel}
             </a>
           </p>
           <p>
-            <span className="foot__label">{t.contactLabel}</span>
-            <a href={`mailto:${CONTACT}`}>{CONTACT}</a>
-          </p>
-          <p>
-            <span className="foot__label">{t.machineLabel}</span>
             <a href="/llms.txt">/llms.txt</a>
             {" · "}
             <a href={locale === "ko" ? "/ko/index.md" : "/index.md"}>.md</a>

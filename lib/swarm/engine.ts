@@ -27,7 +27,6 @@ export interface GeoPoint {
 export interface EngineOptions {
   canvas: HTMLCanvasElement;
   operating: readonly GeoPoint[];
-  market: readonly GeoPoint[];
   locale: "en" | "ko";
   /** Fires once the first frame has painted, to cross-fade out the SVG. */
   onReady?: () => void;
@@ -216,7 +215,6 @@ export class SwarmEngine {
       });
     };
     for (const p of this.opts.operating) push(p, true);
-    for (const p of this.opts.market) push(p, false);
     this.markers = out;
   }
 

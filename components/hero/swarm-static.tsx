@@ -22,10 +22,8 @@ function ViewSvg({ view, locale, className }: { view: SwarmView; locale: Locale;
   const w = view.cols * SVG_CELL;
   const h = view.rows * SVG_CELL;
 
-  const markers = [
-    ...geo.operating.map((p) => ({ ...p, operating: true, hq: "hq" in p && p.hq === true })),
-    ...geo.market.map((p) => ({ ...p, operating: false, hq: false })),
-  ]
+  const markers = geo.operating
+    .map((p) => ({ ...p, operating: true, hq: "hq" in p && p.hq === true }))
     .map((p) => {
       const n = project(p.lon, p.lat, view);
       return n ? { ...p, x: n.nx * w, y: n.ny * h } : null;

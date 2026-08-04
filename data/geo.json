@@ -1,5 +1,5 @@
 {
-  "$comment": "Markers are drawn independently of the dot grid, so a country that resolves to two dots still gets a legible label. `operating` is where campaign work has run; `market` is TikTok audience scale we can reach, not a claim of past work. labelDy nudges a label off a neighbour's; it does not move the marker.",
+  "$comment": "Where the company operates. Markers are drawn independently of the dot grid, so a country that resolves to two dots still gets a legible label. labelDy nudges a label off a neighbour's; it does not move the marker. Reachable-market figures live on the product sites, not here.",
   "maintained": "manual",
   "capturedAt": "2026-08-04",
   "operating": [
@@ -87,38 +87,5 @@
       "lon": 9.19,
       "labelDy": 11
     }
-  ],
-  "market": [
-    {
-      "id": "jakarta",
-      "city": "Jakarta",
-      "cityKo": "자카르타",
-      "country": "ID",
-      "lat": -6.2088,
-      "lon": 106.8456,
-      "tiktokUsersM": 180.1
-    },
-    {
-      "id": "sao-paulo",
-      "city": "São Paulo",
-      "cityKo": "상파울루",
-      "country": "BR",
-      "lat": -23.5505,
-      "lon": -46.6333,
-      "tiktokUsersM": 130.8
-    },
-    {
-      "id": "manila",
-      "city": "Manila",
-      "cityKo": "마닐라",
-      "country": "PH",
-      "lat": 14.5995,
-      "lon": 120.9842,
-      "tiktokUsersM": 56.1
-    }
-  ],
-  "marketSource": {
-    "label": "TikTok users by country, 2026",
-    "url": "https://worldpopulationreview.com/country-rankings/tiktok-users-by-country"
-  }
+  ]
 }

@@ -1,5 +1,5 @@
 import fleet from "@/data/fleet.json";
-import pilot from "@/data/pilot.json";
+import people from "@/data/people.json";
 
 /**
  * The social card, built from the same snapshot the page renders. When the
@@ -13,9 +13,12 @@ import pilot from "@/data/pilot.json";
 export function OgCard({ locale }: { locale: "en" | "ko" }) {
   const stats = [
     { value: String(fleet.counts.total), label: "AGENTS" },
-    { value: String(pilot.headline.verifiedPosts), label: "VERIFIED POSTS" },
-    { value: pilot.headline.views.toLocaleString("en-US"), label: "VIEWS" },
-    { value: String(pilot.headline.unapprovedSends), label: "UNAPPROVED SENDS" },
+    { value: String(people.people.length), label: "PEOPLE" },
+    { value: String(fleet.gates.length), label: "APPROVAL GATES" },
+    {
+      value: String(fleet.gates.filter((g) => g.requiredHitl).length),
+      label: "NEVER DELEGATED",
+    },
   ];
 
   return (
@@ -46,8 +49,23 @@ export function OgCard({ locale }: { locale: "en" | "ko" }) {
         </div>
       </div>
 
-      <div style={{ display: "flex", fontSize: 78, lineHeight: 1.02, letterSpacing: -3 }}>
-        This company runs on agents.
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        <div style={{ display: "flex", fontSize: 70, lineHeight: 1.04, letterSpacing: -3 }}>
+          This company runs on agents.
+        </div>
+        <div
+          style={{
+            display: "flex",
+            fontSize: 24,
+            lineHeight: 1.4,
+            color: "#c9c5b6",
+            marginTop: 20,
+          }}
+        >
+          {/* No apostrophe: the subset font ships only the glyphs listed in
+              scripts/subset-og-font.sh, and a missing glyph renders as a box. */}
+          We do not hire people. We build agents.
+        </div>
       </div>
 
       <div style={{ display: "flex", borderTop: "1px solid #2a2822", paddingTop: 28 }}>

@@ -2,8 +2,10 @@
 
 The AgentBase company site. One page, English at `/` and Korean at `/ko`.
 
-Its only job is to show how the company operates. Products are sold on their
-own sites.
+Its only job is to show how the company operates. This is a company page, not
+a product page — customer names, campaign results and category metrics belong
+on each product's own site, and `tests/no-banned-claims.test.ts` fails the
+build if they turn up here.
 
 ## Why the repository is public
 
@@ -52,10 +54,12 @@ crawler, a social preview, and a person all read the same figures.
 | --- | --- |
 | `fleet.json` | CI, from the source repo's agent modules |
 | `quality.json` | CI, from the source repo's test run |
-| `pilot.json` | frozen — a completed campaign is a historical record |
 | `economics.json` | by hand; `scopeNote` is a required field |
 | `replacements.json` | by hand, quoted verbatim from the source roster |
-| `geo.json` | by hand |
+| `products.json` | by hand — names and links only |
+| `people.json` | by hand |
+| `partners.json` | by hand |
+| `geo.json` | by hand — where work has run, not reachable market |
 
 `tests/no-banned-claims.test.ts` fails the build on figures this company
 cannot evidence, and `tests/ssr-numbers.test.ts` fails it if a headline figure
@@ -85,4 +89,5 @@ pnpm tsx scripts/measure-svg.ts         # size check for the SVG fallback
 
 ## Contact
 
-sejun@2weeks.co
+CEO Sanggen Chang — sangguen@agentba.se
+CTO Sejun Kim — sejun@agentba.se

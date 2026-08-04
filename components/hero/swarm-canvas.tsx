@@ -33,7 +33,6 @@ export function SwarmCanvas({ locale }: { locale: Locale }) {
           engine = new SwarmEngine({
             canvas,
             operating: geo.operating,
-            market: geo.market,
             locale,
             onReady: () => setLive(true),
           });

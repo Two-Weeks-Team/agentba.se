@@ -1,0 +1,18 @@
+{
+  "$comment": "What the company operates. Names and links only — each product argues its own case on its own site.",
+  "maintained": "manual",
+  "capturedAt": "2026-08-04",
+  "products": [
+    {
+      "id": "social-seeding",
+      "name": "Social Seeding",
+      "domain": "socialseed.ing",
+      "url": "https://socialseed.ing",
+      "status": "operating",
+      "one": {
+        "en": "Creator campaigns, run end to end by the fleet. A brief goes in; sourcing, outreach, replies, shipping and verification come out.",
+        "ko": "크리에이터 캠페인을 플릿이 끝까지 운영합니다. 브리프가 들어가면 소싱·아웃리치·답장·배송·검증이 나옵니다."
+      }
+    }
+  ]
+}
