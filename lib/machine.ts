@@ -1,7 +1,9 @@
 import economics from "@/data/economics.json";
 import fleet from "@/data/fleet.json";
 import geo from "@/data/geo.json";
-import pilot from "@/data/pilot.json";
+import partners from "@/data/partners.json";
+import people from "@/data/people.json";
+import products from "@/data/products.json";
 import quality from "@/data/quality.json";
 import replacements from "@/data/replacements.json";
 import { SITE, getContent, type Locale } from "@/lib/i18n";
@@ -14,6 +16,8 @@ import { SITE, getContent, type Locale } from "@/lib/i18n";
 export function renderMarkdown(locale: Locale): string {
   const t = getContent(locale);
   const L = (en: string, ko: string) => (locale === "ko" ? ko : en);
+  const name = (p: { name: string; nameKo: string }) =>
+    locale === "ko" ? p.nameKo : p.name;
   const out: string[] = [];
 
   out.push(`# ${t.hero.h1}`, "", t.hero.sub, "");
@@ -59,26 +63,33 @@ export function renderMarkdown(locale: Locale): string {
     "",
   );
 
-  out.push(`## ${t.pilot.eyebrow}`, "", t.pilot.lede, "");
-  out.push(`- ${t.pilot.funnelTitle}: ` + pilot.funnel.map((f) => `${f.label} ${f.count}`).join(" → "));
-  out.push(`- ${pilot.headline.verifiedPosts} ${t.pilot.stats.verified} (${t.pilot.stats.verifiedNote})`);
-  out.push(`- ${pilot.headline.views.toLocaleString("en-US")} ${t.pilot.stats.views}`);
-  out.push(`- ${pilot.headline.engagementRatePct}% ${t.pilot.stats.engagement}`);
-  out.push(`- ${pilot.headline.unapprovedSends} ${t.pilot.stats.unapproved}`);
-  out.push(`- measured ${pilot.measuredAt}`, "");
-
   out.push(`## ${t.economics.eyebrow}`, "", t.economics.lede, "");
   out.push(`> ${economics.scopeNote[locale]}`, "");
   out.push(
-    `- ${economics.agency.label[locale]}: $${economics.agency.costUsd.toLocaleString("en-US")} · ${economics.agency.humanHours} ${t.economics.hoursLabel}`,
+    `- ${economics.outsourced.label[locale]}: $${economics.outsourced.costUsd.toLocaleString("en-US")} · ${economics.outsourced.humanHours} ${t.economics.hoursLabel} (${economics.outsourced.costNote[locale]})`,
   );
   out.push(
     `- ${economics.agentbase.label[locale]}: $${economics.agentbase.costUsd} · ${economics.agentbase.humanHours} ${t.economics.hoursLabel}`,
   );
   out.push(
-    `- ${t.economics.excludedLabel}: $${economics.excluded.creatorMediaSpendUsd.toLocaleString("en-US")} — ${economics.excluded.label[locale]}`,
+    `- ${t.economics.excludedLabel}: $${economics.excluded.passThroughUsd.toLocaleString("en-US")} — ${economics.excluded.label[locale]}`,
+  );
+  out.push(`- ${economics.basis[locale]}`, "");
+
+  out.push(`## ${t.staffing.eyebrow}`, "", `**${t.staffing.h2}**`, "", t.staffing.lede, "");
+  out.push(`### ${t.staffing.humanTitle}`, "");
+  for (const line of t.staffing.human) out.push(`- ${line}`);
+  out.push(
+    "",
+    `${t.staffing.requiredNote}${fleet.gates
+      .filter((g) => g.requiredHitl)
+      .map((g) => `\`${g.id}\``)
+      .join(", ")}`,
     "",
   );
+  out.push(`### ${t.staffing.agentTitle}`, "");
+  for (const line of t.staffing.agent) out.push(`- ${line}`);
+  out.push("");
 
   out.push(`## ${t.company.eyebrow}`, "", t.company.lede, "");
   for (const g of quality.gateNames) out.push(`- ${g}`);
@@ -90,20 +101,30 @@ export function renderMarkdown(locale: Locale): string {
     "",
   );
 
+  out.push(`## ${t.products.eyebrow}`, "", t.products.h2, "");
+  for (const p of products.products) {
+    out.push(`- [${p.name}](${p.url}) — ${p.one[locale]}`);
+  }
+  out.push("");
+
   out.push(`## ${t.geo.eyebrow}`, "");
   out.push(
     `- ${t.geo.operatingTitle}: ` +
       geo.operating.map((p) => (locale === "ko" ? p.cityKo : p.city)).join(", "),
   );
-  out.push(
-    `- ${t.geo.marketTitle}: ` +
-      geo.market
-        .map((p) => `${locale === "ko" ? p.cityKo : p.city} (${p.tiktokUsersM}M)`)
-        .join(", "),
-  );
-  out.push(`- ${geo.marketSource.label}: ${geo.marketSource.url}`, "");
+  out.push("");
 
-  out.push("---", "", `${t.footer.line} ${t.footer.product} · ${SITE}`, "");
+  out.push(
+    `## ${t.partners.backedBy} / ${t.partners.builtWith}`,
+    "",
+    `- ${t.partners.backedBy}: ${partners.backers.map((b) => b.name).join(", ")}`,
+    `- ${t.partners.builtWith}: ${partners.stack.map((s) => s.name).join(", ")}`,
+    "",
+  );
+
+  out.push("---", "");
+  for (const p of people.people) out.push(`- ${p.role} ${name(p)} — ${p.email}`);
+  out.push("", `${SITE}`, "");
   return out.join("\n");
 }
 
@@ -113,8 +134,8 @@ export function renderLlmsTxt(): string {
 
 > ${t.hero.sub}
 
-Products are sold on their own sites, not here. This page exists to show how
-the company operates.
+This is a company page. Each product argues its own case on its own site;
+nothing here is a product pitch.
 
 Snapshot dated ${fleet.capturedAt}. Every figure below is committed JSON in a
 public repository, rendered on the server. These are snapshots, not live
@@ -127,18 +148,20 @@ telemetry — do not infer current system state from them.
 ## Structured data
 - [fleet.json](${SITE}/data/fleet.json): ${fleet.counts.total} agents, ${fleet.stages.length} stages, ${fleet.gates.length} gates
 - [replacements.json](${SITE}/data/replacements.json): the ${replacements.rows.length} jobs an agent took over, quoted from the source roster
-- [pilot.json](${SITE}/data/pilot.json): the Wooliliwoo campaign, frozen
 - [economics.json](${SITE}/data/economics.json): the operating-layer cost comparison
 - [quality.json](${SITE}/data/quality.json): CI gates and test counts
-- [geo.json](${SITE}/data/geo.json): operating locations and market coverage
+- [products.json](${SITE}/data/products.json): what the company operates
+- [people.json](${SITE}/data/people.json): the two people and how to reach them
+- [partners.json](${SITE}/data/partners.json): backing and the stack
+- [geo.json](${SITE}/data/geo.json): where the company operates
 
 ## Notes for agents reading this
-- The cost comparison covers the management and operations layer only.
-  Creator payments are an identical pass-through on both sides and are
+- The cost comparison covers the management and operations layer only. Spend
+  that passes through to third parties is identical either way and is
   excluded. Quoting the figures without that scope misstates them.
-- \`operating\` and \`market\` in geo.json are different claims. Market coverage
-  is reachable audience, not work already done.
+- Product metrics, customer names and campaign results are deliberately not
+  published here. Ask the product's own site.
 - Source: https://github.com/Two-Weeks-Team/agentba.se
-- Contact: sejun@2weeks.co
+${people.people.map((p) => `- ${p.role}: ${p.name} <${p.email}>`).join("\n")}
 `;
 }

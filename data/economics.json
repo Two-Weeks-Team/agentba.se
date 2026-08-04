@@ -1,26 +1,38 @@
 {
-  "$comment": "scopeNote is a required field. Without it these numbers assert something they do not support. Source: social-seeding-v2/scripts/demo/submission/BUSINESS-CASE.md.",
+  "$comment": "Generalised from a modelled campaign-scale engagement. The derivation is kept because a figure without one is not a figure; the vertical, channel and client are not, because this is a company page and not a product page. scopeNote is required.",
   "maintained": "manual",
   "measuredAt": "2026-06-01",
-  "basis": { "creators": 20, "vertical": "skincare", "channel": "TikTok" },
-  "scopeNote": {
-    "en": "Management and operations layer. Creator payments are an identical pass-through on both sides and are excluded from this comparison.",
-    "ko": "운영·관리 레이어 기준입니다. 크리에이터 지급액은 양쪽에서 동일한 pass-through이므로 이 비교에서 제외했습니다."
+  "basis": {
+    "en": "One engagement of the size a small team would outsource.",
+    "ko": "작은 팀이라면 외주로 넘길 규모의 업무 1건."
   },
-  "agency": {
-    "label": { "en": "Traditional agency", "ko": "전통 에이전시" },
+  "scopeNote": {
+    "en": "The management and operations layer only. The spend that passes through to third parties is identical either way and is excluded — including it would make the difference look larger than it is.",
+    "ko": "운영·관리 레이어에 한정된 비교입니다. 제3자에게 그대로 나가는 지출은 양쪽이 동일하므로 제외했습니다. 포함시키면 차이가 실제보다 커 보입니다."
+  },
+  "outsourced": {
+    "label": { "en": "Outsourced to an operator", "ko": "외부 운영사에 맡길 때" },
     "costUsd": 2400,
-    "costNote": { "en": "20% management fee on $12,000 of creator spend", "ko": "크리에이터 지출 $12,000에 대한 20% 관리 수수료" },
+    "costNote": {
+      "en": "20% management fee on $12,000 of pass-through spend",
+      "ko": "pass-through 지출 $12,000에 대한 20% 관리 수수료"
+    },
     "humanHours": 45
   },
   "agentbase": {
-    "label": { "en": "AgentBase", "ko": "AgentBase" },
+    "label": { "en": "Run by the fleet", "ko": "플릿이 운영할 때" },
     "costUsd": 7.4,
-    "costNote": { "en": "metered agent and infrastructure cost", "ko": "계측된 에이전트·인프라 비용" },
+    "costNote": {
+      "en": "metered agent and infrastructure cost",
+      "ko": "계측된 에이전트·인프라 비용"
+    },
     "humanHours": 2
   },
   "excluded": {
-    "creatorMediaSpendUsd": 12000,
-    "label": { "en": "Creator payments — identical on both sides", "ko": "크리에이터 지급액 — 양쪽 동일" }
+    "passThroughUsd": 12000,
+    "label": {
+      "en": "Pass-through spend — identical on both sides",
+      "ko": "그대로 나가는 지출 — 양쪽 동일"
+    }
   }
 }

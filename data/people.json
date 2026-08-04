@@ -1,0 +1,21 @@
+{
+  "$comment": "The two people. Everything on this site is their responsibility.",
+  "maintained": "manual",
+  "capturedAt": "2026-08-04",
+  "people": [
+    {
+      "id": "sanggen",
+      "name": "Sanggen Chang",
+      "nameKo": "장상근",
+      "role": "CEO",
+      "email": "sangguen@agentba.se"
+    },
+    {
+      "id": "sejun",
+      "name": "Sejun Kim",
+      "nameKo": "김세준",
+      "role": "CTO",
+      "email": "sejun@agentba.se"
+    }
+  ]
+}

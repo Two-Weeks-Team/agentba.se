@@ -5,8 +5,9 @@ import { home as ko } from "../content/ko/home";
 
 const fleet = JSON.parse(readFileSync("data/fleet.json", "utf8"));
 const replacements = JSON.parse(readFileSync("data/replacements.json", "utf8"));
-const pilot = JSON.parse(readFileSync("data/pilot.json", "utf8"));
 const geo = JSON.parse(readFileSync("data/geo.json", "utf8"));
+const people = JSON.parse(readFileSync("data/people.json", "utf8"));
+const products = JSON.parse(readFileSync("data/products.json", "utf8"));
 
 describe("fleet", () => {
   it("the roster length matches the published count", () => {
@@ -52,45 +53,48 @@ describe("replacement ledger", () => {
   });
 });
 
-describe("pilot", () => {
-  it("the funnel never grows as it descends", () => {
-    const counts = pilot.funnel.map((f: { count: number }) => f.count);
-    for (let i = 1; i < counts.length; i++) {
-      expect(counts[i]).toBeLessThanOrEqual(counts[i - 1]);
-    }
-  });
-
-  it("the headline matches the last funnel step", () => {
-    const last = pilot.funnel.at(-1);
-    expect(pilot.headline.verifiedPosts).toBe(last.count);
-  });
-
-  it("attainment is derived, not asserted", () => {
-    const derived = Math.round((pilot.headline.verifiedPosts / pilot.headline.targetPosts) * 100);
-    expect(pilot.headline.attainmentPct).toBe(derived);
-  });
-});
-
 describe("geo", () => {
-  it("operating and market sets do not overlap", () => {
-    const op = new Set(geo.operating.map((p: { id: string }) => p.id));
-    for (const m of geo.market) expect(op.has(m.id)).toBe(false);
-  });
-
   it("coordinates are on Earth", () => {
-    for (const p of [...geo.operating, ...geo.market]) {
+    for (const p of geo.operating) {
       expect(Math.abs(p.lat)).toBeLessThanOrEqual(90);
       expect(Math.abs(p.lon)).toBeLessThanOrEqual(180);
     }
   });
 
-  it("market entries cite a user figure, since that is the claim being made", () => {
-    for (const m of geo.market) expect(m.tiktokUsersM).toBeGreaterThan(0);
-    expect(geo.marketSource.url).toMatch(/^https:\/\//);
-  });
-
   it("exactly one HQ", () => {
     expect(geo.operating.filter((p: { hq?: boolean }) => p.hq).length).toBe(1);
+  });
+
+  it("claims only places where work has run — no reachable-market tier", () => {
+    // Market sizing is a product's argument, and mixing it into a list titled
+    // "where we operate" would turn reach into a claim of work already done.
+    expect(geo.market).toBeUndefined();
+  });
+});
+
+describe("people", () => {
+  it("everyone has a role, both names, and an agentba.se address", () => {
+    for (const p of people.people) {
+      expect(p.role).toBeTruthy();
+      expect(p.name).toBeTruthy();
+      expect(p.nameKo).toBeTruthy();
+      expect(p.email).toMatch(/@agentba\.se$/);
+    }
+  });
+
+  it("the headline people count matches the roster", () => {
+    const stat = en.hero.stats.find((s) => s.label === "people");
+    expect(stat?.value).toBe(String(people.people.length));
+  });
+});
+
+describe("products", () => {
+  it("links out rather than arguing here", () => {
+    for (const p of products.products) {
+      expect(p.url).toMatch(/^https:\/\//);
+      expect(p.one.en.length).toBeGreaterThan(20);
+      expect(p.one.ko.length).toBeGreaterThan(10);
+    }
   });
 });
 

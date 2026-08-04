@@ -14,18 +14,29 @@ const BUILD = ".next/server/app";
 
 const MUST_APPEAR_EN = [
   "This company runs on agents",
-  "59,498",
-  "7.9%",
+  "We don&#x27;t hire people. We build agents.",
   "the human clicking Search + Step 2",
   "AI 작성", // present in both locales: quoted verbatim from the source
   "approveBudget",
   "3,000",
-  "Wooliliwoo",
   "Seoul",
   "Ulaanbaatar",
+  "socialseed.ing",
+  "ElevenLabs Grants",
+  "sangguen@agentba.se",
+  "sejun@agentba.se",
 ];
 
-const MUST_APPEAR_KO = ["이 회사는 에이전트로 돌아갑니다", "59,498", "AI 작성", "approveBudget"];
+const MUST_APPEAR_KO = [
+  "이 회사는 에이전트로 돌아갑니다",
+  "우린 사람을 뽑지 않습니다",
+  "AI 작성",
+  "approveBudget",
+  "sejun@agentba.se",
+];
+
+/** Product-side disclosure that must not reappear on the company page. */
+const MUST_NOT_APPEAR = ["Wooliliwoo", "59,498", "7.9%"];
 
 function html(file: string): string {
   const path = `${BUILD}/${file}`;
@@ -51,6 +62,13 @@ describe("server-rendered figures", () => {
     expect(missing, `missing from server-rendered HTML: ${missing.join(", ")}`).toEqual([]);
   });
 
+  it("does not leak product-side disclosure into the built page", () => {
+    for (const doc of [html("index.html"), html("ko.html")]) {
+      const leaked = MUST_NOT_APPEAR.filter((s) => doc.includes(s));
+      expect(leaked, `product disclosure on a company page: ${leaked.join(", ")}`).toEqual([]);
+    }
+  });
+
   it("renders a map without JavaScript", () => {
     const doc = html("index.html");
     // The static SVG carries the whole world as one path.
@@ -63,9 +81,15 @@ describe("server-rendered figures", () => {
     expect(html("ko.html")).toContain('lang="ko"');
   });
 
-  it("does not mark agents up as people", () => {
+  it("marks agents as software, and only the real people as people", () => {
     const doc = html("index.html");
     expect(doc).toContain("SoftwareApplication");
-    expect(doc).not.toContain('"@type":"Person"');
+
+    // Person entries are legitimate — there are two actual founders. What must
+    // never happen is an agent being marked up as one, which would encode the
+    // exact confusion this page exists to clear up.
+    const personCount = (doc.match(/"@type":"Person"/g) ?? []).length;
+    const people = JSON.parse(readFileSync("data/people.json", "utf8"));
+    expect(personCount).toBe(people.people.length);
   });
 });
