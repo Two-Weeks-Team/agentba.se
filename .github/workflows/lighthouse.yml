@@ -1,0 +1,27 @@
+name: Lighthouse
+
+# Accessibility and SEO are errors; performance is a warning to begin with.
+# Performance scores move with runner load, and a gate that cries wolf gets
+# ignored. Tighten it once a few weeks of numbers exist.
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lhci:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - run: npx --yes @lhci/cli@0.15.x autorun
