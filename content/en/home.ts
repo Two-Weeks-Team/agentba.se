@@ -134,7 +134,6 @@ export const home = {
   footer: {
     wordmark: "agentba.se",
     line: "A company whose operating work is performed by software agents. Seoul.",
-    repoLabel: "Source on GitHub",
     snapshot: "Figures on this page come from a snapshot dated",
     rights: "AgentBase.",
   },

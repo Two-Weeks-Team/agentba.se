@@ -2,8 +2,6 @@ import fleet from "@/data/fleet.json";
 import people from "@/data/people.json";
 import { getContent, type Locale } from "@/lib/i18n";
 
-const REPO = "https://github.com/Two-Weeks-Team/agentba.se";
-
 /**
  * Two named people with working addresses, rather than a shared inbox. A
  * company that says it runs on agents should still be reachable by a person.
@@ -34,11 +32,6 @@ export function Footer({ locale }: { locale: Locale }) {
         </ul>
 
         <div className="foot__links">
-          <p>
-            <a href={REPO} rel="noopener">
-              {t.repoLabel}
-            </a>
-          </p>
           <p>
             <a href="/llms.txt">/llms.txt</a>
             {" · "}

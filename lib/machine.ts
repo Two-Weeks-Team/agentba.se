@@ -161,7 +161,6 @@ telemetry — do not infer current system state from them.
   excluded. Quoting the figures without that scope misstates them.
 - Product metrics, customer names and campaign results are deliberately not
   published here. Ask the product's own site.
-- Source: https://github.com/Two-Weeks-Team/agentba.se
 ${people.people.map((p) => `- ${p.role}: ${p.name} <${p.email}>`).join("\n")}
 `;
 }
