@@ -1,5 +1,6 @@
 import fleet from "@/data/fleet.json";
 import people from "@/data/people.json";
+import { MARK_ASPECT, markDataUri } from "@/lib/brand";
 
 /**
  * The social card, built from the same snapshot the page renders. When the
@@ -39,10 +40,20 @@ export function OgCard({ locale }: { locale: "en" | "ko" }) {
           child, so every wrapper here declares flex even when it looks like
           plain text. */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <div style={{ display: "flex", fontSize: 28, letterSpacing: -1 }}>
-          <span>agentba</span>
-          <span style={{ color: "#e8b23a" }}>.</span>
-          <span>se</span>
+        <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+          {/* Satori has no inline <svg>, so the mark arrives as a data URI. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={markDataUri("#f2efe6")}
+            alt=""
+            width={Math.round(30 * MARK_ASPECT)}
+            height={30}
+          />
+          <div style={{ display: "flex", fontSize: 28, letterSpacing: -1 }}>
+            <span>agentba</span>
+            <span style={{ color: "#e8b23a" }}>.</span>
+            <span>se</span>
+          </div>
         </div>
         <div style={{ display: "flex", fontSize: 20, color: "#6f6b5c", letterSpacing: 2 }}>
           {locale === "ko" ? "SEOUL · KO" : "SEOUL"}

@@ -37,10 +37,22 @@
   font-size: 0.8125rem;
 }
 .topbar__mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
   font-family: var(--font-display);
   font-weight: 700;
   letter-spacing: -0.02em;
   text-decoration: none;
+}
+.topbar__logo {
+  /* Sized against the cap height of the wordmark beside it, not the line box.
+     The mark's mass sits low — the triangle points down-left — so it is lifted
+     a hair to read as optically centred against the type. */
+  block-size: 1.35em;
+  inline-size: auto;
+  margin-block-start: -0.1em;
+  color: var(--color-paper);
 }
 .topbar__dot {
   color: var(--color-sig-run);
