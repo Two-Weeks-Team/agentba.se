@@ -20,6 +20,9 @@ export function JsonLd({ locale }: { locale: Locale }) {
       "@id": `${SITE}/#org`,
       name: "AgentBase",
       url: SITE,
+      // Google wants a stable raster here, and Next serves app/icon.svg from a
+      // hashed path — so this points at the copy in public/.
+      logo: `${SITE}/logo-512.png`,
       description: t.meta.description,
       foundingLocation: {
         "@type": "Place",
