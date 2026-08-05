@@ -126,7 +126,6 @@ export const home: HomeContent = {
   footer: {
     wordmark: "agentba.se",
     line: "운영 업무를 소프트웨어 에이전트가 수행하는 회사. 서울.",
-    repoLabel: "GitHub 소스",
     snapshot: "이 페이지의 수치는 다음 날짜의 스냅샷에서 왔습니다",
     rights: "AgentBase.",
   },

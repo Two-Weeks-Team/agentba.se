@@ -34,7 +34,7 @@ export function JsonLd({ locale }: { locale: Locale }) {
         jobTitle: p.role,
         email: p.email,
       })),
-      sameAs: ["https://github.com/Two-Weeks-Team", ...products.products.map((p) => p.url)],
+      sameAs: products.products.map((p) => p.url),
       knowsAbout: ["autonomous agents", "agent orchestration", "operations automation"],
     },
     {
