@@ -11,8 +11,9 @@ overrides:
 minimumReleaseAge: 1440
 
 # Postinstall scripts are denied by default; each one here is an explicit,
-# reviewed exception. All three ship prebuilt native binaries.
+# reviewed decision. The three allowed ones ship prebuilt native binaries.
 allowBuilds:
+  core-js: false # posthog-js transitive; its postinstall only prints a donation banner
   esbuild: true # bundler behind vite/tsx
   sharp: true # next/image optimisation
   unrs-resolver: true # eslint module resolution
