@@ -795,12 +795,26 @@
   padding-block: 1.125rem 1.5rem;
   border-block-start: 1px solid var(--color-line-dark);
 }
+.lab__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
 .lab__name {
   margin: 0;
   font-family: var(--font-display);
   font-size: 1.0625rem;
   font-weight: 600;
   letter-spacing: -0.02em;
+}
+/* Quiet enough to scan past, present enough to sort by. */
+.lab__platform {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  color: var(--color-graphite-2);
 }
 .lab__one {
   margin: 0.5rem 0 0;

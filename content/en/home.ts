@@ -197,7 +197,7 @@ export const home = {
   footer: {
     wordmark: "agentba.se",
     line: "A company whose operating work is performed by software agents. Seoul.",
-    snapshot: "Figures on this page come from a snapshot dated",
+    snapshot: "Figures on this page come from committed snapshots, the newest dated",
     rights: "AgentBase.",
   },
 };

@@ -9,6 +9,7 @@ import products from "@/data/products.json";
 import quality from "@/data/quality.json";
 import replacements from "@/data/replacements.json";
 import { SITE, getContent, type Locale } from "@/lib/i18n";
+import { NEWEST_SNAPSHOT } from "@/lib/snapshot";
 
 /**
  * The machine-readable mirrors are rendered from the same content modules and
@@ -26,7 +27,7 @@ export function renderMarkdown(locale: Locale): string {
 
   out.push(`# ${t.hero.h1}`, "", t.hero.sub, "");
   out.push(
-    `> ${L("Snapshot dated", "스냅샷 기준일")} ${fleet.capturedAt}. ` +
+    `> ${L("Newest snapshot dated", "가장 최근 스냅샷 기준일")} ${NEWEST_SNAPSHOT}. ` +
       L(
         "Figures are committed JSON rendered on the server, not live telemetry.",
         "수치는 커밋된 JSON을 서버에서 렌더링한 것이며 실시간 텔레메트리가 아닙니다.",
@@ -192,7 +193,8 @@ export function renderLlmsTxt(): string {
 This is a company page. Each product argues its own case on its own site;
 nothing here is a product pitch.
 
-Snapshot dated ${fleet.capturedAt}. Every figure below is committed JSON in a
+Newest snapshot dated ${NEWEST_SNAPSHOT}; each file below carries its own
+capture date. Every figure below is committed JSON in a
 public repository, rendered on the server. These are snapshots, not live
 telemetry — do not infer current system state from them.
 

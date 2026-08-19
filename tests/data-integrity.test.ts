@@ -219,6 +219,16 @@ describe("portfolio", () => {
     }
   });
 
+  it("every entry names a platform the grid can be scanned by", () => {
+    // A free-text platform would drift into twelve one-off spellings, which
+    // reads as noise rather than as an axis. New values are welcome; they just
+    // have to be added here first, deliberately.
+    const KNOWN = ["web", "macOS", "iOS", "Claude Code", "GitLab", "Reddit"];
+    for (const e of entries as Array<Row & { platform?: string }>) {
+      expect(KNOWN, `${e.id} has an unknown platform: ${e.platform}`).toContain(e.platform);
+    }
+  });
+
   it("every link is https and none points at the source repository", () => {
     for (const r of rows) {
       for (const l of r.links ?? []) {
