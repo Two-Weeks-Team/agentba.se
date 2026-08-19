@@ -1,0 +1,170 @@
+{
+  "$comment": "Every external competition entered, results as they fell — including the losses. Do not add a result without a public evidence link; 'selected' rows without one must say so in their note. Results were re-verified against the official winner pages on capturedAt. The one thing this file must never do is quietly drop a row that lost.",
+  "maintained": "manual",
+  "capturedAt": "2026-08-19",
+  "entries": [
+    {
+      "id": "gemini3",
+      "date": "2026-02",
+      "event": "Gemini 3 Hackathon",
+      "organizer": "Google",
+      "project": "Somm.dev",
+      "result": "entered",
+      "links": [{ "label": "Devpost", "url": "https://devpost.com/software/somm-dev" }]
+    },
+    {
+      "id": "playmcp",
+      "date": "2026-02",
+      "event": "PlayMCP “Player 10”",
+      "organizer": "Kakao",
+      "project": "kidsafe-mcp",
+      "result": "selected",
+      "note": {
+        "en": "Program selection. No public roster page exists, so this row rests on our own records.",
+        "ko": "프로그램 선정. 공개 명단 페이지가 없어 이 행은 우리 기록에 근거합니다."
+      },
+      "links": []
+    },
+    {
+      "id": "digitalocean",
+      "date": "2026-03",
+      "event": "Gradient AI Hackathon",
+      "organizer": "DigitalOcean",
+      "project": "vibeDeploy",
+      "result": "won",
+      "prize": { "en": "$8,000", "ko": "$8,000" },
+      "links": [
+        {
+          "label": "winners",
+          "url": "https://digitalocean.devpost.com/updates/41480-and-the-winner-is"
+        },
+        {
+          "label": "Devpost",
+          "url": "https://devpost.com/software/vibedeploy-zero-prompt-ai-app-factory-on-digitalocean"
+        },
+        { "label": "video", "url": "https://youtu.be/VHw-FdvcF2A" }
+      ]
+    },
+    {
+      "id": "gemini-live",
+      "date": "2026-03",
+      "event": "Gemini Live Agent Challenge",
+      "organizer": "Google Cloud",
+      "project": "VibeCat",
+      "result": "hm",
+      "prize": { "en": "$2,000", "ko": "$2,000" },
+      "links": [
+        {
+          "label": "winners",
+          "url": "https://geminiliveagentchallenge.devpost.com/updates/41944-announcing-the-challenge-winners"
+        },
+        { "label": "Devpost", "url": "https://devpost.com/software/vibecat" },
+        { "label": "video", "url": "https://youtu.be/j1zzfoDr7qA" }
+      ]
+    },
+    {
+      "id": "gitlab",
+      "date": "2026-03",
+      "event": "GitLab AI Hackathon",
+      "organizer": "GitLab",
+      "project": "GitLab Atlas",
+      "result": "entered",
+      "links": [
+        {
+          "label": "Devpost",
+          "url": "https://devpost.com/software/gitlab-atlas-code-to-architecture-in-one-command"
+        }
+      ]
+    },
+    {
+      "id": "opus47",
+      "date": "2026-04",
+      "event": "Built with Opus 4.7",
+      "organizer": "Cerebral Valley × Anthropic",
+      "project": "Preview Forge",
+      "result": "entered",
+      "links": [
+        { "label": "video", "url": "https://www.youtube.com/watch?v=_xHL8SZqfyI" },
+        { "label": "site", "url": "https://two-weeks-team.github.io/PreviewForgeForClaudeCode/" }
+      ]
+    },
+    {
+      "id": "reddit-mod",
+      "date": "2026-05",
+      "event": "Mod Tools Hackathon",
+      "organizer": "Reddit",
+      "project": "vibe-mod",
+      "result": "entered",
+      "note": {
+        "en": "No award; the app itself passed review and is live in the Reddit App Directory.",
+        "ko": "수상은 없었지만 앱 자체는 심사를 통과해 Reddit 앱 디렉터리에 등재돼 있습니다."
+      },
+      "links": [
+        { "label": "Devpost", "url": "https://devpost.com/software/vibe-mod-say-it-ship-subreddit-rules" },
+        { "label": "listing", "url": "https://developers.reddit.com/apps/vibe-mod" }
+      ]
+    },
+    {
+      "id": "qdrant",
+      "date": "2026-06",
+      "event": "Vector Space Day",
+      "organizer": "Qdrant",
+      "project": "Memex",
+      "result": "entered",
+      "links": [{ "label": "site", "url": "https://memex.quest" }]
+    },
+    {
+      "id": "arize",
+      "date": "2026-06",
+      "event": "Rapid Agent Hackathon · Arize track",
+      "organizer": "Google Cloud",
+      "project": "Glasshat",
+      "result": "entered",
+      "links": [
+        { "label": "Devpost", "url": "https://devpost.com/software/glasshat" },
+        { "label": "video", "url": "https://youtu.be/A9diFeRDybo" }
+      ]
+    },
+    {
+      "id": "gfs-agents",
+      "date": "2026-06",
+      "event": "AI Agents Challenge · Track 3",
+      "organizer": "Google for Startups",
+      "project": "SocialSeed.ing",
+      "result": "entered",
+      "links": [{ "label": "video", "url": "https://youtu.be/4SDvNK4cwZs" }]
+    },
+    {
+      "id": "reddit-games",
+      "date": "2026-07",
+      "event": "Games with a Hook",
+      "organizer": "Reddit",
+      "project": "Pipuzzle",
+      "result": "entered",
+      "links": [
+        { "label": "Devpost", "url": "https://devpost.com/software/pipuzzle" },
+        { "label": "listing", "url": "https://developers.reddit.com/apps/pipuzzle" }
+      ]
+    },
+    {
+      "id": "qwen",
+      "date": "2026-07",
+      "event": "Global AI Hackathon Series with Qwen Cloud",
+      "organizer": "Alibaba",
+      "project": "Circle Take",
+      "result": "pending",
+      "announceOn": "2026-08-21",
+      "links": [{ "label": "Devpost", "url": "https://devpost.com/software/vibe-memex" }]
+    }
+  ],
+  "aside": {
+    "judge": {
+      "en": "Judged once: CMUX × AIM Intelligence Hackathon, Seoul, April 2026 — our own record, not a published roster.",
+      "ko": "심사위원 참여 1회: CMUX × AIM Intelligence Hackathon, 서울, 2026년 4월 — 공개 명단이 아니라 우리 기록에 근거합니다."
+    },
+    "hosted": {
+      "en": "And two internal hackathons of our own, scored against the same kind of rubric.",
+      "ko": "그리고 같은 방식의 루브릭으로 채점하는 내부 해커톤 2회를 직접 주최했습니다."
+    }
+  }
+}

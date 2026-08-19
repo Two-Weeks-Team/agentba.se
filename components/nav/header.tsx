@@ -2,8 +2,10 @@ import { Mark } from "@/components/brand/mark";
 import { getContent, type Locale } from "@/lib/i18n";
 
 /**
- * Mark, wordmark, and a locale switch. Nothing else — this is one page, and a
- * link out of it belongs at the bottom.
+ * Mark, wordmark, a contact anchor, and a locale switch. The contact anchor is
+ * the one deliberate exception to "nothing else": it points down the page to
+ * intake, not out of it — a link that leaves the page still belongs at the
+ * bottom.
  *
  * The mark is decorative here: the company name sits right beside it as text,
  * so announcing it twice would only add noise for a screen reader.
@@ -26,14 +28,19 @@ export function Header({ locale }: { locale: Locale }) {
             agentba<span className="topbar__dot">.</span>se
           </span>
         </a>
-        <a
-          className="topbar__locale"
-          href={t.localeHref}
-          hrefLang={locale === "ko" ? "en" : "ko"}
-          rel="alternate"
-        >
-          {t.localeLabel}
-        </a>
+        <div className="topbar__right">
+          <a className="topbar__contact" href="#intake">
+            {t.contact}
+          </a>
+          <a
+            className="topbar__locale"
+            href={t.localeHref}
+            hrefLang={locale === "ko" ? "en" : "ko"}
+            rel="alternate"
+          >
+            {t.localeLabel}
+          </a>
+        </div>
       </nav>
     </>
   );

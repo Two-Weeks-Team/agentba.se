@@ -35,6 +35,11 @@ export function JsonLd({ locale }: { locale: Locale }) {
         email: p.email,
       })),
       sameAs: products.products.map((p) => p.url),
+      // Only results with a public winner page behind them.
+      award: [
+        "1st place — Gradient AI Hackathon (DigitalOcean, 2026)",
+        "Honorable Mention — Gemini Live Agent Challenge (Google Cloud, 2026)",
+      ],
       knowsAbout: ["autonomous agents", "agent orchestration", "operations automation"],
     },
     {

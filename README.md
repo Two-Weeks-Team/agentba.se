@@ -15,8 +15,9 @@ proves nothing.
 
 ## Stack
 
-Next.js 16 (App Router, all routes static) · React 19 · Tailwind CSS 4 ·
-TypeScript · deployed on Vercel, `icn1`.
+Next.js 16 (App Router; every page static) · React 19 · Tailwind CSS 4 ·
+TypeScript · deployed on Vercel, `icn1`. The one dynamic route is
+`POST /api/intake`, the contact form's endpoint.
 
 There is no `app/layout.tsx`. Each locale is its own root layout under
 `app/(en)` and `app/(ko)`, so `<html lang>` is correct without a middleware
@@ -57,8 +58,10 @@ crawler, a social preview, and a person all read the same figures.
 | `economics.json` | by hand; `scopeNote` is a required field |
 | `replacements.json` | by hand, quoted verbatim from the source roster |
 | `products.json` | by hand — names and links only |
+| `portfolio.json` | by hand — every entry carries a link a visitor can verify |
+| `competitions.json` | by hand — results re-verified against official winner pages; losses stay in |
 | `people.json` | by hand |
-| `partners.json` | by hand |
+| `partners.json` | by hand — grants and programs, never styled as backing |
 | `geo.json` | by hand — where work has run, not reachable market |
 
 `tests/no-banned-claims.test.ts` fails the build on figures this company
@@ -102,6 +105,18 @@ a reason to spend for its own sake.
 Set `NEXT_PUBLIC_POSTHOG_KEY` (see `.env.example`) in Vercel for Production and
 Preview. It is inlined at build time, so changing it needs a redeploy. A local
 checkout has no key and loads no analytics at all.
+
+## Intake
+
+The contact form is two fields — a reply address and one line — posted to
+`/api/intake`, which mails both founders through Resend's REST API (no SDK).
+Set `RESEND_API_KEY` in Vercel (server-side only, never `NEXT_PUBLIC_`); the
+sending domain has to be verified in Resend first. Without the key the
+endpoint answers 503 and the form degrades to the mailto fallback, the same
+pattern as the analytics key.
+
+Spam is handled without a CAPTCHA: a honeypot field and a minimum-time check,
+both answered with an empty 204 so a bot learns nothing from the response.
 
 ## Commands
 

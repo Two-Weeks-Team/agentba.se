@@ -64,6 +64,8 @@ describe("machine-readable mirrors", () => {
       "people.json",
       "partners.json",
       "geo.json",
+      "portfolio.json",
+      "competitions.json",
     ]) {
       expect(txt, `llms.txt does not mention ${file}`).toContain(file);
     }

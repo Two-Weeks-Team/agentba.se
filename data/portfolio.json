@@ -1,0 +1,140 @@
+{
+  "$comment": "The lab: shipped properties, tools and competition builds. Entry rule: at least one link a visitor can verify without trusting us — a live site, a public listing, a demo video, or a judged result. No github.com links (tests/machine-mirror.test.ts bans them from the mirrors). Live URLs were each checked once on capturedAt; the Glasshat and vibeDeploy demo deployments no longer answer, so those cards link evidence, not infrastructure.",
+  "maintained": "manual",
+  "capturedAt": "2026-08-19",
+  "entries": [
+    {
+      "id": "satellite",
+      "name": "Satellite",
+      "one": {
+        "en": "The live satellite catalogue on an interactive globe — close approaches, re-entries, space weather — briefed by agents in manual, assist and autopilot modes. EN·KO·JA.",
+        "ko": "라이브 위성 카탈로그를 인터랙티브 지구본에 올렸습니다 — 근접·재진입·우주기상 신호를 에이전트가 수동·보조·오토파일럿 모드로 브리핑합니다. EN·KO·JA."
+      },
+      "links": [{ "label": "live", "url": "https://satellite.agentba.se" }]
+    },
+    {
+      "id": "travel",
+      "name": "Travel",
+      "one": {
+        "en": "An AI travel planner that plans routes and weather together, and refuses to invent what it cannot verify — no fabricated fares, no imaginary flight numbers. Booking hands off to the real engines.",
+        "ko": "경로와 날씨를 같이 계획하는 AI 여행 플래너. 검증 못 하는 것은 지어내지 않습니다 — 요금도, 항공편도. 예약은 실제 엔진으로 넘깁니다."
+      },
+      "links": [{ "label": "live", "url": "https://travel.agentba.se" }]
+    },
+    {
+      "id": "vibedeploy",
+      "name": "vibeDeploy",
+      "one": {
+        "en": "One click runs idea discovery, a live board ranks the candidates, and the chosen app is built and deployed. Took 1st place at DigitalOcean's Gradient AI Hackathon.",
+        "ko": "클릭 한 번에 아이디어 발굴이 돌고, 라이브 보드가 후보를 랭킹하고, 고른 앱이 빌드·배포됩니다. DigitalOcean Gradient AI 해커톤 1위."
+      },
+      "links": [
+        { "label": "video", "url": "https://youtu.be/VHw-FdvcF2A" },
+        {
+          "label": "Devpost",
+          "url": "https://devpost.com/software/vibedeploy-zero-prompt-ai-app-factory-on-digitalocean"
+        }
+      ]
+    },
+    {
+      "id": "vibecat",
+      "name": "VibeCat",
+      "one": {
+        "en": "A macOS desktop companion that watches the screen with you and suggests before you ask. Honorable Mention at Google Cloud's Gemini Live Agent Challenge.",
+        "ko": "화면을 같이 보다가 묻기 전에 먼저 제안하는 macOS 데스크톱 컴패니언. Google Cloud Gemini Live Agent Challenge에서 Honorable Mention."
+      },
+      "links": [
+        { "label": "video", "url": "https://youtu.be/j1zzfoDr7qA" },
+        { "label": "Devpost", "url": "https://devpost.com/software/vibecat" }
+      ]
+    },
+    {
+      "id": "glasshat",
+      "name": "Glasshat",
+      "one": {
+        "en": "An audit layer for AI judging: a six-perspective panel scores with evidence, then audits its own over-confidence and pulls the scores back — every step a visible trace.",
+        "ko": "AI 심사를 감사하는 레이어. 여섯 관점의 패널이 근거와 함께 채점한 뒤, 자기 과신을 스스로 감사해 점수를 끌어내립니다 — 전 과정이 트레이스로 남습니다."
+      },
+      "links": [
+        { "label": "video", "url": "https://youtu.be/A9diFeRDybo" },
+        { "label": "Devpost", "url": "https://devpost.com/software/glasshat" }
+      ]
+    },
+    {
+      "id": "previewforge",
+      "name": "Preview Forge",
+      "one": {
+        "en": "A Claude Code plugin that turns one line into twenty-six mockups, lets a person pick one, and drives 144 agents to a frozen full-stack app.",
+        "ko": "한 줄을 목업 26개로 만들고, 사람이 하나를 고르면 에이전트 144개가 동결된 풀스택 앱까지 밀어붙이는 Claude Code 플러그인."
+      },
+      "links": [
+        { "label": "video", "url": "https://www.youtube.com/watch?v=_xHL8SZqfyI" },
+        { "label": "site", "url": "https://two-weeks-team.github.io/PreviewForgeForClaudeCode/" }
+      ]
+    },
+    {
+      "id": "memex",
+      "name": "Memex",
+      "one": {
+        "en": "Local memory for coding agents — session history as navigable spatial memory, no LLM at runtime, everything on your machine. Its embedding fix was merged upstream into fastembed-rs.",
+        "ko": "코딩 에이전트를 위한 로컬 메모리 — 세션 기록을 공간 기억으로, 런타임 LLM 없이 전부 로컬에서. 임베딩 수정은 fastembed-rs 업스트림에 머지됐습니다."
+      },
+      "links": [{ "label": "live", "url": "https://memex.quest" }]
+    },
+    {
+      "id": "socrates",
+      "name": "He was Socrates",
+      "one": {
+        "en": "A fullscreen Socratic bust that listens and only asks back, fully on device — zero network entitlements, first token in 192 ms median, the benchmark committed beside the code. Built for the Gemma 4 Good hackathon.",
+        "ko": "듣고서 묻기만 하는 전체화면 소크라테스 흉상. 전부 온디바이스 — 네트워크 권한 0, 첫 토큰 중앙값 192ms, 벤치마크는 코드 옆에 커밋돼 있습니다. Gemma 4 Good 해커톤을 위해 만들었습니다."
+      },
+      "links": [{ "label": "live", "url": "https://he-was-socrates.vercel.app" }]
+    },
+    {
+      "id": "vibe-mod",
+      "name": "vibe-mod",
+      "one": {
+        "en": "Write a moderation rule in English; it compiles once into a deterministic rule with shadow mode and a 30-day undo. Live in the Reddit App Directory.",
+        "ko": "모더레이션 룰을 영어로 쓰면 결정론적 룰로 한 번 컴파일됩니다 — 섀도 모드와 30일 되돌리기까지. Reddit 앱 디렉터리에 정식 등재."
+      },
+      "links": [
+        { "label": "listing", "url": "https://developers.reddit.com/apps/vibe-mod" },
+        { "label": "site", "url": "https://two-weeks-team.github.io/vibe-mod/" }
+      ]
+    }
+  ],
+  "mentions": [
+    {
+      "id": "claudesync",
+      "name": "ClaudeSync",
+      "one": {
+        "en": "keeps AI coding environments in sync across Macs",
+        "ko": "맥 사이의 AI 코딩 환경을 동기화합니다"
+      }
+    },
+    {
+      "id": "vibevoice",
+      "name": "vibeVoice",
+      "one": {
+        "en": "the text-to-audio dashboard our demo narrations are made with",
+        "ko": "우리 데모 내레이션을 만드는 텍스트-투-오디오 대시보드"
+      }
+    },
+    {
+      "id": "openclawworld",
+      "name": "openClawWorld",
+      "one": {
+        "en": "a 2D world where people and agents share the map",
+        "ko": "사람과 에이전트가 같은 맵을 쓰는 2D 월드"
+      }
+    },
+    {
+      "id": "memoed",
+      "name": "Memoed on your life",
+      "one": {
+        "en": "an evidence-first iPhone app that finds what changed in everyday memories",
+        "ko": "일상 기억에서 무엇이 바뀌었는지 찾아내는 증거 우선 iPhone 앱"
+      }
+    }
+  ]
+}

@@ -25,6 +25,12 @@ const MUST_APPEAR_EN = [
   "ElevenLabs Grants",
   "sangguen@agentba.se",
   "sejun@agentba.se",
+  "teslam.io",
+  "kbeauty.market",
+  "Gradient AI Hackathon",
+  "Honorable Mention",
+  "One line is enough.",
+  "memex.quest",
 ];
 
 const MUST_APPEAR_KO = [
@@ -33,6 +39,8 @@ const MUST_APPEAR_KO = [
   "AI 작성",
   "approveBudget",
   "sejun@agentba.se",
+  "미수상",
+  "한 줄이면 충분합니다.",
 ];
 
 /** Product-side disclosure that must not reappear on the company page. */

@@ -21,6 +21,13 @@ const BANNED_CLAIMS: Array<[RegExp, string]> = [
   [/\bSpanner\b/i, "architecture that is not an approved deployment path"],
   [/\b99\.99\s?%\b/, "SLO we do not operate against"],
   [/\bmulti[-\s]region\b/i, "architecture that is not an approved deployment path"],
+
+  // Findings from the 2026-08-19 research pass: claims that circulated in
+  // decks or repo descriptions and do not survive the evidence.
+  [/multiple\s+(hackathon\s+)?wins/i, "the record is one 1st place and one Honorable Mention — say that"],
+  [/Best\s+Ported\s+Data\s+API\s+App/i, "a prize track we targeted, not a result"],
+  [/Gemma 4 Good (submission|entry)/i, "built for it, never submitted"],
+  [/listed on (the )?Google Cloud Marketplace/i, "marketplace-ready, not listed"],
 ];
 
 /** The company presents as AgentBase. The prior legal styling is retired. */
@@ -44,7 +51,9 @@ const PRODUCT_SPECIFICS: Array<[RegExp, string]> = [
   // description and belongs here.
   [/\b\d+\s+verified posts?\b/i, "campaign outcome metric"],
   [/검증된 포스팅\s*\d|\d\s*건의? 검증된 포스팅/, "campaign outcome metric"],
-  [/\bK-?beauty\b/i, "product vertical"],
+  // Hyphen or space required: the vertical argument stays banned, while the
+  // product's own name — the domain string "kbeauty.market" — may appear.
+  [/\bK[-\s]beauty\b/i, "product vertical"],
   [/tiktokUsersM/, "reachable-market sizing — that argument belongs to the product"],
 ];
 
