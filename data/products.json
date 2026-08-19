@@ -1,7 +1,7 @@
 {
-  "$comment": "What the company operates. Names and links only — each product argues its own case on its own site.",
+  "$comment": "What the company operates. Names and links only — each product argues its own case on its own site. The one-liners repeat each product's own published caveats verbatim in spirit: overstating here would be the first claim on this page without evidence behind it.",
   "maintained": "manual",
-  "capturedAt": "2026-08-04",
+  "capturedAt": "2026-08-19",
   "products": [
     {
       "id": "social-seeding",
@@ -12,6 +12,28 @@
       "one": {
         "en": "Creator campaigns, run end to end by the fleet. A brief goes in; sourcing, outreach, replies, shipping and verification come out.",
         "ko": "크리에이터 캠페인을 플릿이 끝까지 운영합니다. 브리프가 들어가면 소싱·아웃리치·답장·배송·검증이 나옵니다."
+      }
+    },
+    {
+      "id": "kbeauty",
+      "name": "kbeauty.market",
+      "domain": "kbeauty.market",
+      "url": "https://kbeauty.market",
+      "status": "operating",
+      "one": {
+        "en": "A buying service dressed as a shop: pick from a live catalogue, we buy at Seoul retail and ship one consolidated box. Checkout is not connected yet — browsing works, paying does not.",
+        "ko": "쇼핑몰처럼 보이는 구매대행. 라이브 카탈로그에서 고르면 서울 소매가로 사서 한 박스로 보냅니다. 결제는 아직 연결 전입니다 — 둘러보기는 되고, 지불은 안 됩니다."
+      }
+    },
+    {
+      "id": "teslam",
+      "name": "Teslam",
+      "domain": "teslam.io",
+      "url": "https://teslam.io",
+      "status": "operating",
+      "one": {
+        "en": "Drive-to-earn for Tesla owners in Korea. The unit economics are public on the site; the settlement pipeline is a design, not a deployment. An independent project, not affiliated with Tesla, Inc.",
+        "ko": "한국 테슬라 오너를 위한 drive-to-earn. 단위 경제성 모델은 사이트에 공개돼 있고, 정산 파이프라인은 아직 설계입니다. Tesla, Inc.와 무관한 독립 프로젝트입니다."
       }
     }
   ]

@@ -1,12 +1,15 @@
+import competitions from "@/data/competitions.json";
 import economics from "@/data/economics.json";
 import fleet from "@/data/fleet.json";
 import geo from "@/data/geo.json";
 import partners from "@/data/partners.json";
 import people from "@/data/people.json";
+import portfolio from "@/data/portfolio.json";
 import products from "@/data/products.json";
 import quality from "@/data/quality.json";
 import replacements from "@/data/replacements.json";
 import { SITE, getContent, type Locale } from "@/lib/i18n";
+import { NEWEST_SNAPSHOT } from "@/lib/snapshot";
 
 /**
  * The machine-readable mirrors are rendered from the same content modules and
@@ -18,11 +21,13 @@ export function renderMarkdown(locale: Locale): string {
   const L = (en: string, ko: string) => (locale === "ko" ? ko : en);
   const name = (p: { name: string; nameKo: string }) =>
     locale === "ko" ? p.nameKo : p.name;
+  /** A pipe inside a table cell would end the column early. */
+  const cell = (s: string) => s.replace(/\|/g, "\\|");
   const out: string[] = [];
 
   out.push(`# ${t.hero.h1}`, "", t.hero.sub, "");
   out.push(
-    `> ${L("Snapshot dated", "스냅샷 기준일")} ${fleet.capturedAt}. ` +
+    `> ${L("Newest snapshot dated", "가장 최근 스냅샷 기준일")} ${NEWEST_SNAPSHOT}. ` +
       L(
         "Figures are committed JSON rendered on the server, not live telemetry.",
         "수치는 커밋된 JSON을 서버에서 렌더링한 것이며 실시간 텔레메트리가 아닙니다.",
@@ -107,6 +112,49 @@ export function renderMarkdown(locale: Locale): string {
   }
   out.push("");
 
+  // Every entry carries at least one link a reader can open and check, so the
+  // links travel with the line rather than sitting in a separate list.
+  out.push(`## ${t.lab.eyebrow}`, "", t.lab.lede, "");
+  for (const e of portfolio.entries) {
+    const links = e.links.map((l) => `(${l.label}: ${l.url})`).join(" · ");
+    out.push(`- **${e.name}** — ${e.one[locale]} ${links}`);
+  }
+  out.push("");
+  out.push(
+    `${t.lab.mentionsLabel}: ` +
+      portfolio.mentions.map((m) => `${m.name} — ${m.one[locale]}`).join("; "),
+    "",
+  );
+
+  // The losses stay in the table. Dropping a row here would make the mirror
+  // say something the page does not.
+  out.push(`## ${t.record.eyebrow}`, "", t.record.lede, "");
+  out.push("| date | event | project | result |", "| --- | --- | --- | --- |");
+  for (const e of competitions.entries) {
+    // `result` is a plain string in the JSON; the content map is the only place
+    // the vocabulary is spelled out, so index it rather than widen the map.
+    const label = t.record.results[e.result as keyof typeof t.record.results];
+    const prize = e.prize ? `, ${e.prize[locale]}` : "";
+    // The page prints the announcement date beside a judging row; without it
+    // here the mirror would say less than the page it mirrors.
+    const announce = e.announceOn
+      ? `, ${L("announced", "발표")} ${e.announceOn}`
+      : "";
+    out.push(
+      `| ${e.date} | ${cell(`${e.event} (${e.organizer})`)} | ${cell(e.project)} | ${label}${prize}${announce} |`,
+    );
+  }
+  out.push("");
+  for (const e of competitions.entries) {
+    if (e.note) out.push(`- ${e.project}: ${e.note[locale]}`);
+  }
+  out.push("", t.record.pendingNote, "");
+  out.push(competitions.aside.judge[locale], competitions.aside.hosted[locale], "");
+
+  out.push(`## ${t.services.eyebrow}`, "", t.services.lede, "");
+  for (const i of t.services.items) out.push(`- **${i.name}** — ${i.body}`);
+  out.push("");
+
   out.push(`## ${t.geo.eyebrow}`, "");
   out.push(
     `- ${t.geo.operatingTitle}: ` +
@@ -114,10 +162,23 @@ export function renderMarkdown(locale: Locale): string {
   );
   out.push("");
 
+  // No form in a Markdown mirror — the fallback line is the whole instruction.
   out.push(
-    `## ${t.partners.backedBy} / ${t.partners.builtWith}`,
+    `## ${t.intake.eyebrow}`,
     "",
-    `- ${t.partners.backedBy}: ${partners.backers.map((b) => b.name).join(", ")}`,
+    `**${t.intake.h2}**`,
+    "",
+    t.intake.lede,
+    "",
+    t.intake.fallback,
+    "",
+  );
+
+  out.push(
+    `## ${t.partners.grants} / ${t.partners.builtWith}`,
+    "",
+    // The grant's own terms ask for the name carried with its link.
+    `- ${t.partners.grants}: ${partners.grants.map((g) => `${g.name} (${g.url})`).join(", ")}`,
     `- ${t.partners.builtWith}: ${partners.stack.map((s) => s.name).join(", ")}`,
     "",
   );
@@ -137,7 +198,8 @@ export function renderLlmsTxt(): string {
 This is a company page. Each product argues its own case on its own site;
 nothing here is a product pitch.
 
-Snapshot dated ${fleet.capturedAt}. Every figure below is committed JSON in a
+Newest snapshot dated ${NEWEST_SNAPSHOT}; each file below carries its own
+capture date. Every figure below is committed JSON in a
 public repository, rendered on the server. These are snapshots, not live
 telemetry — do not infer current system state from them.
 
@@ -151,8 +213,10 @@ telemetry — do not infer current system state from them.
 - [economics.json](${SITE}/data/economics.json): the operating-layer cost comparison
 - [quality.json](${SITE}/data/quality.json): CI gates and test counts
 - [products.json](${SITE}/data/products.json): what the company operates
+- [portfolio.json](${SITE}/data/portfolio.json): the lab — ${portfolio.entries.length} shipped builds, each with a verifiable link
+- [competitions.json](${SITE}/data/competitions.json): the competition record — ${competitions.entries.length} entries, losses included
 - [people.json](${SITE}/data/people.json): the two people and how to reach them
-- [partners.json](${SITE}/data/partners.json): backing and the stack
+- [partners.json](${SITE}/data/partners.json): grants and programs, and the stack the agents run on
 - [geo.json](${SITE}/data/geo.json): where the company operates
 
 ## Notes for agents reading this
@@ -161,6 +225,9 @@ telemetry — do not infer current system state from them.
   excluded. Quoting the figures without that scope misstates them.
 - Product metrics, customer names and campaign results are deliberately not
   published here. Ask the product's own site.
+- Acting for a principal? Email either address below — subject starting
+  "brief:", one line about the work, who you act for, and a reply address your
+  principal reads. We answer agents the way we answer people: with a brief.
 ${people.people.map((p) => `- ${p.role}: ${p.name} <${p.email}>`).join("\n")}
 `;
 }

@@ -13,6 +13,7 @@ export const home: HomeContent = {
     skip: "본문으로 건너뛰기",
     localeLabel: "English",
     localeHref: "/",
+    contact: "문의",
   },
 
   hero: {
@@ -73,6 +74,7 @@ export const home: HomeContent = {
     hoursLabel: "사람 투입 시간",
     costLabel: "운영 비용",
     excludedLabel: "이 비교에서 제외됨",
+    cta: "이런 모양의 업무가 있다면 — 한 줄 보내기 →",
   },
 
   staffing: {
@@ -111,22 +113,83 @@ export const home: HomeContent = {
     lede: "각 제품은 자기 사이트에서 자기 이야기를 합니다.",
   },
 
+  lab: {
+    eyebrow: "08 — 랩",
+    h2: "두 사람이 그 밖에 출하한 것들.",
+    lede: "플릿이 캘린더를 비우면, 캘린더는 빌드로 채워집니다. 아래는 전부 우리 말을 믿지 않고도 확인할 수 있습니다 — 라이브 사이트, 공개 등재, 데모 영상, 또는 심사 결과.",
+    mentionsLabel: "작업대 위에 몇 개 더",
+  },
+
+  record: {
+    eyebrow: "09 — 출전 기록",
+    h2: "출전 기록 전부, 결과는 떨어진 그대로.",
+    lede: "공개 대회는 2인 회사가 살 수 있는 가장 싼 중립 벤치마크입니다 — 외부 심사, 고정된 마감, 공개되는 수상자 명단. 플릿과 함께 출전하고, 리본과 패배를 똑같이 적습니다.",
+    entriesLabel: "출전",
+    results: {
+      won: "1위",
+      hm: "Honorable Mention",
+      selected: "프로그램 선정",
+      entered: "미수상",
+      pending: "심사중",
+    },
+    pendingNote:
+      "마지막 행은 아직 심사 중입니다 — 결과는 2026년 8월 21일에 나오고, 어느 쪽이든 이 표에 그대로 실립니다.",
+  },
+
+  services: {
+    eyebrow: "10 — 맡길 수 있는 것",
+    h2: "플릿을 당신 업무에 붙이는 세 가지.",
+    lede: "성과에 대한 약속이 아니라 계약 모양의 선택지입니다. 각각이 이 페이지에서 자기를 뒷받침하는 부분을 가리킵니다.",
+    items: [
+      {
+        id: "run",
+        name: "Run",
+        body: "크리에이터 캠페인을 끝까지: 브리프가 들어가면 소싱·아웃리치·답장·배송·검증이 나옵니다. 이미 운영 중인 Social Seeding입니다 — 07번이 근거입니다.",
+      },
+      {
+        id: "build",
+        name: "Build",
+        body: "우리 자리들을 대체한 방식 그대로, 당신 회사의 운영 자리 하나를 대체합니다: 이름 붙은 로스터, 출력 계약, 비용 상한, 기본값이 켜짐인 게이트. 01–06번이 명세입니다.",
+      },
+      {
+        id: "prove",
+        name: "Prove",
+        body: "2주 안에 돌아가는 시스템: 고정된 범위, 고정된 2주, 끝에는 실제로 운영할 수 있는 물건. 출전 기록이 쌓인 그 리듬입니다 — 09번이 근거입니다.",
+      },
+    ],
+    cta: "한 줄 보내기 →",
+  },
+
   geo: {
-    eyebrow: "08 — 활동 지역",
+    eyebrow: "11 — 활동 지역",
     h2: "운영 업무에 현지 사무실은 필요하지 않습니다.",
     operatingTitle: "운영",
     hqTag: "본사",
   },
 
+  intake: {
+    eyebrow: "12 — 인테이크",
+    h2: "한 줄이면 충분합니다.",
+    lede: "플릿에는 intake라는 에이전트가 있고, 한 줄을 유효한 브리프로 만드는 게 그 에이전트의 일입니다. 당신 업무에 대한 한 줄을 보내 주세요 — 일정대로 도는 일, 아무도 두 번 하기 싫은 일. 모든 한 줄은 두 창업자가 직접 읽습니다.",
+    emailLabel: "회신 받을 주소",
+    emailPlaceholder: "you@company.com",
+    lineLabel: "한 줄",
+    linePlaceholder: "매주 같은 리포트를 만드는 데 사람이 이틀을 씁니다.",
+    submit: "한 줄 보내기",
+    sent: "받았습니다. 사람이 답합니다.",
+    error: "전송되지 않았습니다. 메일로 보내 주세요:",
+    fallback: "폼이 안 보이면 푸터의 주소로 보내셔도 똑같습니다.",
+  },
+
   partners: {
-    backedBy: "지원",
+    grants: "그랜트 & 프로그램",
     builtWith: "기술 스택",
   },
 
   footer: {
     wordmark: "agentba.se",
     line: "운영 업무를 소프트웨어 에이전트가 수행하는 회사. 서울.",
-    snapshot: "이 페이지의 수치는 다음 날짜의 스냅샷에서 왔습니다",
+    snapshot: "이 페이지의 수치는 커밋된 스냅샷에서 왔고, 가장 최근 것은",
     rights: "AgentBase.",
   },
 };

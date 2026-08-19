@@ -46,6 +46,10 @@ export function Economics({ locale }: { locale: Locale }) {
         {t.excludedLabel}
       </p>
       <p className="econ__basis">{e.basis[locale]}</p>
+
+      <p className="sec__cta">
+        <a href="#intake">{t.cta}</a>
+      </p>
     </Section>
   );
 }

@@ -6,8 +6,12 @@ import { Company } from "@/components/sections/company";
 import { Economics } from "@/components/sections/economics";
 import { Fleet } from "@/components/sections/fleet";
 import { Geo } from "@/components/sections/geo";
+import { Intake } from "@/components/sections/intake";
+import { Lab } from "@/components/sections/lab";
 import { Ledger } from "@/components/sections/ledger";
 import { Products } from "@/components/sections/products";
+import { RecordSection } from "@/components/sections/record";
+import { Services } from "@/components/sections/services";
 import { Staffing } from "@/components/sections/staffing";
 import { Workflow } from "@/components/sections/workflow";
 import { JsonLd } from "@/components/jsonld";
@@ -28,7 +32,11 @@ export function HomePage({ locale }: { locale: Locale }) {
         <Staffing locale={locale} />
         <Company locale={locale} />
         <Products locale={locale} />
+        <Lab locale={locale} />
+        <RecordSection locale={locale} />
+        <Services locale={locale} />
         <Geo locale={locale} />
+        <Intake locale={locale} />
         <Partners locale={locale} />
       </main>
       <Footer locale={locale} />

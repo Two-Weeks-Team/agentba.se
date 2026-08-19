@@ -8,6 +8,8 @@ const replacements = JSON.parse(readFileSync("data/replacements.json", "utf8"));
 const geo = JSON.parse(readFileSync("data/geo.json", "utf8"));
 const people = JSON.parse(readFileSync("data/people.json", "utf8"));
 const products = JSON.parse(readFileSync("data/products.json", "utf8"));
+const competitions = JSON.parse(readFileSync("data/competitions.json", "utf8"));
+const portfolio = JSON.parse(readFileSync("data/portfolio.json", "utf8"));
 
 describe("fleet", () => {
   it("the roster length matches the published count", () => {
@@ -98,6 +100,151 @@ describe("products", () => {
   });
 });
 
+describe("competitions", () => {
+  /** The five outcomes the ledger knows how to render. */
+  const RESULTS = ["won", "hm", "selected", "entered", "pending"];
+
+  type Link = { label: string; url: string };
+  type Entry = {
+    id: string;
+    date: string;
+    result: string;
+    prize?: { en: string; ko: string };
+    note?: { en: string; ko: string };
+    announceOn?: string;
+    links: Link[];
+  };
+  const entries: Entry[] = competitions.entries;
+
+  it("entry ids are unique", () => {
+    const ids = entries.map((e) => e.id);
+    expect(new Set(ids).size).toBe(ids.length);
+  });
+
+  it("every row carries a result the ledger knows", () => {
+    // A misspelled result drops the row out of every filter below — including
+    // the ones that decide which rows have to show their evidence.
+    for (const e of entries) {
+      expect(RESULTS, `${e.id} has an unknown result "${e.result}"`).toContain(e.result);
+    }
+  });
+
+  it("dates are YYYY-MM and never go backwards", () => {
+    // The ledger is read top to bottom as a chronology; a row out of order
+    // reads as a gap in the record rather than as a sorting mistake.
+    let previous = "";
+    for (const e of entries) {
+      // Month bounded, not just shaped: "2026-19" sorts fine and means nothing.
+      expect(e.date, `${e.id} has a malformed date`).toMatch(/^\d{4}-(0[1-9]|1[0-2])$/);
+      expect(e.date >= previous, `${e.id} (${e.date}) sorts before ${previous}`).toBe(true);
+      previous = e.date;
+    }
+  });
+
+  it("a win or an honorable mention shows the prize and the official announcement", () => {
+    // A ribbon claimed without the organizer's own winners page is exactly the
+    // kind of claim this site refuses to publish, and a prize written in only
+    // one locale is a prize half the readers cannot check.
+    for (const e of entries.filter((x) => x.result === "won" || x.result === "hm")) {
+      expect(e.prize?.en, `${e.id} claims ${e.result} with no English prize`).toBeTruthy();
+      expect(e.prize?.ko, `${e.id} claims ${e.result} with no Korean prize`).toBeTruthy();
+      const winners = e.links.filter((l) => l.label === "winners");
+      expect(
+        winners.length,
+        `${e.id} claims ${e.result} with no "winners" link to the announcement`,
+      ).toBeGreaterThan(0);
+    }
+  });
+
+  it("a selected row discloses that it rests on our own records", () => {
+    // Selection with no public roster is self-attribution. It may be published,
+    // but only alongside the sentence that says so — in both locales.
+    for (const e of entries.filter((x) => x.result === "selected")) {
+      expect(e.note?.en, `${e.id} is self-attributed with no English note`).toBeTruthy();
+      expect(e.note?.ko, `${e.id} is self-attributed with no Korean note`).toBeTruthy();
+    }
+  });
+
+  it("a pending row names the date it gets settled", () => {
+    // Without a date, "pending" never expires, and an entry that was never
+    // judged keeps reading like a result still on its way.
+    for (const e of entries.filter((x) => x.result === "pending")) {
+      const on = e.announceOn ?? "";
+      expect(on, `${e.id} is pending with no announcement date`).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      // A shape check passes 2026-02-31. Round-tripping through Date is what
+      // catches a day the month does not have.
+      expect(
+        new Date(`${on}T00:00:00Z`).toISOString().slice(0, 10),
+        `${e.id} names a day that does not exist: ${on}`,
+      ).toBe(on);
+    }
+  });
+
+  it("every link is https and none points at the source repository", () => {
+    // The mirrors ban github.com; the data must not smuggle it back in.
+    for (const e of entries) {
+      for (const l of e.links) {
+        expect(l.url, `${e.id} → ${l.label} is not https`).toMatch(/^https:\/\//);
+        expect(l.url, `${e.id} → ${l.label} links the repository`).not.toMatch(/github\.com/i);
+      }
+    }
+  });
+
+  it("the asides are written in both locales", () => {
+    for (const key of ["judge", "hosted"] as const) {
+      expect(competitions.aside[key]?.en, `aside.${key} has no English`).toBeTruthy();
+      expect(competitions.aside[key]?.ko, `aside.${key} has no Korean`).toBeTruthy();
+    }
+  });
+});
+
+describe("portfolio", () => {
+  type Link = { label: string; url: string };
+  type Row = { id: string; one: { en: string; ko: string }; links?: Link[] };
+  const entries: Row[] = portfolio.entries;
+  const mentions: Row[] = portfolio.mentions;
+  const rows = [...entries, ...mentions];
+
+  it("ids are unique across entries and mentions", () => {
+    const ids = rows.map((r) => r.id);
+    expect(new Set(ids).size).toBe(ids.length);
+  });
+
+  it("every entry can be checked without taking our word for it", () => {
+    // The section states that rule in its own copy. An entry with nothing to
+    // click asks for exactly the trust the rule refuses to ask for.
+    for (const e of entries) {
+      expect(e.links?.length ?? 0, `${e.id} has no link a reader can follow`).toBeGreaterThan(0);
+    }
+  });
+
+  it("every line exists in both locales", () => {
+    for (const r of rows) {
+      expect(r.one?.en?.trim(), `${r.id} is missing its English line`).toBeTruthy();
+      expect(r.one?.ko?.trim(), `${r.id} is missing its Korean line`).toBeTruthy();
+    }
+  });
+
+  it("every entry names a platform the grid can be scanned by", () => {
+    // A free-text platform would drift into twelve one-off spellings, which
+    // reads as noise rather than as an axis. New values are welcome; they just
+    // have to be added here first, deliberately.
+    const KNOWN = ["web", "macOS", "iOS", "Claude Code", "GitLab", "Reddit"];
+    for (const e of entries as Array<Row & { platform?: string }>) {
+      expect(KNOWN, `${e.id} has an unknown platform: ${e.platform}`).toContain(e.platform);
+    }
+  });
+
+  it("every link is https and none points at the source repository", () => {
+    for (const r of rows) {
+      for (const l of r.links ?? []) {
+        expect(l.url, `${r.id} → ${l.label} is not https`).toMatch(/^https:\/\//);
+        expect(l.url, `${r.id} → ${l.label} links the repository`).not.toMatch(/github\.com/i);
+      }
+    }
+  });
+});
+
 describe("i18n", () => {
   /** Structural parity, checked at runtime as well as by the type system. */
   function shape(v: unknown): unknown {
@@ -120,8 +267,17 @@ describe("i18n", () => {
     const untranslated: string[] = [];
     const walk = (a: unknown, b: unknown, path: string) => {
       if (typeof a === "string" && typeof b === "string") {
-        // Proper nouns and identifiers are meant to match.
-        const allow = ["footer.wordmark", "footer.product", "nav.repo", "fleet.groups"];
+        // Proper nouns and identifiers are meant to match. "Honorable Mention"
+        // is the award's name in both locales, and an email placeholder is not
+        // prose in either.
+        const allow = [
+          "footer.wordmark",
+          "footer.product",
+          "nav.repo",
+          "fleet.groups",
+          "record.results.hm",
+          "intake.emailPlaceholder",
+        ];
         if (a === b && a.length > 12 && !allow.some((p) => path.startsWith(p))) {
           untranslated.push(`${path}: ${a}`);
         }

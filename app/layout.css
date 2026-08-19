@@ -770,6 +770,489 @@
   margin: 0.75rem 0 0;
 }
 
+.partners__grant {
+  color: inherit;
+  text-decoration: none;
+}
+.partners__grant:hover {
+  color: var(--color-sig-run);
+}
+
+/* ── 08 lab ──────────────────────────────────────────────────────────── */
+
+.lab {
+  display: grid;
+  gap: 0 2.5rem;
+  margin: 2.5rem 0 0;
+  padding: 0;
+  list-style: none;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  border-block-end: 1px solid var(--color-line-dark);
+}
+.lab__entry {
+  display: flex;
+  flex-direction: column;
+  padding-block: 1.125rem 1.5rem;
+  border-block-start: 1px solid var(--color-line-dark);
+}
+.lab__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+.lab__name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+/* Quiet enough to scan past, present enough to sort by. */
+.lab__platform {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  color: var(--color-graphite-2);
+}
+.lab__one {
+  margin: 0.5rem 0 0;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--color-chalk);
+}
+.lab__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  /* Chips settle at the foot of the cell, whatever the copy above does. */
+  margin: auto 0 0;
+  padding: 1rem 0 0;
+  list-style: none;
+}
+.lab__link {
+  display: inline-block;
+  padding: 0.125rem 0.4375rem;
+  border: 1px solid var(--color-line-dark);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  color: var(--color-ink-3);
+  text-decoration: none;
+  transition:
+    color 120ms ease,
+    border-color 120ms ease;
+}
+.lab__link:hover {
+  border-color: var(--color-sig-run);
+  color: var(--color-sig-run);
+}
+.lab__mentions {
+  margin-block-start: 2.25rem;
+}
+.lab__mention-list {
+  display: grid;
+  gap: 0 2.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+}
+/* One line each, wrapping as a sentence — a bench list, not a second grid. */
+.lab__mention {
+  padding-block: 0.5rem;
+  border-block-end: 1px solid var(--color-line-dark);
+  font-size: 0.8125rem;
+  line-height: 1.55;
+}
+.lab__mention-name {
+  font-family: var(--font-mono);
+  color: var(--color-paper);
+}
+.lab__mention-one {
+  color: var(--color-ink-3);
+}
+.lab__mention-one::before {
+  content: "—";
+  margin-inline: 0.4em 0.35em;
+  color: var(--color-graphite-2);
+}
+
+/* ── 09 record ───────────────────────────────────────────────────────── */
+
+/* The ledger of every competition entered, losses included. Nothing here may
+   dim a row by result: no opacity, no smaller type, no colour drop on
+   `[data-result="entered"]`. Only the tag changes. */
+
+.rec__stats {
+  display: grid;
+  gap: 1.25rem 2rem;
+  margin: 2.5rem 0 0;
+  padding-block-start: 1.25rem;
+  border-block-start: 1px solid var(--color-line-dark);
+  grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
+}
+.rec__stat-value {
+  font-family: var(--font-display);
+  font-size: 1.625rem;
+  font-weight: 600;
+  line-height: 1;
+}
+.rec__stat-label {
+  margin: 0.375rem 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-ink-3);
+}
+
+.rec {
+  margin: 2rem 0 0;
+  padding: 0;
+  list-style: none;
+  border-block-end: 1px solid var(--color-line-dark);
+}
+.rec__row {
+  display: grid;
+  gap: 0.375rem 1.25rem;
+  padding-block: 0.875rem;
+  border-block-start: 1px solid var(--color-line-dark);
+  grid-template-columns: 1fr;
+  align-items: baseline;
+}
+.rec__date {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-graphite-2);
+}
+.rec__what {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.5rem;
+}
+.rec__event {
+  font-size: 0.9375rem;
+  line-height: 1.4;
+  color: var(--color-paper);
+}
+.rec__org {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--color-ink-3);
+}
+.rec__project {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--color-chalk);
+}
+.rec__outcome {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+/* The one place result is allowed to change how a row looks. */
+.rec__tag {
+  padding: 0.0625rem 0.375rem;
+  border: 1px solid var(--color-graphite-2);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  /* Default is the losing row: a quiet outline, but chalk text — "quiet" is a
+     border weight here, never a contrast cut. */
+  color: var(--color-chalk);
+}
+.rec__tag[data-result="won"],
+.rec__tag[data-result="hm"] {
+  border-color: var(--color-sig-ok);
+  color: var(--color-sig-ok);
+}
+.rec__tag[data-result="pending"] {
+  border-color: var(--color-sig-run);
+  color: var(--color-sig-run);
+}
+.rec__tag[data-result="selected"] {
+  border-color: var(--color-sig-watch);
+  color: var(--color-sig-watch);
+}
+
+.rec__prize {
+  font-family: var(--font-display);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-sig-ok);
+}
+.rec__announce {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--color-graphite-2);
+}
+
+.rec__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+.rec__chip {
+  padding: 0.0625rem 0.375rem;
+  border: 1px solid var(--color-line-dark);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--color-ink-3);
+  text-decoration: none;
+}
+.rec__chip:hover {
+  border-color: var(--color-sig-run);
+  color: var(--color-sig-run);
+}
+
+.rec__note {
+  margin: 0;
+  max-inline-size: 44rem;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: var(--color-ink-3);
+}
+
+.rec__pending {
+  margin: 1.25rem 0 0;
+  max-inline-size: 44rem;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--color-ink-3);
+}
+.rec__source {
+  margin: 0.5rem 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--color-graphite-2);
+}
+
+@media (min-width: 52rem) {
+  .rec__row {
+    grid-template-columns: 4.5rem minmax(12rem, 1.5fr) minmax(7rem, 1fr) 12rem;
+  }
+  .rec__links,
+  .rec__note {
+    grid-column: 2 / -1;
+  }
+  .rec__note {
+    margin-block-start: 0.125rem;
+  }
+}
+
+/* ── 10 services ─────────────────────────────────────────────────────── */
+
+.svc {
+  display: grid;
+  gap: 2.5rem;
+  margin: 2.5rem 0 0;
+  padding: 0;
+  list-style: none;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+}
+.svc__item {
+  padding-block-start: 1rem;
+  border-block-start: 1px solid var(--color-line-dark);
+}
+.svc__head {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.125rem, 2vw, 1.375rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+/* Filled only where something is already running behind the shape; the other
+   two are empty slots, and the square says so without a word of copy. */
+.svc__mark {
+  flex: none;
+  inline-size: 8px;
+  block-size: 8px;
+  border: 1px solid var(--color-graphite-2);
+}
+.svc__mark[data-live="true"] {
+  border-color: var(--color-sig-run);
+  background: var(--color-sig-run);
+}
+.svc__link {
+  text-decoration-color: var(--color-graphite-2);
+}
+.svc__link:hover {
+  color: var(--color-sig-run);
+  text-decoration-color: var(--color-sig-run);
+}
+.svc__body {
+  margin: 0.75rem 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--color-chalk);
+}
+.svc__cta {
+  margin: 2.25rem 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.04em;
+}
+.svc__cta a {
+  color: var(--color-sig-run);
+  text-decoration: none;
+}
+.svc__cta a:hover {
+  text-decoration: underline;
+}
+
+/* ── 12 intake ───────────────────────────────────────────────────────── */
+
+.intake {
+  margin-block-start: 2.5rem;
+  max-inline-size: 34rem;
+}
+.intake__form {
+  display: grid;
+  gap: 1.25rem;
+}
+.intake__field {
+  display: grid;
+  gap: 0.5rem;
+}
+.intake__label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-graphite-2);
+}
+.intake__input,
+.intake__textarea {
+  inline-size: 100%;
+  padding: 0.75rem 0.875rem;
+  background: var(--color-void-2);
+  border: 1px solid var(--color-line-dark);
+  border-radius: 2px;
+  color: var(--color-paper);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+.intake__input {
+  font-family: var(--font-mono);
+}
+.intake__textarea {
+  /* Prose, not an identifier: this field takes a sentence about the work. */
+  font-family: var(--font-sans);
+  min-block-size: 4.5rem;
+  resize: vertical;
+}
+.intake__input::placeholder,
+.intake__textarea::placeholder {
+  color: var(--color-graphite-2);
+}
+.intake__input:hover,
+.intake__textarea:hover {
+  border-color: var(--color-graphite-2);
+}
+
+/* Off-screen rather than display:none — a bot skips what is not rendered, and
+   this field only works if it is there to be filled. */
+.intake__trap {
+  position: absolute;
+  inset-inline-start: -9999px;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+}
+
+.intake__submit {
+  justify-self: start;
+  padding: 0.6875rem 1.25rem;
+  border: 0;
+  border-radius: 2px;
+  background: var(--color-sig-run);
+  color: var(--color-void);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.intake__submit:hover {
+  background: var(--color-paper);
+}
+.intake__submit:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.intake__status {
+  margin: 1rem 0 0;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+/* The live region is in the DOM from the first render; empty, it takes no room. */
+.intake__status:empty {
+  display: none;
+}
+.intake__status[data-state="sent"] {
+  color: var(--color-sig-ok);
+}
+.intake__status[data-state="error"] {
+  color: var(--color-sig-halt);
+}
+/* The addresses are the way out of a failure, so they keep full contrast. */
+.intake__mail {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--color-paper);
+}
+.intake__fallback {
+  margin: 1.25rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--color-ink-3);
+}
+
+/* ── section cta ─────────────────────────────────────────────────────── */
+
+/* The one link in the top bar that does not leave the page. Reads as part of
+   the locale switch's group, not as a button. */
+.topbar__right {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+.topbar__contact {
+  color: var(--color-chalk);
+  text-decoration: none;
+}
+.topbar__contact:hover {
+  color: var(--color-sig-run);
+}
+
+/* A section's quiet closer: a line of mono type, not a call-to-action block.
+   Shared across sections, so it sets spacing and type and nothing else. */
+.sec__cta {
+  margin: 1.5rem 0 0;
+}
+.sec__cta a {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--color-sig-run);
+  text-decoration: none;
+}
+.sec__cta a:hover {
+  text-decoration: underline;
+}
+
 /* ── footer ──────────────────────────────────────────────────────────── */
 
 .foot {

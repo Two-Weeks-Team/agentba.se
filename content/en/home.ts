@@ -20,6 +20,7 @@ export const home = {
     skip: "Skip to content",
     localeLabel: "한국어",
     localeHref: "/ko",
+    contact: "Contact",
   },
 
   hero: {
@@ -81,6 +82,7 @@ export const home = {
     hoursLabel: "human hours",
     costLabel: "operating cost",
     excludedLabel: "excluded from this comparison",
+    cta: "Have a workload shaped like this? Send one line →",
   },
 
   staffing: {
@@ -119,22 +121,83 @@ export const home = {
     lede: "Each one makes its own case on its own site.",
   },
 
+  lab: {
+    eyebrow: "08 — The lab",
+    h2: "What else two people shipped.",
+    lede: "The fleet frees the calendar, and the calendar fills with builds. Everything below is verifiable without taking our word for it — a live site, a public listing, a demo video, or a judged result.",
+    mentionsLabel: "Also on the bench",
+  },
+
+  record: {
+    eyebrow: "09 — The competition record",
+    h2: "The whole record, results as they fell.",
+    lede: "Public competitions are the cheapest neutral benchmark a two-person company can buy: outside judges, fixed deadlines, published winner lists. We enter with the fleet and publish the whole column — the ribbons and the losses alike.",
+    entriesLabel: "entries",
+    results: {
+      won: "1st place",
+      hm: "Honorable Mention",
+      selected: "Selected",
+      entered: "No award",
+      pending: "Judging",
+    },
+    pendingNote:
+      "The last row is still being judged — the result lands on Aug 21, 2026, and this table will carry it either way.",
+  },
+
+  services: {
+    eyebrow: "10 — What we can hold for you",
+    h2: "Three ways to put the fleet on your work.",
+    lede: "Not a promise of outcomes — a choice of engagement shapes. Each one points at the part of this page that backs it.",
+    items: [
+      {
+        id: "run",
+        name: "Run",
+        body: "Creator campaigns, operated end to end: a brief goes in; sourcing, outreach, replies, shipping and verification come out. This is Social Seeding, already operating — section 07.",
+      },
+      {
+        id: "build",
+        name: "Build",
+        body: "An operating seat in your company, replaced the way ours were: a named roster, output contracts, spend caps, gates that default to on. Sections 01–06 are the spec.",
+      },
+      {
+        id: "prove",
+        name: "Prove",
+        body: "Two weeks to a working system: fixed scope, a fixed fortnight, and at the end something you can operate. The cadence the competition record was built on — section 09.",
+      },
+    ],
+    cta: "Send one line →",
+  },
+
   geo: {
-    eyebrow: "08 — Where we operate",
+    eyebrow: "11 — Where we operate",
     h2: "Operating work does not need a local office.",
     operatingTitle: "Operating",
     hqTag: "HQ",
   },
 
+  intake: {
+    eyebrow: "12 — Intake",
+    h2: "One line is enough.",
+    lede: "The fleet has an agent named intake, and its whole job is turning one line into a valid brief. Send a line about your work — the thing that runs on a schedule, the thing nobody wants to do twice. Both founders read every line.",
+    emailLabel: "Reply-to address",
+    emailPlaceholder: "you@company.com",
+    lineLabel: "The line",
+    linePlaceholder: "A person spends two days a week assembling the same report.",
+    submit: "Send the line",
+    sent: "Received. A person will answer.",
+    error: "That didn't go through. Mail us instead:",
+    fallback: "No form? The addresses in the footer work the same.",
+  },
+
   partners: {
-    backedBy: "Backed by",
+    grants: "Grants & programs",
     builtWith: "Built with",
   },
 
   footer: {
     wordmark: "agentba.se",
     line: "A company whose operating work is performed by software agents. Seoul.",
-    snapshot: "Figures on this page come from a snapshot dated",
+    snapshot: "Figures on this page come from committed snapshots, the newest dated",
     rights: "AgentBase.",
   },
 };

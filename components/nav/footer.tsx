@@ -1,6 +1,6 @@
-import fleet from "@/data/fleet.json";
 import people from "@/data/people.json";
 import { getContent, type Locale } from "@/lib/i18n";
+import { NEWEST_SNAPSHOT } from "@/lib/snapshot";
 
 /**
  * Two named people with working addresses, rather than a shared inbox. A
@@ -41,7 +41,7 @@ export function Footer({ locale }: { locale: Locale }) {
       </div>
 
       <p className="foot__snapshot">
-        {t.snapshot} <time dateTime={fleet.capturedAt}>{fleet.capturedAt}</time>.
+        {t.snapshot} <time dateTime={NEWEST_SNAPSHOT}>{NEWEST_SNAPSHOT}</time>.
       </p>
       <p className="foot__rights">
         © {year} {t.rights}

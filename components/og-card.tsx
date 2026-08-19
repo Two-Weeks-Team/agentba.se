@@ -1,5 +1,7 @@
+import competitions from "@/data/competitions.json";
 import fleet from "@/data/fleet.json";
 import people from "@/data/people.json";
+import portfolio from "@/data/portfolio.json";
 import { MARK_ASPECT, markDataUri } from "@/lib/brand";
 
 /**
@@ -12,13 +14,23 @@ import { MARK_ASPECT, markDataUri } from "@/lib/brand";
  * is not worth that. It also only supports a subset of CSS — flexbox, no grid.
  */
 export function OgCard({ locale }: { locale: "en" | "ko" }) {
+  // Counted, never typed: the card is regenerated on every deploy, so a stat
+  // here cannot outlive the data it came from. The two competition figures sit
+  // side by side on purpose — twelve tries next to one win is the honest
+  // reading of the same record the page publishes in full.
+  //
+  // The font is subset to scripts/subset-og-font.sh's character set. Any label
+  // needing a glyph outside it renders as a box, which rules out a currency
+  // figure for the prize.
   const stats = [
     { value: String(fleet.counts.total), label: "AGENTS" },
     { value: String(people.people.length), label: "PEOPLE" },
-    { value: String(fleet.gates.length), label: "APPROVAL GATES" },
+    { value: String(fleet.gates.length), label: "GATES" },
+    { value: String(portfolio.entries.length), label: "SHIPPED" },
+    { value: String(competitions.entries.length), label: "ENTERED" },
     {
-      value: String(fleet.gates.filter((g) => g.requiredHitl).length),
-      label: "NEVER DELEGATED",
+      value: String(competitions.entries.filter((e) => e.result === "won").length),
+      label: "FIRST PLACE",
     },
   ];
 
