@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import partners from "@/data/partners.json";
 import { getContent, type Locale } from "@/lib/i18n";
 
@@ -16,10 +17,13 @@ export function Partners({ locale }: { locale: Locale }) {
         <div>
           <p className="eyebrow">{t.grants}</p>
           <p className="partners__backer">
-            {partners.grants.map((g) => (
-              <a key={g.id} className="partners__grant" href={g.url} rel="noopener">
-                {g.name}
-              </a>
+            {partners.grants.map((g, i) => (
+              <Fragment key={g.id}>
+                {i > 0 ? " · " : null}
+                <a className="partners__grant" href={g.url} rel="noopener">
+                  {g.name}
+                </a>
+              </Fragment>
             ))}
           </p>
         </div>

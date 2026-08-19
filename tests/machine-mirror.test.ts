@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import competitions from "../data/competitions.json";
 import { home as en } from "../content/en/home";
 import { home as ko } from "../content/ko/home";
 import { LOCALES, type Locale } from "../lib/i18n";
@@ -52,6 +53,19 @@ describe("machine-readable mirrors", () => {
       expect(md).toContain(byLocale[locale].staffing.h2);
     });
   }
+
+  it("carries the announcement date a judging row is waiting on", () => {
+    // The page prints it beside the pending row; a mirror that drops it says
+    // less than the page it mirrors, which is the one thing it may not do.
+    const pending = competitions.entries.filter((e) => e.announceOn);
+    expect(pending.length).toBeGreaterThan(0);
+    for (const locale of LOCALES) {
+      const md = renderMarkdown(locale);
+      for (const e of pending) {
+        expect(md, `${locale} mirror omits ${e.id}'s announcement date`).toContain(e.announceOn);
+      }
+    }
+  });
 
   it("llms.txt points at every published data file", () => {
     const txt = renderLlmsTxt();

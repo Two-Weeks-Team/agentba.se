@@ -19,6 +19,29 @@ const MAX_LINE = 1000;
 /** A parser fills a form the instant it reads it. Nobody types a line this fast. */
 const MIN_FILL_MS = 2500;
 
+/**
+ * A speed bump, and only that. Module scope lives as long as one warm instance,
+ * so this slows a loop coming from a single address on a single instance; it
+ * cannot promise a limit across instances. A promise would need an edge rule,
+ * and the thing being protected is two inboxes, not a database.
+ */
+const WINDOW_MS = 60_000;
+const MAX_PER_WINDOW = 3;
+const seen = new Map<string, number[]>();
+
+function overLimit(ip: string): boolean {
+  const now = Date.now();
+  const recent = (seen.get(ip) ?? []).filter((at) => now - at < WINDOW_MS);
+  recent.push(now);
+  seen.set(ip, recent);
+  if (seen.size > 500) {
+    for (const [key, at] of seen) {
+      if (!at.some((t) => now - t < WINDOW_MS)) seen.delete(key);
+    }
+  }
+  return recent.length > MAX_PER_WINDOW;
+}
+
 function text(value: unknown): string {
   if (typeof value === "string") return value.trim();
   if (typeof value === "number") return String(value);
@@ -54,11 +77,26 @@ export async function POST(req: Request): Promise<Response> {
   if (!email || email.length > MAX_EMAIL || !EMAIL.test(email)) return fail(400);
   if (!line || line.length > MAX_LINE) return fail(400);
 
-  // Two traps, one answer. A filled honeypot or an instant submit is dropped
-  // with a success, so the sender cannot tell which field gave it away.
-  if (text(body.website)) return silent();
-  const elapsed = text(body.t);
-  if (elapsed && Number(elapsed) < MIN_FILL_MS) return silent();
+  // Three traps, one answer. A filled honeypot, a missing one, or an instant
+  // submit is dropped with a success, so the sender cannot tell which field
+  // gave it away.
+  //
+  // Absence is as suspicious as a filled trap: both paths through the real form
+  // send `website` — empty from a person, filled by whatever crawls it — so a
+  // request without the field at all was not sent by this form.
+  if (!("website" in body) || text(body.website)) return silent();
+
+  // `t` is only sent by the scripted path; the native submit has no clock to
+  // read, so its absence is normal and allowed. What is not allowed is a value
+  // that is present and not a real number — NaN fails every comparison, which
+  // would turn the trap into a way through it.
+  if ("t" in body) {
+    const elapsed = Number(text(body.t));
+    if (!Number.isFinite(elapsed) || elapsed < MIN_FILL_MS) return silent();
+  }
+
+  const ip = (req.headers.get("x-forwarded-for") ?? "").split(",")[0]?.trim() || "unknown";
+  if (overLimit(ip)) return fail(429);
 
   // Without the key nothing can be sent, and claiming otherwise would lose the
   // line. The 503 is what makes the client show the founders' addresses — the
@@ -70,6 +108,10 @@ export async function POST(req: Request): Promise<Response> {
   try {
     sent = await fetch("https://api.resend.com/emails", {
       method: "POST",
+      // Without a bound, a silent Resend holds the function open to its own
+      // limit and leaves the form saying "sending" the whole time. An abort
+      // lands in the catch below and answers 502, which the form can act on.
+      signal: AbortSignal.timeout(8000),
       headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
       body: JSON.stringify({
         from: "AgentBase Intake <intake@agentba.se>",

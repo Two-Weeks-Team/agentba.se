@@ -135,8 +135,13 @@ export function renderMarkdown(locale: Locale): string {
     // the vocabulary is spelled out, so index it rather than widen the map.
     const label = t.record.results[e.result as keyof typeof t.record.results];
     const prize = e.prize ? `, ${e.prize[locale]}` : "";
+    // The page prints the announcement date beside a judging row; without it
+    // here the mirror would say less than the page it mirrors.
+    const announce = e.announceOn
+      ? `, ${L("announced", "발표")} ${e.announceOn}`
+      : "";
     out.push(
-      `| ${e.date} | ${cell(`${e.event} (${e.organizer})`)} | ${cell(e.project)} | ${label}${prize} |`,
+      `| ${e.date} | ${cell(`${e.event} (${e.organizer})`)} | ${cell(e.project)} | ${label}${prize}${announce} |`,
     );
   }
   out.push("");

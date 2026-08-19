@@ -9,7 +9,9 @@ import { Section } from "./section";
  */
 export function Services({ locale }: { locale: Locale }) {
   const t = getContent(locale).services;
-  const liveUrl = products.products[0]?.url;
+  // By id, not by position: the products file is ordered for the page it feeds,
+  // and reordering it must not quietly point this link at another product.
+  const liveUrl = products.products.find((p) => p.id === "social-seeding")?.url;
 
   return (
     <Section id="services" eyebrow={t.eyebrow} h2={t.h2} lede={t.lede}>

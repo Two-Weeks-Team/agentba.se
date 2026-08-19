@@ -1,3 +1,4 @@
+import competitions from "@/data/competitions.json";
 import fleet from "@/data/fleet.json";
 import people from "@/data/people.json";
 import products from "@/data/products.json";
@@ -35,11 +36,15 @@ export function JsonLd({ locale }: { locale: Locale }) {
         email: p.email,
       })),
       sameAs: products.products.map((p) => p.url),
-      // Only results with a public winner page behind them.
-      award: [
-        "1st place — Gradient AI Hackathon (DigitalOcean, 2026)",
-        "Honorable Mention — Gemini Live Agent Challenge (Google Cloud, 2026)",
-      ],
+      // Read off the same record the page publishes, so structured data cannot
+      // claim a result the table does not. Only placed rows appear, and
+      // data-integrity holds each of those to a public winners link.
+      award: competitions.entries
+        .filter((e) => e.result === "won" || e.result === "hm")
+        .map(
+          (e) =>
+            `${t.record.results[e.result as keyof typeof t.record.results]} — ${e.event} (${e.organizer}, ${e.date.slice(0, 4)})`,
+        ),
       knowsAbout: ["autonomous agents", "agent orchestration", "operations automation"],
     },
     {

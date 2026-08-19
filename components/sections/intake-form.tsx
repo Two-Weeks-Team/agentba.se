@@ -17,6 +17,9 @@ export function IntakeForm({ locale }: { locale: Locale }) {
   const t = getContent(locale).intake;
   const [status, setStatus] = useState<Status>("idle");
   const openedAt = useRef(0);
+  // State and the button's disabled attribute both settle a render later, so a
+  // fast double-submit can pass a guard that reads them. A ref changes now.
+  const sending = useRef(false);
 
   // The endpoint drops anything typed faster than a person can type it, so it
   // has to be told how long the form was open. Left at 0 the elapsed time
@@ -27,7 +30,8 @@ export function IntakeForm({ locale }: { locale: Locale }) {
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (status === "sending") return;
+    if (sending.current) return;
+    sending.current = true;
 
     const data = new FormData(event.currentTarget);
     setStatus("sending");
@@ -48,6 +52,8 @@ export function IntakeForm({ locale }: { locale: Locale }) {
       ok = res.ok;
     } catch {
       ok = false;
+    } finally {
+      sending.current = false;
     }
 
     if (ok) {

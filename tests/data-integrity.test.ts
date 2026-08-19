@@ -134,7 +134,8 @@ describe("competitions", () => {
     // reads as a gap in the record rather than as a sorting mistake.
     let previous = "";
     for (const e of entries) {
-      expect(e.date, `${e.id} has a malformed date`).toMatch(/^\d{4}-\d{2}$/);
+      // Month bounded, not just shaped: "2026-19" sorts fine and means nothing.
+      expect(e.date, `${e.id} has a malformed date`).toMatch(/^\d{4}-(0[1-9]|1[0-2])$/);
       expect(e.date >= previous, `${e.id} (${e.date}) sorts before ${previous}`).toBe(true);
       previous = e.date;
     }
@@ -168,9 +169,14 @@ describe("competitions", () => {
     // Without a date, "pending" never expires, and an entry that was never
     // judged keeps reading like a result still on its way.
     for (const e of entries.filter((x) => x.result === "pending")) {
-      expect(e.announceOn, `${e.id} is pending with no announcement date`).toMatch(
-        /^\d{4}-\d{2}-\d{2}$/,
-      );
+      const on = e.announceOn ?? "";
+      expect(on, `${e.id} is pending with no announcement date`).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      // A shape check passes 2026-02-31. Round-tripping through Date is what
+      // catches a day the month does not have.
+      expect(
+        new Date(`${on}T00:00:00Z`).toISOString().slice(0, 10),
+        `${e.id} names a day that does not exist: ${on}`,
+      ).toBe(on);
     }
   });
 
