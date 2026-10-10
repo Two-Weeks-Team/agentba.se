@@ -1,0 +1,28 @@
+Newsreader Regular — local font provenance
+
+Official distribution: https://github.com/google/fonts
+Pinned directory commit: 8b0a1d0f5983c89bc2b93f1b5fb55f9e252744b5
+Source font: https://raw.githubusercontent.com/google/fonts/8b0a1d0f5983c89bc2b93f1b5fb55f9e252744b5/ofl/newsreader/Newsreader%5Bopsz%2Cwght%5D.ttf
+Source SHA-256: 8a08d13f8a6c0d51be379a60af84f945f65369a67e509ee3c3bdcc421254d7c1
+License: https://raw.githubusercontent.com/google/fonts/8b0a1d0f5983c89bc2b93f1b5fb55f9e252744b5/ofl/newsreader/OFL.txt
+Upstream license SHA-256: fdfad38143ec470553cae82a1e45320bdd1b9ec70415d37bd0171051d8a4ded8
+License text is copied from the upstream SIL OFL 1.1; trailing whitespace is removed.
+
+Generated using fontTools 4.60.2.
+Instance: normal/upright, wght=400, opsz=72.
+All variable axes are pinned. All original glyphs and layout features are retained.
+Source timestamps are preserved for reproducible output.
+The WOFF2 is a lossless compression of the same static instance as the OG TTF.
+
+Reproduce after downloading the source to FAMILY-Variable.ttf:
+  from fontTools.ttLib import TTFont
+  from fontTools.varLib.instancer import instantiateVariableFont
+  font = TTFont("Newsreader-Variable.ttf", recalcTimestamp=False)
+  font = instantiateVariableFont(font, {"wght": 400, "opsz": 72}, inplace=False, updateFontNames=True)
+  font.save("assets/fonts/Newsreader-Regular.ttf")
+  font.flavor = "woff2"
+  font.save("assets/landing/fonts/Newsreader-Regular.woff2")
+
+Generated files (SHA-256):
+  3fee8d944c8e83052b489862dd61901ae8af617c7e63e4552633f439fe975693  assets/fonts/Newsreader-Regular.ttf
+  44489e4607cdf5665ff1c6aa6b9d5c390ef8577af74eee75fa58e2bc17708c2a  assets/landing/fonts/Newsreader-Regular.woff2

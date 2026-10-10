@@ -284,6 +284,17 @@ export function mountSocialDemo(host) {
     next.innerHTML = step === 2 ? 'Replay <span aria-hidden="true">↺</span>' : `${step === 0 ? "View draft" : "Human review"} <span aria-hidden="true">→</span>`;
     next.setAttribute("aria-label", step === 2 ? `Replay ${selected.name}’s sample assignment` : `Show ${selected.name}’s ${STEPS[step + 1].toLowerCase()}`);
     if (announce) announcer.textContent = `${selected.name}, ${selected.role}. ${STEPS[step]}: ${current.title} Illustrative sample only.`;
+
+    // Keep the active person visible on small screens, including the initial
+    // Theo selection and handoffs to a role outside the current roster window.
+    // Move only the horizontal roster; never move the reader's page position.
+    if (roster.scrollWidth > roster.clientWidth) {
+      const button = people.find((person) => person.dataset.ssPersona === selected.id);
+      const bounds = roster.getBoundingClientRect();
+      const item = button.getBoundingClientRect();
+      if (item.left < bounds.left + 12) roster.scrollLeft += item.left - bounds.left - 12;
+      else if (item.right > bounds.right - 12) roster.scrollLeft += item.right - bounds.right + 12;
+    }
   }
 
   function selectPersona(id) {
@@ -331,10 +342,6 @@ export function mountSocialDemo(host) {
     target.focus({ preventScroll: true });
     if (collection === people) {
       selectPersona(target.dataset.ssPersona);
-      const bounds = roster.getBoundingClientRect();
-      const item = target.getBoundingClientRect();
-      if (item.left < bounds.left) roster.scrollLeft += item.left - bounds.left;
-      else if (item.right > bounds.right) roster.scrollLeft += item.right - bounds.right;
     } else setStep(destination);
   }
 

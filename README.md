@@ -1,7 +1,7 @@
 # agentba.se
 
-AgentBase LLC's company site. The selected C redesign is the production English
-homepage at `/`. The existing Korean page remains at `/ko`, with updated company
+AgentBase LLC's company site. The English landing page is served at `/`.
+The existing Korean page remains at `/ko`, with updated company
 facts and discovery metadata.
 
 ## Production page
@@ -15,6 +15,11 @@ The approved design includes the large shared-background Three.js organization,
 Social Seeding AI role cards and outreach walkthrough, kbeauty discovery,
 Memex recall, Glasshat review, PreviewForge decision handoff, four organization
 scopes, capabilities, Run / Build / Prove, and the company footer.
+
+The English visual system uses a warm paper background, Newsreader display
+headings, Inter reading text, and softly framed product demonstrations. Shared
+tokens live in `assets/landing/c.css`; the organization and all five demos use
+the same palette. Keep monospace type for code and actual technical values.
 
 `assets/landing/` contains the selected design's scripts, styles, referenced
 media, vendored Three.js and local fonts. `prebuild` copies that complete set to

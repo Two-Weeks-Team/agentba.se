@@ -5,6 +5,13 @@ import * as THREE from "../assets/landing/vendor/three/three.module.js";
 import { blueprint } from "../assets/landing/organization-blueprint.mjs";
 
 const width = 600, height = 450;
+// Keep the same organization geometry and warm olive/stone palette as the hero.
+const palette = {
+  ink: { side: "#363931", top: "#41453b", front: "#363931", stroke: "#676c60" },
+  paper: { side: "#e2dfd5", top: "#fdfcf8", front: "#edeae1", stroke: "#99978c" },
+  grid: "#e9e6dc",
+  wires: "#aaa596",
+};
 const model = blueprint("company");
 const camera = new THREE.OrthographicCamera();
 camera.position.set(9, 6.8, 11);
@@ -36,21 +43,22 @@ const blocks = [...model.blocks].sort((a, b) =>
 const faces = [];
 for (const block of blocks) {
   const v = vertices(block);
+  const paint = block.ink ? palette.ink : palette.paper;
   const blockFaces = [];
   for (const [indices, color] of [
-    [[4, 5, 7, 6], block.ink ? "#292929" : "#e4e4e4"],
-    [[2, 6, 7, 3], block.ink ? "#111111" : "#ffffff"],
-    [[1, 3, 7, 5], block.ink ? "#181818" : "#f7f7f7"],
+    [[4, 5, 7, 6], paint.side],
+    [[2, 6, 7, 3], paint.top],
+    [[1, 3, 7, 5], paint.front],
   ]) {
     const polygon = indices.map(i => v[i]);
     blockFaces.push({ depth: polygon.reduce((sum, p) => sum + point(p)[2], 0) / 4,
-      svg: `<polygon points="${polygon.map(xy).join(" ")}" fill="${color}" stroke="${block.ink ? "#4b4b4b" : "#777777"}" stroke-width=".8" stroke-linejoin="round"/>` });
+      svg: `<polygon points="${polygon.map(xy).join(" ")}" fill="${color}" stroke="${paint.stroke}" stroke-width=".8" stroke-linejoin="round"/>` });
   }
   faces.push(...blockFaces.sort((a, b) => a.depth - b.depth));
 }
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
-<g fill="none" stroke="#eeeeee" stroke-width=".7">${paths.join("")}</g>
-<g fill="none" stroke="#858585" stroke-width="1">${wires.join("")}</g>
+<g fill="none" stroke="${palette.grid}" stroke-width=".7">${paths.join("")}</g>
+<g fill="none" stroke="${palette.wires}" stroke-width="1">${wires.join("")}</g>
 ${faces.map(f => f.svg).join("")}
 </svg>`;
 mkdirSync("assets/brand", { recursive: true });

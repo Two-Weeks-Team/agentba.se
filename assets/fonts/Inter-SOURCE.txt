@@ -1,0 +1,25 @@
+Inter Regular — local font provenance
+
+Official distribution: https://github.com/google/fonts
+Pinned directory commit: 0b58fb370093f9a9f4ff785d94405710b79de67c
+Source font: https://raw.githubusercontent.com/google/fonts/0b58fb370093f9a9f4ff785d94405710b79de67c/ofl/inter/Inter%5Bopsz%2Cwght%5D.ttf
+Source SHA-256: 29160a80ff49ddcab2c97711247e08b1fab27a484a329ce8b813d820dc559031
+License: https://raw.githubusercontent.com/google/fonts/0b58fb370093f9a9f4ff785d94405710b79de67c/ofl/inter/OFL.txt
+Upstream license SHA-256: 5b9321a4298cfeb6b34354164a1c3afc3db114569984c502b9b35d988fd58c57
+License text is copied from the upstream SIL OFL 1.1; trailing whitespace is removed.
+
+Generated using fontTools 4.60.2.
+Instance: normal/upright, wght=400, opsz=14.
+All variable axes are pinned. All original glyphs and layout features are retained.
+Source timestamps are preserved for reproducible output.
+Used for OG only: the existing browser Inter WOFF2 is unsupported by Satori (wOF2 signature).
+
+Reproduce after downloading the source to FAMILY-Variable.ttf:
+  from fontTools.ttLib import TTFont
+  from fontTools.varLib.instancer import instantiateVariableFont
+  font = TTFont("Inter-Variable.ttf", recalcTimestamp=False)
+  font = instantiateVariableFont(font, {"wght": 400, "opsz": 14}, inplace=False, updateFontNames=True)
+  font.save("assets/fonts/Inter-Regular.ttf")
+
+Generated files (SHA-256):
+  0b59f6b6fc9e8a9ad8032802d1797c4237d9288a3e7b7661517070627b577060  assets/fonts/Inter-Regular.ttf

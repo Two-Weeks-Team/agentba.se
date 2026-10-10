@@ -4,9 +4,10 @@ import { join } from "node:path";
 /**
  * Fonts for the social card.
  *
- * Bebas Neue matches the redesign's display type. JetBrains Mono is subset
- * to the card's glyphs; regenerate with `scripts/subset-og-font.sh` if the
- * copy gains a character outside that set. All font files are local.
+ * Newsreader 400 matches the landing display face; Inter 400 carries the
+ * supporting copy. Both are static instances of official Google Fonts
+ * releases. Source pins, generation steps and OFL licenses live beside
+ * the font files in assets/fonts. Satori cannot read the browser's WOFF2.
  *
  * These are read at build time: the OG routes are prerendered, so nothing
  * here runs on a request.
@@ -19,7 +20,6 @@ function load(filename: string): ArrayBuffer {
 }
 
 export const ogFonts = [
-  { name: "Bebas Neue", data: load("BebasNeue-Regular.ttf"), weight: 400 as const, style: "normal" as const },
-  { name: "JetBrains Mono", data: load("JetBrainsMono-Regular.subset.ttf"), weight: 400 as const, style: "normal" as const },
-  { name: "JetBrains Mono", data: load("JetBrainsMono-Bold.subset.ttf"), weight: 700 as const, style: "normal" as const },
+  { name: "Newsreader", data: load("Newsreader-Regular.ttf"), weight: 400 as const, style: "normal" as const },
+  { name: "Inter", data: load("Inter-Regular.ttf"), weight: 400 as const, style: "normal" as const },
 ];

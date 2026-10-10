@@ -234,21 +234,21 @@ function lunchConcept(doc, direction) {
     words.append(element(doc, 'span', 'pf-concept-kicker', 'A little less deciding.'), element(doc, 'p', 'pf-editorial-title', 'Make room\nfor lunch.'), element(doc, 'span', 'pf-concept-note', 'Something warm. Something simple.'));
     const plate = element(doc, 'div', 'pf-editorial-plate');
     plate.append(svg(doc, '0 0 180 150', ['M24 69H156C150 110 124 131 90 131S30 110 24 69Z M20 69C20 58 160 58 160 69 M49 140H131 M64 49C46 28 79 31 65 9 M91 46C75 22 108 24 96 4 M116 49C103 32 132 24 121 12'], 'pf-bowl'));
-    plate.append(element(doc, 'span', 'pf-plate-label', 'THE WARM BOWL'));
+    plate.append(element(doc, 'span', 'pf-plate-label', 'The warm bowl'));
     body.append(words, plate);
   } else if (direction === 'terminal') {
     const commands = element(doc, 'div', 'pf-terminal-commands');
     commands.append(element(doc, 'p', 'pf-command', '> mood: low effort'), element(doc, 'p', 'pf-command', '> preference: something warm'), element(doc, 'p', 'pf-terminal-title', 'Lunch,\nsorted.'));
     const output = element(doc, 'div', 'pf-terminal-output');
-    output.append(element(doc, 'span', 'pf-concept-kicker', 'RECOMMENDATION'), element(doc, 'p', 'pf-terminal-result', 'Noodle\nbowl.'), element(doc, 'span', 'pf-concept-note', 'One idea to take away.'));
+    output.append(element(doc, 'span', 'pf-concept-kicker', 'Recommendation'), element(doc, 'p', 'pf-terminal-result', 'Noodle\nbowl.'), element(doc, 'span', 'pf-concept-note', 'One idea to take away.'));
     body.append(commands, output);
   } else {
     const words = element(doc, 'div', 'pf-playful-words');
-    words.append(element(doc, 'span', 'pf-concept-kicker', 'Let your mood choose.'), element(doc, 'p', 'pf-playful-title', 'A good\nlunch hunch.'), element(doc, 'span', 'pf-mood', 'TODAY FEELS COZY'));
+    words.append(element(doc, 'span', 'pf-concept-kicker', 'Let your mood choose.'), element(doc, 'p', 'pf-playful-title', 'A good\nlunch hunch.'), element(doc, 'span', 'pf-mood', 'Today feels cozy'));
     const oracle = element(doc, 'div', 'pf-oracle');
     oracle.append(svg(doc, '0 0 180 180', ['M90 5L107 27L134 17L137 47L167 49L156 77L178 94L153 111L160 140L130 140L117 168L94 150L69 172L56 145L26 148L31 118L7 101L28 81L16 54L47 51L47 21L73 31Z'], 'pf-star'));
     const oracleWords = element(doc, 'div', 'pf-oracle-words');
-    oracleWords.append(element(doc, 'span', 'pf-oracle-kicker', 'YOUR LUNCH HUNCH'), element(doc, 'strong', 'pf-oracle-pick', 'WARM\n& BOWLFUL'), element(doc, 'span', 'pf-oracle-sign', '✳'));
+    oracleWords.append(element(doc, 'span', 'pf-oracle-kicker', 'Your lunch hunch'), element(doc, 'strong', 'pf-oracle-pick', 'Warm\n& bowlful'), element(doc, 'span', 'pf-oracle-sign', '✳'));
     oracle.append(oracleWords);
     body.append(words, oracle);
   }

@@ -17,9 +17,13 @@ existing layout and its updated company facts.
 - `public/og/agentbase.png` is the 1200 × 630 PNG used by explicit metadata.
 - Next.js also generates locale-specific Open Graph image routes from the same
   component. All three image responses should be identical.
-- Fonts are local. Bebas Neue's license is included in `assets/fonts`.
+- Fonts are local. Newsreader 400 and Inter 400 use pinned official Google Fonts
+  sources, with OFL licenses and reproducible conversion notes in `assets/fonts`.
+  The landing page preloads its Newsreader WOFF2 and existing Inter WOFF2. The OG
+  renderer uses static TTF instances of those families.
 - The static diagram uses the interactive hero's geometry. If geometry changes,
   run `node scripts/render-og-organization.mjs` before regenerating the card.
+  Keep its olive/stone palette and wordmark aligned with the English page.
 
 ```sh
 pnpm og:generate

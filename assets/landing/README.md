@@ -1,6 +1,8 @@
 # Selected landing page assets
 
-These are the runtime assets for the approved C redesign, now rendered at `/`.
+These are the runtime assets for the landing page rendered at `/`. The warm
+editorial design uses local Newsreader for headlines, Inter for reading and
+controls, and a continuous canvas for the interactive organization models.
 `content/en/landing.html` is the committed page narrative. Company and product
 facts are synchronized by `lib/landing.ts`. The generated local preview reads
 that same source; production never depends on an untracked preview directory.
@@ -22,3 +24,6 @@ Only referenced runtime media is published. Alternative designs, working
 captures and research notes remain local under `design-previews` and `docs`.
 Three.js and font licenses are included beside their assets. Fonts and runtime
 modules are served from the company domain; there is no CDN requirement.
+Newsreader's pinned source and reproducible static-font conversion are recorded
+in `assets/fonts/Newsreader-SOURCE.txt`. Use the shared page color and typography
+tokens when updating demos; product code samples may keep their monospace type.

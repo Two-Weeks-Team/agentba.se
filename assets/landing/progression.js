@@ -3,40 +3,40 @@
       // Company scope remains an ambition, not a claim of a deployed autonomous company.
       const stagesData = {
         task: {
-          label: "Stage 01: Task Scope",
+          label: "Stage 01 · Task",
           title: "Complete a defined assignment.",
           body: "Read the brief, use the relevant context, and return a result someone can inspect. A single assignment establishes the contract: what comes in, what work is allowed, and what counts as done.",
           example: "Illustrative assignment: research a creator against a campaign brief and return the evidence for their fit.",
           nodes: ["Brief", "Research", "Summary"],
-          tierTag: "SCHEMA // TASK NODES",
-          countTag: "SCOPE: TASK"
+          tierTag: "An assignment, made visible",
+          countTag: "Task"
         },
         role: {
-          label: "Stage 02: Role Scope",
+          label: "Stage 02 · Role",
           title: "Hold an ongoing responsibility.",
           body: "Give the agent a continuing responsibility. A sourcing role needs to carry campaign context, use discovery tools, maintain its shortlist and raise cases it cannot resolve.",
           example: "Illustrative role: keep the creator pipeline current as briefs, candidates and review decisions change.",
           nodes: ["Purpose", "Context", "Tools", "Output", "Review"],
-          tierTag: "SCHEMA // ROLE NODES",
-          countTag: "SCOPE: ROLE"
+          tierTag: "A role with responsibility",
+          countTag: "Role"
         },
         department: {
-          label: "Stage 03: Department Scope",
+          label: "Stage 03 · Department",
           title: "Coordinate work across roles.",
           body: "Connect specialists around one operating outcome. Research informs outreach; replies inform the next action; publication evidence informs the report. Shared state makes the handoffs visible.",
           example: "Illustrative department: sourcing, outreach, conversation and analysis working from the same campaign context.",
           nodes: ["Research", "Planning", "Execution", "Review"],
-          tierTag: "SCHEMA // DEPARTMENT NODES",
-          countTag: "SCOPE: DEPARTMENT"
+          tierTag: "Specialists working together",
+          countTag: "Department"
         },
         company: {
-          label: "Stage 04: Company Scope",
+          label: "Stage 04 · Company",
           title: "Operate toward a business objective.",
           body: "Our long-term destination is an organization whose operating work is performed by software. People determine its direction, commit resources, and remain responsible for what the company does.",
           example: "Long-term ambition: agent departments operating together under human ownership and direction.",
           nodes: ["Human direction", "Agent departments", "Business operations", "Accountability"],
-          tierTag: "SCHEMA // COMPANY NODES",
-          countTag: "SCOPE: COMPANY"
+          tierTag: "A software organization",
+          countTag: "Company"
         }
       };
 

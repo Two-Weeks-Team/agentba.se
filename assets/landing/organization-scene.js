@@ -31,7 +31,7 @@ class OrganizationScene {
 
     this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'low-power' });
     this.renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.75));
-    this.renderer.setClearColor(0xffffff, host.dataset.sceneLayout === 'shared' ? 0 : 1);
+    this.renderer.setClearColor(0xf7f6f2, host.dataset.sceneLayout === 'shared' ? 0 : 1);
     this.canvas = this.renderer.domElement;
     this.canvas.tabIndex = 0;
     this.canvas.setAttribute('role', 'img');
@@ -46,12 +46,12 @@ class OrganizationScene {
     this.scene.add(this.world);
     this.geometry = new THREE.BoxGeometry(1, 1, 1);
     this.edgesGeometry = new THREE.EdgesGeometry(this.geometry);
-    this.white = [0xe5e5e5, 0xf0f0f0, 0xffffff, 0xd8d8d8, 0xf8f8f8, 0xeaeaea].map(color => new THREE.MeshBasicMaterial({ color }));
-    this.black = new THREE.MeshBasicMaterial({ color: 0x151515 });
-    this.outline = new THREE.LineBasicMaterial({ color: 0x111111 });
-    this.inkOutline = new THREE.LineBasicMaterial({ color: 0x666666 });
-    this.wire = new THREE.LineBasicMaterial({ color: 0x777777 });
-    this.particleMaterial = new THREE.MeshBasicMaterial({ color: 0x000000, depthTest: false });
+    this.white = [0xe2dfd5, 0xedeae1, 0xfdfcf8, 0xd6d2c7, 0xf4f1e8, 0xe8e4d9].map(color => new THREE.MeshBasicMaterial({ color }));
+    this.black = new THREE.MeshBasicMaterial({ color: 0x363931 });
+    this.outline = new THREE.LineBasicMaterial({ color: 0x99978c });
+    this.inkOutline = new THREE.LineBasicMaterial({ color: 0x676c60 });
+    this.wire = new THREE.LineBasicMaterial({ color: 0xa2a398 });
+    this.particleMaterial = new THREE.MeshBasicMaterial({ color: 0xa56d48, depthTest: false });
     this.particleGeometry = new THREE.SphereGeometry(.057, 8, 6);
 
     this.blocks = Array.from({ length: 40 }, () => {
@@ -71,7 +71,9 @@ class OrganizationScene {
     this.labelLayer.setAttribute('aria-hidden', 'true');
     host.append(this.labelLayer);
 
-    const grid = new THREE.GridHelper(11, 22, 0xc8c8c8, 0xe8e8e8);
+    const grid = new THREE.GridHelper(11, 16, 0xd8d6cc, 0xe2e0d7);
+    grid.material.transparent = true;
+    grid.material.opacity = .45;
     grid.position.y = -2.4;
     this.world.add(grid);
     this.grid = grid;
@@ -142,13 +144,13 @@ class OrganizationScene {
     // A full-width canvas leaves room for the narrative in the same scene.
     // The camera, rather than a second panel, places the organization to the right.
     this.sharedLayout = this.host.dataset.sceneLayout === 'shared' && matchMedia('(min-width: 901px)').matches;
-    const viewAspect = this.sharedLayout ? aspect * .56 : aspect;
+    const viewAspect = this.sharedLayout ? aspect * .54 : aspect;
     // The hero is the main visual: give the organization a closer framing while
     // preserving the full-width transparent canvas and room for the left copy.
     // Other progression scenes keep their existing camera framing.
     const heroFraming = this.host.dataset.sceneFraming === 'hero';
-    const vertical = heroFraming ? Math.max(7.6, 8.6 / viewAspect) : Math.max(8.9, 10.7 / viewAspect);
-    const shift = this.sharedLayout ? vertical * aspect * .225 : 0;
+    const vertical = heroFraming ? Math.max(7.4, 8.3 / viewAspect) : Math.max(8.6, 10.2 / viewAspect);
+    const shift = this.sharedLayout ? vertical * aspect * .235 : 0;
     this.camera.left = -vertical * aspect / 2 - shift;
     this.camera.right = vertical * aspect / 2 - shift;
     this.camera.top = vertical / 2;
