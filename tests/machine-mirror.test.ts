@@ -2,8 +2,9 @@ import { describe, expect, it } from "vitest";
 import competitions from "../data/competitions.json";
 import { home as en } from "../content/en/home";
 import { home as ko } from "../content/ko/home";
-import { LOCALES, type Locale } from "../lib/i18n";
+import { type Locale } from "../lib/i18n";
 import { renderLlmsTxt, renderMarkdown } from "../lib/machine";
+import { renderLandingHtml } from "../lib/landing";
 
 /**
  * The `.md` mirrors and the HTML page render from the same content modules and
@@ -37,7 +38,19 @@ describe("machine-readable mirrors", () => {
     expect(sectionEyebrows(en).length).toBeGreaterThanOrEqual(8);
   });
 
-  for (const locale of LOCALES) {
+  it("the English mirror covers the actual production narrative", () => {
+    const html = renderLandingHtml();
+    const headings = [...html.matchAll(/<h[1-3]\b[^>]*>([\s\S]*?)<\/h[1-3]>/g)].map(match =>
+      match[1]!.replace(/<br\s*\/?>|<\/span>/g, " ").replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim());
+    expect(headings.length).toBeGreaterThanOrEqual(12);
+    const md = renderMarkdown("en");
+    for (const heading of headings) expect(md).toContain(heading);
+    expect(md).not.toContain(en.staffing.h2);
+    expect(md).toContain("Google Gemini");
+    expect(md).toContain("OpenAI");
+  });
+
+  for (const locale of ["ko"] as const) {
     it(`the ${locale} mirror covers every section on the page`, () => {
       const md = renderMarkdown(locale);
       const missing = sectionEyebrows(byLocale[locale]).filter((e) => !md.includes(e));
@@ -59,7 +72,7 @@ describe("machine-readable mirrors", () => {
     // less than the page it mirrors, which is the one thing it may not do.
     const pending = competitions.entries.filter((e) => e.announceOn);
     expect(pending.length).toBeGreaterThan(0);
-    for (const locale of LOCALES) {
+    for (const locale of ["ko"] as const) {
       const md = renderMarkdown(locale);
       for (const e of pending) {
         expect(md, `${locale} mirror omits ${e.id}'s announcement date`).toContain(e.announceOn);
@@ -70,6 +83,7 @@ describe("machine-readable mirrors", () => {
   it("llms.txt points at every published data file", () => {
     const txt = renderLlmsTxt();
     for (const file of [
+      "company.json",
       "fleet.json",
       "replacements.json",
       "economics.json",

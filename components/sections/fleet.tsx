@@ -15,6 +15,7 @@ export function Fleet({ locale }: { locale: Locale }) {
 
   return (
     <Section id="fleet" eyebrow={t.eyebrow} h2={t.h2} lede={t.lede}>
+      <p className="scope-note" lang="en">{fleet.scope}</p>
       <div className="fleet">
         {TIERS.map((tier) => {
           const members = fleet.agents.filter((a) => a.tier === tier);

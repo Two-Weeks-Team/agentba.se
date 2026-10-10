@@ -17,6 +17,7 @@ export function Lab({ locale }: { locale: Locale }) {
 
   return (
     <Section id="lab" eyebrow={t.eyebrow} h2={t.h2} lede={t.lede}>
+      <p className="scope-note" lang="en">{portfolio.scope}</p>
       <ul className="lab">
         {portfolio.entries.map((e) => (
           <li key={e.id} className="lab__entry">

@@ -63,8 +63,8 @@ describe("geo", () => {
     }
   });
 
-  it("exactly one HQ", () => {
-    expect(geo.operating.filter((p: { hq?: boolean }) => p.hq).length).toBe(1);
+  it("does not publish a city-level HQ without a verified location", () => {
+    expect(geo.operating.filter((p: { hq?: boolean }) => p.hq)).toEqual([]);
   });
 
   it("claims only places where work has run — no reachable-market tier", () => {
@@ -75,12 +75,13 @@ describe("geo", () => {
 });
 
 describe("people", () => {
-  it("everyone has a role, both names, and an agentba.se address", () => {
+  it("public profiles carry names, roles and LinkedIn without individual email addresses", () => {
     for (const p of people.people) {
       expect(p.role).toBeTruthy();
       expect(p.name).toBeTruthy();
       expect(p.nameKo).toBeTruthy();
-      expect(p.email).toMatch(/@agentba\.se$/);
+      expect(p.linkedin).toMatch(/^https:\/\/www\.linkedin\.com\/in\//);
+      expect(p.email).toBeUndefined();
     }
   });
 
@@ -269,8 +270,30 @@ describe("i18n", () => {
       if (typeof a === "string" && typeof b === "string") {
         // Proper nouns and identifiers are meant to match. "Honorable Mention"
         // is the award's name in both locales, and an email placeholder is not
-        // prose in either.
+        // prose in either. Company verification and contact copy is explicitly
+        // required to stay in English on both pages.
         const allow = [
+          "meta.description",
+          // Both locales deliberately share the new English brand artwork.
+          "meta.ogTitle",
+          "meta.ogAlt",
+          "hero.eyebrow",
+          // Newly reviewed public-fact copy stays in English, as requested.
+          "hero.sub",
+          "hero.stats.0.label",
+          "fleet.h2",
+          "ledger.h2",
+          "ledger.footnote",
+          "economics.h2",
+          "economics.lede",
+          "lab.lede",
+          "record.lede",
+          "record.results.pending",
+          "record.pendingNote",
+          "services.items.0.body",
+          "about.",
+          "intake.fallback.",
+          "footer.rights",
           "footer.wordmark",
           "footer.product",
           "nav.repo",

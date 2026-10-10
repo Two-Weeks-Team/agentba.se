@@ -1,6 +1,8 @@
 {
   "$comment": "The `was` strings are quoted verbatim from the 'Replaces (v1)' column of social-seeding-v2/docs/AGENTS.md, written before this website existed. Do not rewrite them to read better.",
   "capturedAt": "2026-08-04",
+  "evidenceType": "source-definition-snapshot",
+  "scope": "Historical mappings from human tasks to agent responsibilities in the source roster. These definitions do not establish that every replacement is deployed or quantify labor savings.",
   "source": "social-seeding-v2/docs/AGENTS.md",
   "rows": [
     {

@@ -21,7 +21,7 @@ export function Hero({ locale }: { locale: Locale }) {
       </div>
 
       <div className="hero__copy">
-        <p className="eyebrow">{t.eyebrow}</p>
+        <p className="eyebrow" lang="en">{t.eyebrow}</p>
         <h1 className="hero__h1">{t.h1}</h1>
         <p className="hero__sub">{t.sub}</p>
 

@@ -1,17 +1,8 @@
 {
   "$comment": "Where the company operates. Markers are drawn independently of the dot grid, so a country that resolves to two dots still gets a legible label. labelDy nudges a label off a neighbour's; it does not move the marker. Reachable-market figures live on the product sites, not here.",
   "maintained": "manual",
-  "capturedAt": "2026-08-04",
+  "capturedAt": "2026-10-10",
   "operating": [
-    {
-      "id": "seoul",
-      "city": "Seoul",
-      "cityKo": "서울",
-      "country": "KR",
-      "lat": 37.5665,
-      "lon": 126.978,
-      "hq": true
-    },
     {
       "id": "tokyo",
       "city": "Tokyo",

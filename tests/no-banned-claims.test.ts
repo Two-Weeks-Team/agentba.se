@@ -30,11 +30,9 @@ const BANNED_CLAIMS: Array<[RegExp, string]> = [
   [/listed on (the )?Google Cloud Marketplace/i, "marketplace-ready, not listed"],
 ];
 
-/** The company presents as AgentBase. The prior legal styling is retired. */
-const RETIRED_ENTITY: Array<[RegExp, string]> = [
-  [/\bE[\s-]?Corp\b/i, "retired entity styling"],
-  [/이\s*주식회사/, "retired entity styling"],
-];
+// E Corp. is a separate subsidiary, not a retired spelling of AgentBase.
+// Its approved relationship is checked in ai-discovery.test.ts, including a
+// negative case that swaps it into the parent company's legal-name field.
 
 /**
  * This is a company page, not a product page.
@@ -61,7 +59,7 @@ const PRODUCT_SPECIFICS: Array<[RegExp, string]> = [
 const SCOPE_HARDCODES = ["2,400", "2400"];
 
 const ROOTS = ["app", "components", "content", "data", "lib"];
-const EXT = /\.(ts|tsx|json|css|md)$/;
+const EXT = /\.(ts|tsx|json|css|md|html)$/;
 
 function walk(dir: string, out: string[] = []): string[] {
   for (const entry of readdirSync(dir)) {
@@ -82,7 +80,7 @@ describe("no banned claims", () => {
     expect(files.length).toBeGreaterThan(20);
   });
 
-  for (const [pattern, why] of [...BANNED_CLAIMS, ...RETIRED_ENTITY, ...PRODUCT_SPECIFICS]) {
+  for (const [pattern, why] of [...BANNED_CLAIMS, ...PRODUCT_SPECIFICS]) {
     it(`never says ${pattern} — ${why}`, () => {
       const hits: string[] = [];
       for (const file of files) {

@@ -1,4 +1,6 @@
-import people from "@/data/people.json";
+// Delivery targets stay in this server-only route, outside public profiles
+// and client bundles. Preserve the existing recipients when editing discovery copy.
+const INTAKE_RECIPIENTS = ["sangguen@agentba.se", "sejun@agentba.se"];
 
 /**
  * The intake endpoint. It keeps nothing: a valid line becomes one email to the
@@ -99,7 +101,7 @@ export async function POST(req: Request): Promise<Response> {
   if (overLimit(ip)) return fail(429);
 
   // Without the key nothing can be sent, and claiming otherwise would lose the
-  // line. The 503 is what makes the client show the founders' addresses — the
+  // line. The 503 is what makes the client show the shared contact address — the
   // same degradation the site takes when the analytics key is absent.
   const key = process.env.RESEND_API_KEY;
   if (!key) return fail(503);
@@ -115,7 +117,7 @@ export async function POST(req: Request): Promise<Response> {
       headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
       body: JSON.stringify({
         from: "AgentBase Intake <intake@agentba.se>",
-        to: people.people.map((p) => p.email),
+        to: INTAKE_RECIPIENTS,
         reply_to: email,
         // A textarea line may hold newlines; a subject must not.
         subject: `brief: ${line.replace(/\s+/g, " ").slice(0, 80)}`,

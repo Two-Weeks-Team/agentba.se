@@ -1,6 +1,8 @@
 {
   "$comment": "Counted from social-seeding-v2/packages/agents-adk/src/ss_agents/agents/*.py (excluding __init__). Gates and autonomy levels read from packages/contracts/src/policy.ts. Stages from packages/contracts/src/campaign.ts.",
   "capturedAt": "2026-08-04",
+  "evidenceType": "source-definition-snapshot",
+  "scope": "Agent definitions and workflow contracts recorded on 2026-08-04. The roster describes software responsibilities; it does not measure live agents, active workloads or deployment of every role.",
   "source": "social-seeding-v2",
   "counts": {
     "domain": 16,

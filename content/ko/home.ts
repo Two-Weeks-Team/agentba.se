@@ -1,12 +1,12 @@
-import type { HomeContent } from "../en/home";
+import { home as en, type HomeContent } from "../en/home";
 
 /** A missing or misspelled key here is a compile error, not a silent fallback. */
 export const home: HomeContent = {
   meta: {
     title: "AgentBase — 이 회사는 에이전트로 돌아갑니다",
-    description:
-      "AgentBase는 운영 업무를 소프트웨어 에이전트가 수행하는 회사입니다. 그 자리를 사람으로 채우지 않고, 그 자리를 맡을 에이전트를 만듭니다.",
-    ogAlt: "AgentBase — 세계 지도 위의 에이전트",
+    description: en.meta.description,
+    ogTitle: en.meta.ogTitle,
+    ogAlt: en.meta.ogAlt,
   },
 
   nav: {
@@ -17,11 +17,11 @@ export const home: HomeContent = {
   },
 
   hero: {
-    eyebrow: "AgentBase — 서울",
+    eyebrow: en.hero.eyebrow,
     h1: "이 회사는 에이전트로 돌아갑니다.",
-    sub: "운영 직무를 사람으로 채우지 않습니다. 그 자리를 맡을 에이전트를 만들고, 그 플릿 위에서 제품을 운영합니다.",
+    sub: en.hero.sub,
     stats: [
-      { value: "22", label: "플릿의 에이전트" },
+      { value: "22", label: en.hero.stats[0]!.label },
       { value: "2", label: "사람" },
       { value: "7", label: "승인 게이트" },
     ],
@@ -30,9 +30,12 @@ export const home: HomeContent = {
     swarmHint: "이동 · 누르기 · 클릭",
   },
 
+  // Company verification copy stays in English on both pages.
+  about: en.about,
+
   fleet: {
     eyebrow: "01 — 플릿",
-    h2: "이름이 붙은 스물두 개의 에이전트.",
+    h2: en.fleet.h2,
     lede: "자유롭게 도는 루프가 아닙니다. 각각은 판단이 필요한 하위 작업을 위해 워크플로가 호출하는 함수입니다. 시스템 프롬프트, 선별된 도구 집합, 출력 계약, 비용 상한, 그리고 정의된 에스컬레이션 조건을 갖습니다.",
     groups: {
       domain: "Domain",
@@ -48,11 +51,11 @@ export const home: HomeContent = {
 
   ledger: {
     eyebrow: "02 — 대체 기록",
-    h2: "사람이 앉아 있던 여덟 개의 자리.",
+    h2: en.ledger.h2,
     lede: "왼쪽 열은 이 웹사이트가 만들어지기 전에 작성된 내부 에이전트 명세에서 그대로 인용했습니다. 더 그럴듯하게 다듬지 않았습니다. 실제 누군가의 업무처럼 읽히는 이유는, 실제로 그랬기 때문입니다 — 우리 업무였습니다.",
     wasLabel: "이전 · 사람",
     nowLabel: "이후 · 에이전트",
-    footnote: "…그리고 사람 전임자가 아예 없던 일을 하는 에이전트 14개가 더 있습니다.",
+    footnote: en.ledger.footnote,
     sourceNote: "우리 에이전트 명세에서 인용.",
   },
 
@@ -69,8 +72,8 @@ export const home: HomeContent = {
 
   economics: {
     eyebrow: "04 — 운영 레이어",
-    h2: "$2,400·45시간이 $7.40·2시간이 되었습니다.",
-    lede: "같은 업무를 두 가지 방식으로 계산했습니다. 왼쪽은 외부 운영사가 이 일을 맡을 때의 수수료와 투입 시간입니다. 우리 쪽은 계측된 에이전트·인프라 비용과, 사람이 게이트에서 쓰는 시간입니다.",
+    h2: en.economics.h2,
+    lede: en.economics.lede,
     hoursLabel: "사람 투입 시간",
     costLabel: "운영 비용",
     excludedLabel: "이 비교에서 제외됨",
@@ -116,24 +119,24 @@ export const home: HomeContent = {
   lab: {
     eyebrow: "08 — 랩",
     h2: "두 사람이 그 밖에 출하한 것들.",
-    lede: "플릿이 캘린더를 비우면, 캘린더는 빌드로 채워집니다. 아래는 전부 우리 말을 믿지 않고도 확인할 수 있습니다 — 라이브 사이트, 공개 등재, 데모 영상, 또는 심사 결과.",
+    lede: en.lab.lede,
     mentionsLabel: "작업대 위에 몇 개 더",
   },
 
   record: {
     eyebrow: "09 — 출전 기록",
     h2: "출전 기록 전부, 결과는 떨어진 그대로.",
-    lede: "공개 대회는 2인 회사가 살 수 있는 가장 싼 중립 벤치마크입니다 — 외부 심사, 고정된 마감, 공개되는 수상자 명단. 플릿과 함께 출전하고, 리본과 패배를 똑같이 적습니다.",
+    lede: en.record.lede,
     entriesLabel: "출전",
     results: {
       won: "1위",
       hm: "Honorable Mention",
       selected: "프로그램 선정",
       entered: "미수상",
-      pending: "심사중",
+      pending: en.record.results.pending,
     },
     pendingNote:
-      "마지막 행은 아직 심사 중입니다 — 결과는 2026년 8월 21일에 나오고, 어느 쪽이든 이 표에 그대로 실립니다.",
+      en.record.pendingNote,
   },
 
   services: {
@@ -144,7 +147,7 @@ export const home: HomeContent = {
       {
         id: "run",
         name: "Run",
-        body: "크리에이터 캠페인을 끝까지: 브리프가 들어가면 소싱·아웃리치·답장·배송·검증이 나옵니다. 이미 운영 중인 Social Seeding입니다 — 07번이 근거입니다.",
+        body: en.services.items[0]!.body,
       },
       {
         id: "build",
@@ -178,7 +181,7 @@ export const home: HomeContent = {
     submit: "한 줄 보내기",
     sent: "받았습니다. 사람이 답합니다.",
     error: "전송되지 않았습니다. 메일로 보내 주세요:",
-    fallback: "폼이 안 보이면 푸터의 주소로 보내셔도 똑같습니다.",
+    fallback: en.intake.fallback,
   },
 
   partners: {
@@ -188,8 +191,8 @@ export const home: HomeContent = {
 
   footer: {
     wordmark: "agentba.se",
-    line: "운영 업무를 소프트웨어 에이전트가 수행하는 회사. 서울.",
+    line: "운영 업무를 소프트웨어 에이전트가 수행하는 회사. USA.",
     snapshot: "이 페이지의 수치는 커밋된 스냅샷에서 왔고, 가장 최근 것은",
-    rights: "AgentBase.",
+    rights: en.footer.rights,
   },
 };

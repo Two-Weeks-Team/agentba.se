@@ -1,8 +1,6 @@
-import competitions from "@/data/competitions.json";
 import fleet from "@/data/fleet.json";
-import people from "@/data/people.json";
-import products from "@/data/products.json";
 import { SITE, getContent, type Locale } from "@/lib/i18n";
+import { companyGraph, serializeJsonLd } from "@/lib/seo";
 
 /**
  * Agents are marked up as SoftwareApplication, never as Person.
@@ -15,50 +13,17 @@ import { SITE, getContent, type Locale } from "@/lib/i18n";
 export function JsonLd({ locale }: { locale: Locale }) {
   const t = getContent(locale);
 
+  const [organization, website] = companyGraph();
   const graph = [
-    {
-      "@type": "Organization",
-      "@id": `${SITE}/#org`,
-      name: "AgentBase",
-      url: SITE,
-      // Google wants a stable raster here, and Next serves app/icon.svg from a
-      // hashed path — so this points at the copy in public/.
-      logo: `${SITE}/logo-512.png`,
-      description: t.meta.description,
-      foundingLocation: {
-        "@type": "Place",
-        address: { "@type": "PostalAddress", addressLocality: "Seoul", addressCountry: "KR" },
-      },
-      founder: people.people.map((p) => ({
-        "@type": "Person",
-        name: p.name,
-        jobTitle: p.role,
-        email: p.email,
-      })),
-      sameAs: products.products.map((p) => p.url),
-      // Read off the same record the page publishes, so structured data cannot
-      // claim a result the table does not. Only placed rows appear, and
-      // data-integrity holds each of those to a public winners link.
-      award: competitions.entries
-        .filter((e) => e.result === "won" || e.result === "hm")
-        .map(
-          (e) =>
-            `${t.record.results[e.result as keyof typeof t.record.results]} — ${e.event} (${e.organizer}, ${e.date.slice(0, 4)})`,
-        ),
-      knowsAbout: ["autonomous agents", "agent orchestration", "operations automation"],
-    },
-    {
-      "@type": "WebSite",
-      "@id": `${SITE}/#site`,
-      url: SITE,
-      name: "AgentBase",
-      publisher: { "@id": `${SITE}/#org` },
-      inLanguage: locale === "ko" ? "ko-KR" : "en",
-    },
+    // The historical team competition record includes work before the LLC.
+    // It must not be attributed to the legal entity as Organization.award.
+    organization,
+    website,
     {
       "@type": "ItemList",
       "@id": `${SITE}/#fleet`,
-      name: "AgentBase agent fleet",
+      name: `AgentBase — ${t.fleet.eyebrow} (${fleet.capturedAt})`,
+      description: fleet.scope,
       numberOfItems: fleet.counts.total,
       itemListElement: fleet.agents.map((a, i) => ({
         "@type": "ListItem",
@@ -78,7 +43,7 @@ export function JsonLd({ locale }: { locale: Locale }) {
       type="application/ld+json"
       // Server-rendered constant; no user input reaches this string.
       dangerouslySetInnerHTML={{
-        __html: JSON.stringify({ "@context": "https://schema.org", "@graph": graph }),
+        __html: serializeJsonLd(graph),
       }}
     />
   );

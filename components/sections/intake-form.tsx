@@ -1,9 +1,8 @@
 "use client";
 
-import { Fragment, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
-import people from "@/data/people.json";
-import { getContent, type Locale } from "@/lib/i18n";
+import { CONTACT_EMAIL, getContent, type Locale } from "@/lib/i18n";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
@@ -129,14 +128,9 @@ export function IntakeForm({ locale }: { locale: Locale }) {
         {status === "error" ? (
           <>
             {t.error}{" "}
-            {people.people.map((p, i) => (
-              <Fragment key={p.id}>
-                {i > 0 ? " · " : null}
-                <a className="intake__mail" href={`mailto:${p.email}`}>
-                  {p.email}
-                </a>
-              </Fragment>
-            ))}
+            <a className="intake__mail" href={`mailto:${CONTACT_EMAIL}`}>
+              {CONTACT_EMAIL}
+            </a>
           </>
         ) : null}
       </p>

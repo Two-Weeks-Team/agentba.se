@@ -23,7 +23,7 @@ import replacements from "@/data/replacements.json";
  */
 const CAPTURES: string[] = [
   competitions.capturedAt,
-  economics.measuredAt,
+  economics.modeledAt,
   fleet.capturedAt,
   geo.capturedAt,
   partners.capturedAt,

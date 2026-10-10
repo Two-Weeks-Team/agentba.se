@@ -4,9 +4,8 @@ import { SITE } from "@/lib/i18n";
 /**
  * AI crawlers are named and allowed explicitly.
  *
- * A company that runs on agents blocking agents from reading it would be an
- * odd position to hold. They read the HTML, not /llms.txt, so this is the
- * file that actually decides.
+ * These access rules apply to HTML, Markdown and llms.txt alike. Allowing a
+ * crawler does not establish that it visits the site or reviews applications.
  */
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -18,8 +17,8 @@ export default function robots(): MetadataRoute.Robots {
           "OAI-SearchBot",
           "ChatGPT-User",
           "ClaudeBot",
-          "Claude-Web",
-          "anthropic-ai",
+          "Claude-User",
+          "Claude-SearchBot",
           "PerplexityBot",
           "Google-Extended",
           "CCBot",

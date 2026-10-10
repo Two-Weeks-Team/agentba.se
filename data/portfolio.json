@@ -2,6 +2,8 @@
   "$comment": "The lab: shipped properties, tools and competition builds. Entry rule: at least one link a visitor can verify without trusting us — a live site, a public listing, a demo video, or a judged result. Something with no public link at all belongs in mentions, named but unlinked, rather than in entries with a link that proves nothing. No github.com links (tests/machine-mirror.test.ts bans them from the mirrors). Live URLs were each checked once on capturedAt; the Glasshat and vibeDeploy demo deployments no longer answer, and Fairthon's API is down behind its front page, so those carry evidence or no link at all rather than a URL that greets a visitor with a failure.",
   "maintained": "manual",
   "capturedAt": "2026-08-19",
+  "featured": ["memex", "previewforge"],
+  "scope": "Team projects, including work begun before AgentBase LLC was founded in August 2026. The collection includes developer tools, prototypes and competition builds; it is not a list of deployed company operations. The original capture date applies unless an entry has its own reviewedAt date.",
   "entries": [
     {
       "id": "satellite",
@@ -80,11 +82,12 @@
     },
     {
       "id": "previewforge",
+      "reviewedAt": "2026-10-11",
       "name": "Preview Forge",
       "platform": "Claude Code",
       "one": {
-        "en": "A Claude Code plugin that turns one line into twenty-six mockups, lets a person pick one, and drives 144 agents to a frozen full-stack app.",
-        "ko": "한 줄을 목업 26개로 만들고, 사람이 하나를 고르면 에이전트 144개가 동결된 풀스택 앱까지 밀어붙이는 Claude Code 플러그인."
+        "en": "A Claude Code development workflow: explore visual options, record a person's choice, and carry that decision into specifications, implementation and tests.",
+        "ko": "A Claude Code development workflow: explore visual options, record a person's choice, and carry that decision into specifications, implementation and tests."
       },
       "links": [
         { "label": "video", "url": "https://www.youtube.com/watch?v=_xHL8SZqfyI" },
@@ -108,11 +111,12 @@
     },
     {
       "id": "memex",
+      "reviewedAt": "2026-10-11",
       "name": "Memex",
       "platform": "macOS",
       "one": {
-        "en": "Local memory for coding agents — session history as navigable spatial memory, no LLM at runtime, everything on your machine. Its embedding fix was merged upstream into fastembed-rs.",
-        "ko": "코딩 에이전트를 위한 로컬 메모리 — 세션 기록을 공간 기억으로, 런타임 LLM 없이 전부 로컬에서. 임베딩 수정은 fastembed-rs 업스트림에 머지됐습니다."
+        "en": "Local memory for Claude Code and Codex. MCP and session hooks make past coding sessions retrievable, so an agent can recover earlier work and inspect its source context.",
+        "ko": "Local memory for Claude Code and Codex. MCP and session hooks make past coding sessions retrievable, so an agent can recover earlier work and inspect its source context."
       },
       "links": [{ "label": "live", "url": "https://memex.quest" }]
     },

@@ -7,7 +7,12 @@ import typescript from "eslint-config-next/typescript";
  * graph these presets ship under ESLint 10.
  */
 const config = [
-  { ignores: [".next/**", "node_modules/**", "public/**", "next-env.d.ts"] },
+  { ignores: [
+    ".next/**", "node_modules/**", "public/**", "next-env.d.ts",
+    // Vendored Three.js and a compiled product capture are not authored source.
+    "assets/landing/vendor/**",
+    "design-previews/**",
+  ] },
   ...coreWebVitals,
   ...typescript,
 ];

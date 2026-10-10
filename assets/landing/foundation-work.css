@@ -1,0 +1,299 @@
+/* Component-only styles. The parent page owns placement, headings and captions. */
+.judgment-demo,
+.delivery-demo {
+  --gh-ink: #111;
+  --gh-paper: #fff;
+  --gh-soft: #f3f3ef;
+  color: var(--gh-ink);
+  background: var(--gh-paper);
+  width: 100%;
+  min-width: 0;
+  border: 1px solid currentColor;
+  font-family: var(--font-body, Arial, sans-serif);
+  line-height: 1.45;
+  text-align: left;
+  isolation: isolate;
+}
+.judgment-demo { container: gh-foundation / inline-size; }
+.delivery-demo { container: pf-foundation / inline-size; }
+.judgment-demo *,
+.delivery-demo * { box-sizing: border-box; }
+.judgment-demo p,
+.judgment-demo dl,
+.judgment-demo dd,
+.delivery-demo p,
+.delivery-demo pre { margin: 0; }
+.judgment-demo button,
+.delivery-demo button {
+  appearance: none;
+  border-radius: 0;
+  min-height: 44px;
+  min-width: 44px;
+  margin: 0;
+  font: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.judgment-demo :focus-visible,
+.delivery-demo :focus-visible {
+  outline: 2px solid #111;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 3px #fff;
+  position: relative;
+  z-index: 4;
+}
+.judgment-demo .gh-shell {
+  height: 480px;
+  display: grid;
+  grid-template-rows: minmax(42px, auto) 214px minmax(0, 1fr) 56px;
+}
+.judgment-demo .gh-label,
+.delivery-demo .pf-label {
+  padding: 12px 16px;
+  border-bottom: 1px solid #111;
+  font: 10px/1.5 var(--font-mono, monospace);
+  text-transform: uppercase;
+  letter-spacing: .035em;
+  display: flex;
+  align-items: center;
+}
+.judgment-demo .gh-diagram {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1.7fr 1fr 1fr;
+  gap: 16px;
+  align-items: center;
+  padding: 24px 16px;
+  background: var(--gh-soft);
+}
+.judgment-demo .gh-wire {
+  position: absolute;
+  left: 9%;
+  right: 9%;
+  top: 50%;
+  height: 1px;
+  background: #111;
+}
+.judgment-demo .gh-node {
+  position: relative;
+  z-index: 1;
+  background: #fff;
+  color: #111;
+  border: 1px solid #999;
+  transition: color 140ms ease, background-color 140ms ease, border-color 140ms ease;
+}
+.judgment-demo .gh-node:hover { border-color: #111; background: #e6e6df; }
+.judgment-demo .gh-node[aria-pressed="true"] {
+  background: #111;
+  color: #fff;
+  border-color: #111;
+}
+.judgment-demo .gh-phase {
+  min-width: 0;
+  min-height: 106px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 7px;
+  padding: 12px 4px;
+  text-align: center;
+}
+.judgment-demo .gh-icon {
+  width: 30px;
+  height: 30px;
+  stroke: currentColor;
+  stroke-width: 1.4;
+  fill: none;
+}
+.judgment-demo .gh-node-name { font-size: 12px; font-weight: 600; }
+.judgment-demo .gh-node-detail {
+  font: 9px/1.4 var(--font-mono, monospace);
+  max-width: 9ch;
+}
+.judgment-demo .gh-specialists {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  position: relative;
+}
+.judgment-demo .gh-specialists::before,
+.judgment-demo .gh-specialists::after {
+  content: "";
+  position: absolute;
+  top: 22px;
+  bottom: 22px;
+  width: 10px;
+  border-block: 1px solid #111;
+}
+.judgment-demo .gh-specialists::before { left: -10px; border-left: 1px solid #111; }
+.judgment-demo .gh-specialists::after { right: -10px; border-right: 1px solid #111; }
+.judgment-demo .gh-perspective {
+  padding: 7px 3px;
+  min-width: 0;
+  font-size: 10px;
+  font-weight: 500;
+}
+.judgment-demo .gh-specialists[data-active="true"] .gh-perspective { border-color: #111; }
+.judgment-demo .gh-trace {
+  border-top: 1px solid #111;
+  padding: 14px 16px;
+  overflow: auto;
+  scrollbar-width: thin;
+}
+.judgment-demo .gh-trace-head { display: flex; gap: 8px 16px; justify-content: space-between; flex-wrap: wrap; }
+.judgment-demo .gh-trace-label,
+.judgment-demo .gh-trace-path { font: 10px/1.5 var(--font-mono, monospace); }
+.judgment-demo .gh-trace-label { text-transform: uppercase; color: #555; }
+.judgment-demo .gh-trace-title { margin-top: 8px; font-size: 16px; font-weight: 600; line-height: 1.3; }
+.judgment-demo .gh-trace-rows {
+  display: grid;
+  grid-template-columns: 50px minmax(0, 1fr);
+  gap: 5px 10px;
+  margin-top: 10px;
+  font-size: 12px;
+  line-height: 1.4;
+}
+.judgment-demo .gh-trace-key { color: #555; font-family: var(--font-mono, monospace); font-size: 10px; padding-top: 1px; }
+.judgment-demo .gh-controls,
+.delivery-demo .pf-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  border-top: 1px solid #111;
+  padding: 5px 12px 5px 16px;
+}
+.judgment-demo .gh-hint,
+.delivery-demo .pf-status { font: 10px/1.45 var(--font-mono, monospace); max-width: 25ch; }
+.judgment-demo .gh-follow,
+.delivery-demo .pf-download {
+  background: #111;
+  color: #fff;
+  border: 1px solid #111;
+  padding: 9px 12px;
+  flex-shrink: 0;
+  font-size: 11px;
+  line-height: 1.4;
+}
+.judgment-demo .gh-follow:hover,
+.delivery-demo .pf-download:hover { background: #333; }
+
+.delivery-demo .pf-shell {
+  height: 480px;
+  display: grid;
+  grid-template-rows: minmax(42px, auto) 46px 214px minmax(0, 1fr) 56px;
+}
+.delivery-demo .pf-directions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-bottom: 1px solid #111; }
+.delivery-demo .pf-direction {
+  border: 0;
+  border-right: 1px solid #111;
+  color: #111;
+  background: #fff;
+  font-size: 12px;
+  padding: 8px;
+  text-align: center;
+}
+.delivery-demo .pf-direction:last-child { border-right: 0; }
+.delivery-demo .pf-direction:hover { background: #e6e6df; }
+.delivery-demo .pf-direction[aria-selected="true"] { background: #111; color: #fff; }
+.delivery-demo .pf-preview { min-width: 0; min-height: 0; }
+.delivery-demo .pf-concept { height: 100%; overflow: hidden; padding: 14px 20px; }
+.delivery-demo .pf-concept-masthead { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.delivery-demo .pf-wordmark { font-size: 14px; font-weight: 700; letter-spacing: -.055em; }
+.delivery-demo .pf-sample { font: 9px/1.4 var(--font-mono, monospace); text-transform: uppercase; }
+.delivery-demo .pf-concept-body { display: grid; grid-template-columns: 1.3fr 1fr; gap: 12px; height: calc(100% - 27px); align-items: center; padding-top: 10px; }
+.delivery-demo .pf-concept-kicker { display: block; font: 9px/1.4 var(--font-mono, monospace); }
+.delivery-demo .pf-concept-note { display: block; font-size: 10px; line-height: 1.4; margin-top: 8px; }
+.delivery-demo .pf-concept-editorial { background: #f3f2ec; }
+.delivery-demo .pf-editorial-title {
+  font: 42px/.98 Georgia, 'Times New Roman', serif;
+  white-space: pre-line;
+  letter-spacing: -.055em;
+  margin-top: 9px;
+}
+.delivery-demo .pf-editorial-plate { text-align: center; }
+.delivery-demo .pf-bowl { width: 100%; max-width: 158px; height: 124px; stroke: #111; fill: none; stroke-width: 1.5; }
+.delivery-demo .pf-plate-label { display: block; font: 8px/1 var(--font-mono, monospace); letter-spacing: .13em; }
+.delivery-demo .pf-concept-terminal { background: #171717; color: #fff; }
+.delivery-demo .pf-concept-terminal .pf-wordmark { font: 12px/1.4 var(--font-mono, monospace); letter-spacing: -.02em; }
+.delivery-demo .pf-command { font: 10px/1.8 var(--font-mono, monospace); color: #d5d5ce; }
+.delivery-demo .pf-terminal-title { font: 44px/.9 var(--font-display, Impact, sans-serif); margin-top: 12px; white-space: pre-line; text-transform: uppercase; }
+.delivery-demo .pf-terminal-output { border: 1px solid #aaa; padding: 13px; }
+.delivery-demo .pf-terminal-result { font: 25px/1.05 var(--font-mono, monospace); letter-spacing: -.055em; white-space: pre-line; margin-top: 12px; }
+.delivery-demo .pf-concept-playful { background: #e7e7df; }
+.delivery-demo .pf-playful-title { font: 39px/.94 var(--font-display, Impact, sans-serif); text-transform: uppercase; white-space: pre-line; margin-top: 9px; }
+.delivery-demo .pf-mood { display: inline-block; font: 8px/1.4 var(--font-mono, monospace); padding: 5px 8px; border: 1px solid #111; margin-top: 12px; }
+.delivery-demo .pf-oracle { position: relative; width: 150px; height: 150px; justify-self: center; transform: rotate(8deg); }
+.delivery-demo .pf-star { width: 100%; height: 100%; fill: #111; }
+.delivery-demo .pf-oracle-words { position: absolute; inset: 22px 16px; color: #fff; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; gap: 9px; }
+.delivery-demo .pf-oracle-kicker { font: 7px/1.2 var(--font-mono, monospace); }
+.delivery-demo .pf-oracle-pick { font: 23px/.95 var(--font-display, Impact, sans-serif); white-space: pre-line; }
+.delivery-demo .pf-oracle-sign { font-size: 23px; line-height: 1; }
+.delivery-demo .pf-handoff { display: grid; grid-template-columns: 1fr 1fr; min-height: 0; border-top: 1px solid #111; }
+.delivery-demo .pf-record,
+.delivery-demo .pf-spec { padding: 11px 16px; min-width: 0; overflow: auto; scrollbar-width: thin; }
+.delivery-demo .pf-record { border-right: 1px solid #111; background: #f8f8f5; }
+.delivery-demo .pf-filename { display: block; font: 10px/1.3 var(--font-mono, monospace); overflow-wrap: anywhere; }
+.delivery-demo .pf-record-body { font: 10px/1.45 var(--font-mono, monospace); margin-top: 5px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.delivery-demo .pf-spec-label { display: block; font: 10px/1.3 var(--font-mono, monospace); }
+.delivery-demo .pf-spec-text { font-size: 12px; line-height: 1.4; margin-top: 9px; }
+.delivery-demo .pf-announcement,
+.delivery-demo .pf-download-anchor {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  border: 0;
+  clip-path: inset(50%);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+@container gh-foundation (max-width: 460px) {
+  .judgment-demo .gh-shell { grid-template-rows: minmax(42px, auto) 232px minmax(0, 1fr) 56px; }
+  .judgment-demo .gh-diagram { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: 44px 94px 44px; gap: 10px 14px; padding: 15px 18px; }
+  .judgment-demo .gh-evidence { grid-column: 1 / -1; width: 70%; justify-self: center; }
+  .judgment-demo .gh-specialists { grid-column: 1 / -1; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+  .judgment-demo .gh-phase { min-height: 44px; flex-direction: row; gap: 8px; padding: 6px 8px; }
+  .judgment-demo .gh-node-detail { display: none; }
+  .judgment-demo .gh-icon { height: 25px; width: 25px; }
+  .judgment-demo .gh-wire { top: 24px; bottom: 24px; left: 50%; right: auto; width: 1px; height: auto; }
+  .judgment-demo .gh-specialists::before { left: 16%; right: 16%; width: auto; height: 8px; top: -8px; bottom: auto; border: 0; border-top: 1px solid #111; border-inline: 1px solid #111; }
+  .judgment-demo .gh-specialists::after { left: 16%; right: 16%; width: auto; height: 8px; top: auto; bottom: -8px; border: 0; border-bottom: 1px solid #111; border-inline: 1px solid #111; }
+  .judgment-demo .gh-trace { padding: 10px 14px; }
+  .judgment-demo .gh-trace-title { font-size: 14px; margin-top: 6px; }
+  .judgment-demo .gh-trace-rows { margin-top: 7px; gap: 4px 8px; font-size: 11px; }
+  .judgment-demo .gh-trace-path { font-size: 9px; }
+}
+
+@container pf-foundation (max-width: 460px) {
+  .delivery-demo .pf-shell { grid-template-rows: minmax(42px, auto) 46px 198px minmax(0, 1fr) 56px; }
+  .delivery-demo .pf-concept { padding: 12px 14px; }
+  .delivery-demo .pf-concept-body { grid-template-columns: 1.25fr 1fr; gap: 8px; }
+  .delivery-demo .pf-editorial-title { font-size: 32px; }
+  .delivery-demo .pf-bowl { max-width: 126px; height: 105px; }
+  .delivery-demo .pf-terminal-title { font-size: 36px; }
+  .delivery-demo .pf-command { font-size: 8px; line-height: 1.7; }
+  .delivery-demo .pf-terminal-output { padding: 9px; }
+  .delivery-demo .pf-terminal-result { font-size: 22px; }
+  .delivery-demo .pf-playful-title { font-size: 30px; }
+  .delivery-demo .pf-oracle { width: 122px; height: 122px; }
+  .delivery-demo .pf-oracle-words { inset: 19px 14px; gap: 6px; }
+  .delivery-demo .pf-oracle-kicker { font-size: 6px; }
+  .delivery-demo .pf-oracle-pick { font-size: 20px; }
+  .delivery-demo .pf-oracle-sign { font-size: 18px; }
+  .delivery-demo .pf-record,
+  .delivery-demo .pf-spec { padding: 10px 12px; }
+  .delivery-demo .pf-spec-text { font-size: 11px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .judgment-demo *,
+  .delivery-demo * { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+}
+@media (forced-colors: active) {
+  .judgment-demo .gh-node[aria-pressed="true"],
+  .delivery-demo .pf-direction[aria-selected="true"] { outline: 3px solid Highlight; outline-offset: -4px; }
+}
