@@ -8,5 +8,5 @@ export const size = OG_SIZE;
 export const contentType = OG_CONTENT_TYPE;
 
 export default function Image() {
-  return new ImageResponse(<OgCard locale="ko" />, { ...size, fonts: ogFonts });
+  return new ImageResponse(<OgCard />, { ...size, fonts: ogFonts });
 }

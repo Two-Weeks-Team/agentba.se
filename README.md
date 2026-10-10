@@ -1,146 +1,81 @@
 # agentba.se
 
-The AgentBase company site. One page, English at `/` and Korean at `/ko`.
+AgentBase LLC's company site. The selected C redesign is the production English
+homepage at `/`. The existing Korean page remains at `/ko`, with updated company
+facts and discovery metadata.
 
-Its only job is to show how the company operates. This is a company page, not
-a product page — customer names, campaign results and category metrics belong
-on each product's own site, and `tests/no-banned-claims.test.ts` fails the
-build if they turn up here.
+## Production page
 
-## Why the repository is public
+Next.js 16 and React 19 on Vercel (`2weeks-team/agentbase`). The page narrative is
+server-rendered from `content/en/landing.html` through `lib/landing.ts`; it is not
+an iframe or a client-only preview. Company identity, two founder profiles, and
+product scopes come from `data/*.json`.
 
-The site argues that this company's operating work is done by agents. A commit
-history is the cheapest form of evidence for that claim, and a private one
-proves nothing.
+The approved design includes the large shared-background Three.js organization,
+Social Seeding AI role cards and outreach walkthrough, kbeauty discovery,
+Memex recall, Glasshat review, PreviewForge decision handoff, four organization
+scopes, capabilities, Run / Build / Prove, and the company footer.
 
-## Stack
+`assets/landing/` contains the selected design's scripts, styles, referenced
+media, vendored Three.js and local fonts. `prebuild` copies that complete set to
+`public/landing/`. Read its README for asset provenance and demo limitations.
+No archived alternatives or QA screenshots are deployed.
 
-Next.js 16 (App Router; every page static) · React 19 · Tailwind CSS 4 ·
-TypeScript · deployed on Vercel, `icn1`. The one dynamic route is
-`POST /api/intake`, the contact form's endpoint.
+The two locale groups have separate root layouts. Keep the English landing CSS
+separate from the legacy Korean styles. The English demo modules load after
+hydration and preserve readable text when JavaScript or WebGL is unavailable.
 
-There is no `app/layout.tsx`. Each locale is its own root layout under
-`app/(en)` and `app/(ko)`, so `<html lang>` is correct without a middleware
-negotiating locale on every request.
+## Public facts and machine-readable documents
 
-## The hero
+- `data/company.json`: legal entity, founding month, mission and business model.
+- `data/people.json`: both founders' names, roles and LinkedIn URLs.
+- `data/products.json` and `data/portfolio.json`: product relationships, public
+  links, current scope and historical context.
+- `/llms.txt`: company introduction and curated reading index.
+- `/index.md`: the production English narrative and featured-work links.
+- `/ko/index.md`: the existing Korean page's text mirror.
+- `/data/*.json`: dated evidence and explicit scope; historical definitions and
+  modeled costs are not claims about live deployments or measured savings.
 
-A world map rendered as a dot matrix, where each square is a unit of campaign
-work. Move the cursor and scattered work falls into formation.
+Only `contact@agentba.se` appears in public contact information. Current fleet
+models are Google Gemini and OpenAI. Claude Code integrations in developer tools
+are described separately; the page does not claim that Claude powers the fleet.
 
-- `lib/swarm/layout.ts` — deterministic seat generation, shared by the server
-  (which renders a static SVG) and the browser (which renders the canvas), so
-  the cross-fade between them is invisible.
-- `lib/swarm/step.ts` — one physics tick. No neighbour queries: fluidity comes
-  from per-dot phase noise and cohesion from the cursor field, so the loop is
-  O(n) and needs no spatial index.
-- `lib/swarm/draw.ts` — two batched Canvas 2D passes.
-- `lib/swarm/constants.ts` — every tuning constant, in one file.
+SEO, company JSON-LD and OG images share `lib/seo.ts`. The 1200 × 630 artwork is
+served at `/og/agentbase.png`. See `docs/seo-and-social-cards.md` for maintenance.
 
-Four things keep this reading as a control display rather than a particle
-background, and dropping any one of them undoes it: squares instead of
-circles, integer-snapped coordinates, a grid that stays legible with no cursor
-on it, and monospace labels that are always visible.
+## Development and verification
 
-Without JavaScript the hero is still a finished picture — the server renders
-the whole world as a single `<path>`, about 1 kB gzipped.
-
-## Figures
-
-Every number on the page comes from `data/*.json`, committed to this
-repository and rendered on the server. Nothing is fetched after load, so a
-crawler, a social preview, and a person all read the same figures.
-
-| File | Maintained by |
-| --- | --- |
-| `fleet.json` | CI, from the source repo's agent modules |
-| `quality.json` | CI, from the source repo's test run |
-| `economics.json` | by hand; `scopeNote` is a required field |
-| `replacements.json` | by hand, quoted verbatim from the source roster |
-| `products.json` | by hand — names and links only |
-| `portfolio.json` | by hand — every entry carries a link a visitor can verify |
-| `competitions.json` | by hand — results re-verified against official winner pages; losses stay in |
-| `people.json` | by hand |
-| `partners.json` | by hand — grants and programs, never styled as backing |
-| `geo.json` | by hand — where work has run, not reachable market |
-
-`tests/no-banned-claims.test.ts` fails the build on figures this company
-cannot evidence, and `tests/ssr-numbers.test.ts` fails it if a headline figure
-is missing from the built HTML.
-
-## Analytics
-
-PostHog, US cloud, in the `AgentBase` organisation — its own project, separate
-from the product ones, because a company page and a product share no funnel.
-
-`instrumentation-client.ts` boots it, matching kbeauty.market. It earns the
-spot twice over here: there is no `app/layout.tsx` to hang a component off, and
-mounting one in each of the two locale layouts would be two chances to forget.
-
-The import is dynamic, which is where this departs from kbeauty.market.
-posthog-js is about 240 kB, and importing it statically puts all of it in the
-chunk the document loads eagerly, next to the hero that waits two animation
-frames precisely so it cannot delay the `<h1>`. Measuring the page must not be
-the thing that slows it down.
-
-The browser talks to `/ingest` on this origin, rewritten to PostHog in
-`next.config.ts` — a request to a posthog.com host is on every ad blocker's
-list, and this site's audience runs them. Two things about that are easy to
-break silently, so `tests/analytics-proxy.test.ts` holds them: the
-`/ingest/static/*` rule has to be matched before the `/ingest/*` catch-all, and
-`skipTrailingSlashRedirect` has to stay on, because PostHog posts to `/e/` and
-`/flags/` and Next would otherwise answer each event with a 308 first.
-
-Visitors are never identified — there is no sign-in, so `person_profiles` is
-`identified_only` and every event bills at the anonymous rate. Persistence is
-PostHog's default cookie, which is what makes returning visitors countable;
-there is no consent banner, so if EU traffic ever matters, that is the decision
-to revisit.
-
-Everything runs on the PostHog for Startups credits, which expire around August
-2027. That is a reason to raise the data resolution now — replay retention,
-network payloads — on settings that cash alone would not justify later, and not
-a reason to spend for its own sake.
-
-Set `NEXT_PUBLIC_POSTHOG_KEY` (see `.env.example`) in Vercel for Production and
-Preview. It is inlined at build time, so changing it needs a redeploy. A local
-checkout has no key and loads no analytics at all.
-
-## Intake
-
-The contact form is two fields — a reply address and one line — posted to
-`/api/intake`, which mails both founders through Resend's REST API (no SDK).
-Set `RESEND_API_KEY` in Vercel (server-side only, never `NEXT_PUBLIC_`); the
-sending domain has to be verified in Resend first. Without the key the
-endpoint answers 503 and the form degrades to the mailto fallback, the same
-pattern as the analytics key.
-
-Spam is handled without a CAPTCHA: a honeypot field and a minimum-time check,
-both answered with an empty 204 so a bot learns nothing from the response.
-
-## Commands
-
-```bash
-pnpm dev        # http://localhost:3000
-pnpm verify     # lint · typecheck · test · build
+```sh
+pnpm install --frozen-lockfile
+pnpm dev
+pnpm verify        # lint, typecheck, production build, then tests
 pnpm build && pnpm start
+pnpm seo:preview   # regenerate the local C review page from production source
 ```
 
-Regenerating the land mask (rarely needed — the source data is static):
+Builds generate the local review export under `design-previews/2026-10-10/vision`.
+That directory is ignored by Git and is never a production input. Tests require
+the built HTML, all runtime assets and generated AI documents; missing targets
+fail. A dedicated regression check rejects the previous homepage or a missing
+redesign entry module, preventing a preview-only change from being reported as
+a deployed redesign.
 
-```bash
-pnpm tsx scripts/generate-landmask.ts   # → data/landmask.json
-pnpm tsx scripts/measure-svg.ts         # size check for the SVG fallback
-```
+## Analytics and intake
 
-## Machine-readable
+PostHog is initialized by `instrumentation-client.ts` when
+`NEXT_PUBLIC_POSTHOG_KEY` is configured. The `/ingest/static/*` proxy must precede
+`/ingest/*`; keep `skipTrailingSlashRedirect` for ingestion POSTs. A build without
+the key loads no analytics.
 
-- `/llms.txt`
-- `/index.md`, `/ko/index.md` — rendered from the same content modules as the
-  HTML, so the two cannot drift apart
-- `/data/*.json` — the raw snapshots
+The new landing page uses the shared contact email. The existing Korean intake
+form posts to `/api/intake`, which uses the server-only `RESEND_API_KEY` to reach
+both founders. Missing delivery configuration returns 503 with the shared email
+fallback. Tests mock delivery and never send messages.
 
 ## Contact
 
-CEO Sanggen Chang — sangguen@agentba.se
-CTO Sejun Kim — sejun@agentba.se
+[contact@agentba.se](mailto:contact@agentba.se)
+
+- [Sangguen Chang](https://www.linkedin.com/in/sgwannabe) — Co-founder · CEO
+- [Sejun Kim](https://www.linkedin.com/in/combba) — Co-founder · CTO

@@ -44,6 +44,7 @@ export function RecordSection({ locale }: { locale: Locale }) {
 
   return (
     <Section id="record" eyebrow={t.eyebrow} h2={t.h2} lede={t.lede}>
+      <p className="scope-note" lang="en">{competitions.scope}</p>
       <dl className="rec__stats">
         {stats.map((s) => (
           <div key={s.key} className="rec__stat">

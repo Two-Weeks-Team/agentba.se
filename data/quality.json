@@ -2,6 +2,7 @@
   "$comment": "Refreshed by .github/workflows/snapshot.yml from a repository_dispatch sent by the source repo's CI. Source: social-seeding-v2/README.md.",
   "maintained": "ci",
   "measuredAt": "2026-08-04",
+  "scope": "Historical source-project test and CI snapshot. These counts do not describe the current AgentBase website build or certify present production behavior.",
   "pytestPassing": 3000,
   "tsTests": 596,
   "ciGatesPerPr": 5,

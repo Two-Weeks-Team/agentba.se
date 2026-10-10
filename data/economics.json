@@ -1,17 +1,18 @@
 {
   "$comment": "Generalised from a modelled campaign-scale engagement. The derivation is kept because a figure without one is not a figure; the vertical, channel and client are not, because this is a company page and not a product page. scopeNote is required.",
   "maintained": "manual",
-  "measuredAt": "2026-06-01",
+  "modeledAt": "2026-06-01",
+  "evidenceType": "modeled-scenario",
   "basis": {
-    "en": "One engagement of the size a small team would outsource.",
-    "ko": "작은 팀이라면 외주로 넘길 규모의 업무 1건."
+    "en": "A team cost model dated June 2026, before AgentBase LLC was founded. The figures are scenario inputs, not audited company results or promised savings.",
+    "ko": "A team cost model dated June 2026, before AgentBase LLC was founded. The figures are scenario inputs, not audited company results or promised savings."
   },
   "scopeNote": {
-    "en": "The management and operations layer only. The spend that passes through to third parties is identical either way and is excluded — including it would make the difference look larger than it is.",
-    "ko": "운영·관리 레이어에 한정된 비교입니다. 제3자에게 그대로 나가는 지출은 양쪽이 동일하므로 제외했습니다. 포함시키면 차이가 실제보다 커 보입니다."
+    "en": "Illustrative cost model for the management and operations layer. Third-party pass-through spend is held equal and excluded. Actual costs and human review time depend on the workload.",
+    "ko": "Illustrative cost model for the management and operations layer. Third-party pass-through spend is held equal and excluded. Actual costs and human review time depend on the workload."
   },
   "outsourced": {
-    "label": { "en": "Outsourced to an operator", "ko": "외부 운영사에 맡길 때" },
+    "label": { "en": "Outsourced scenario", "ko": "Outsourced scenario" },
     "costUsd": 2400,
     "costNote": {
       "en": "20% management fee on $12,000 of pass-through spend",
@@ -20,11 +21,11 @@
     "humanHours": 45
   },
   "agentbase": {
-    "label": { "en": "Run by the fleet", "ko": "플릿이 운영할 때" },
+    "label": { "en": "Agent-assisted scenario", "ko": "Agent-assisted scenario" },
     "costUsd": 7.4,
     "costNote": {
-      "en": "metered agent and infrastructure cost",
-      "ko": "계측된 에이전트·인프라 비용"
+      "en": "Agent and infrastructure cost assumption in this model",
+      "ko": "Agent and infrastructure cost assumption in this model"
     },
     "humanHours": 2
   },

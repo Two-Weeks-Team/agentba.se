@@ -1,120 +1,53 @@
-import competitions from "@/data/competitions.json";
-import fleet from "@/data/fleet.json";
-import people from "@/data/people.json";
-import portfolio from "@/data/portfolio.json";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+import company from "@/data/company.json";
 import { MARK_ASPECT, markDataUri } from "@/lib/brand";
+export { OG_SIZE } from "@/lib/seo";
 
-/**
- * The social card, built from the same snapshot the page renders. When the
- * scheduled job commits new figures, the next deploy regenerates this image —
- * the card cannot quietly go stale against the page.
- *
- * Latin-only by design. `ImageResponse` inlines whatever font it is given, and
- * a Korean face large enough to cover the script is megabytes; a social card
- * is not worth that. It also only supports a subset of CSS — flexbox, no grid.
- */
-export function OgCard({ locale }: { locale: "en" | "ko" }) {
-  // Counted, never typed: the card is regenerated on every deploy, so a stat
-  // here cannot outlive the data it came from. The two competition figures sit
-  // side by side on purpose — twelve tries next to one win is the honest
-  // reading of the same record the page publishes in full.
-  //
-  // The font is subset to scripts/subset-og-font.sh's character set. Any label
-  // needing a glyph outside it renders as a box, which rules out a currency
-  // figure for the prize.
-  const stats = [
-    { value: String(fleet.counts.total), label: "AGENTS" },
-    { value: String(people.people.length), label: "PEOPLE" },
-    { value: String(fleet.gates.length), label: "GATES" },
-    { value: String(portfolio.entries.length), label: "SHIPPED" },
-    { value: String(competitions.entries.length), label: "ENTERED" },
-    {
-      value: String(competitions.entries.filter((e) => e.result === "won").length),
-      label: "FIRST PLACE",
-    },
-  ];
+const diagram = `data:image/svg+xml;base64,${readFileSync(join(process.cwd(), "assets/brand/og-organization.svg")).toString("base64")}`;
 
+/** English brand artwork shared by both locales; rendered with local fonts. */
+export function OgCard() {
   return (
-    <div
-      style={{
-        width: "100%",
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        background: "#0e0e0c",
-        color: "#f2efe6",
-        padding: "64px 72px",
-        fontFamily: "JetBrains Mono",
-      }}
-    >
-      {/* Satori requires an explicit display on any element with more than one
-          child, so every wrapper here declares flex even when it looks like
-          plain text. */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-          {/* Satori has no inline <svg>, so the mark arrives as a data URI. */}
+    <div style={{ width: "100%", height: "100%", display: "flex", background: "#ffffff", color: "#000000", fontFamily: "JetBrains Mono" }}>
+      <div style={{ position: "absolute", left: 48, right: 48, top: 32, height: 44, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={markDataUri("#f2efe6")}
-            alt=""
-            width={Math.round(30 * MARK_ASPECT)}
-            height={30}
-          />
-          <div style={{ display: "flex", fontSize: 28, letterSpacing: -1 }}>
-            <span>agentba</span>
-            <span style={{ color: "#e8b23a" }}>.</span>
-            <span>se</span>
-          </div>
+          <img src={markDataUri("#000000", 80)} alt="" width={Math.round(32 * MARK_ASPECT)} height={32} />
+          <span style={{ fontFamily: "Bebas Neue", fontSize: 36 }}>AGENTBASE</span>
         </div>
-        <div style={{ display: "flex", fontSize: 20, color: "#6f6b5c", letterSpacing: 2 }}>
-          {locale === "ko" ? "SEOUL · KO" : "SEOUL"}
-        </div>
+        <span style={{ fontSize: 15, letterSpacing: 1.2 }}>AI AGENT FLEETS</span>
+      </div>
+      <div style={{ position: "absolute", left: 48, right: 48, top: 96, height: 1, background: "#000000" }} />
+
+      <div style={{ position: "absolute", left: 48, top: 125, display: "flex", flexDirection: "column", fontFamily: "Bebas Neue", fontSize: 88, lineHeight: .94, letterSpacing: -.8 }}>
+        <span>BUILD A COMPANY.</span>
+        <span style={{ marginTop: 12, display: "flex" }}>
+          <span style={{ color: "#ffffff", WebkitTextStroke: "1.5px #000000" }}>DEPLOY</span>
+          <span style={{ marginLeft: 16 }}>ITS</span>
+        </span>
+        <span>WORKFORCE.</span>
+      </div>
+      <div style={{ position: "absolute", left: 48, top: 436, display: "flex", flexDirection: "column", fontSize: 21, lineHeight: 1.5 }}>
+        <span>AI agent fleets for</span>
+        <span>real business operations.</span>
       </div>
 
-      <div style={{ display: "flex", flexDirection: "column" }}>
-        <div style={{ display: "flex", fontSize: 70, lineHeight: 1.04, letterSpacing: -3 }}>
-          This company runs on agents.
-        </div>
-        <div
-          style={{
-            display: "flex",
-            fontSize: 24,
-            lineHeight: 1.4,
-            color: "#c9c5b6",
-            marginTop: 20,
-          }}
-        >
-          {/* No apostrophe: the subset font ships only the glyphs listed in
-              scripts/subset-og-font.sh, and a missing glyph renders as a box. */}
-          We do not hire people. We build agents.
-        </div>
-      </div>
+      {/* Same geometry as the interactive hero, rendered as a crawlable image. */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={diagram} alt="" width={600} height={450} style={{ position: "absolute", left: 565, top: 108 }} />
+      <div style={{ position: "absolute", left: 838, top: 128, display: "flex", background: "#000000", color: "#ffffff", padding: "7px 10px", fontSize: 12 }}>HUMAN DIRECTION</div>
+      <div style={{ position: "absolute", left: 602, top: 286, display: "flex", background: "#ffffff", border: "1px solid #000000", padding: "7px 10px", fontSize: 12 }}>AGENT DEPARTMENTS</div>
+      <div style={{ position: "absolute", left: 853, top: 486, display: "flex", background: "#ffffff", border: "1px solid #000000", padding: "7px 10px", fontSize: 12 }}>BUSINESS OPERATIONS</div>
+      <div style={{ position: "absolute", right: 48, top: 537, display: "flex", fontSize: 10, letterSpacing: .4 }}>CONCEPTUAL ORGANIZATION</div>
 
-      <div style={{ display: "flex", borderTop: "1px solid #2a2822", paddingTop: 28 }}>
-        {stats.map((s) => (
-          <div
-            key={s.label}
-            style={{ display: "flex", flexDirection: "column", marginRight: 64 }}
-          >
-            <div style={{ display: "flex", fontSize: 44, lineHeight: 1 }}>{s.value}</div>
-            <div
-              style={{
-                display: "flex",
-                fontSize: 15,
-                color: "#6f6b5c",
-                marginTop: 8,
-                letterSpacing: 1.5,
-              }}
-            >
-              {s.label}
-            </div>
-          </div>
-        ))}
+      <div style={{ position: "absolute", left: 48, right: 48, bottom: 62, height: 1, background: "#000000" }} />
+      <div style={{ position: "absolute", left: 48, right: 48, bottom: 27, display: "flex", justifyContent: "space-between", fontSize: 14 }}>
+        <span>{company.legalName} · {company.country}</span>
+        <span>agentba.se</span>
       </div>
     </div>
   );
 }
 
-export const OG_SIZE = { width: 1200, height: 630 };
 export const OG_CONTENT_TYPE = "image/png";

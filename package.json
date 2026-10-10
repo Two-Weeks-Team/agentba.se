@@ -15,8 +15,10 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "verify": "pnpm lint && pnpm typecheck && pnpm build && pnpm test",
-    "prebuild": "node scripts/copy-data.mjs",
-    "predev": "node scripts/copy-data.mjs"
+    "og:generate": "tsx scripts/generate-og.tsx",
+    "seo:preview": "tsx scripts/sync-preview-seo.ts",
+    "prebuild": "node scripts/copy-data.mjs && node scripts/copy-landing.mjs && tsx scripts/generate-og.tsx && tsx scripts/sync-preview-seo.ts",
+    "predev": "node scripts/copy-data.mjs && node scripts/copy-landing.mjs && tsx scripts/generate-og.tsx && tsx scripts/sync-preview-seo.ts"
   },
   "dependencies": {
     "next": "16.2.12",

@@ -1,4 +1,4 @@
-import { getContent, type Locale } from "@/lib/i18n";
+import { CONTACT_EMAIL, getContent, type Locale } from "@/lib/i18n";
 import { Section } from "./section";
 import { IntakeForm } from "./intake-form";
 
@@ -15,7 +15,11 @@ export function Intake({ locale }: { locale: Locale }) {
   return (
     <Section id="intake" eyebrow={t.eyebrow} h2={t.h2} lede={t.lede}>
       <IntakeForm locale={locale} />
-      <p className="intake__fallback">{t.fallback}</p>
+      <p className="intake__fallback" lang="en">
+        {t.fallback.prefix}{" "}
+        <a className="intake__mail" href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+        {" "}{t.fallback.suffix}
+      </p>
     </Section>
   );
 }

@@ -1,0 +1,18 @@
+{
+  "$comment": "Verified public company facts. Update contentUpdatedAt only when published company content changes, not on each build. The founding day and street address have not been provided.",
+  "name": "AgentBase",
+  "legalName": "AgentBase LLC",
+  "url": "https://agentba.se",
+  "email": "contact@agentba.se",
+  "country": "USA",
+  "countryCode": "US",
+  "formationState": "Wyoming",
+  "founded": "August 2026",
+  "contentUpdatedAt": "2026-10-11",
+  "identity": "AgentBase is operated by AgentBase LLC, a Wyoming limited liability company founded in August 2026. We build and operate AI agent fleets that run real business operations.",
+  "business": "We operate client workloads (Run), embed agent fleets in companies (Build), and ship working systems in two-week engagements (Prove).",
+  "mission": "Our goal is to replace human operating labor with software organizations. People set the direction and remain accountable.",
+  "missionScope": "This is our long-term direction. The products and tools described here are individual building blocks at different stages of development.",
+  "teamWorkScope": "Selected work from our team, including projects begun before AgentBase LLC. These products and tools are building blocks for our ambition; they are not yet one autonomous company.",
+  "models": ["Google Gemini", "OpenAI"]
+}

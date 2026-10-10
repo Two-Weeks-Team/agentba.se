@@ -7,6 +7,7 @@ export function Company({ locale }: { locale: Locale }) {
 
   return (
     <Section id="company" eyebrow={t.eyebrow} h2={t.h2} lede={t.lede}>
+      <p className="scope-note" lang="en">{quality.scope}</p>
       <div className="company">
         <div className="company__col">
           <h3 className="wf__title">

@@ -8,12 +8,16 @@
  * This is a company page. Product arguments — customers, campaign results,
  * category metrics — belong on the product's own site, not here.
  */
+import company from "@/data/company.json";
+import people from "@/data/people.json";
+
 export const home = {
   meta: {
-    title: "AgentBase — this company runs on agents",
+    title: "AgentBase — AI agent fleets for business operations",
     description:
-      "AgentBase is a company whose operating work is performed by software agents. We do not hire for those roles; we build the agents that hold them.",
-    ogAlt: "AgentBase — agents across a world map",
+      "AgentBase LLC builds and operates AI agent fleets for real business operations. A US company founded by Sangguen Chang and Sejun Kim.",
+    ogTitle: "AgentBase — Build a company. Deploy its workforce.",
+    ogAlt: "AgentBase — Build a company. Deploy its workforce. An isometric model of human direction, agent departments and business operations.",
   },
 
   nav: {
@@ -24,11 +28,11 @@ export const home = {
   },
 
   hero: {
-    eyebrow: "AgentBase — Seoul",
+    eyebrow: "AgentBase — USA",
     h1: "This company runs on agents.",
-    sub: "We do not hire people for the operating roles. We build the agents that hold them, and we run our products on that fleet.",
+    sub: "We build and operate AI agent fleets for business operations. People set the direction and remain accountable.",
     stats: [
-      { value: "22", label: "agents in the fleet" },
+      { value: "22", label: "agent definitions" },
       { value: "2", label: "people" },
       { value: "7", label: "approval gates" },
     ],
@@ -37,9 +41,16 @@ export const home = {
     swarmHint: "Move · hold · click",
   },
 
+  about: {
+    eyebrow: "About",
+    identity: company.identity,
+    founder: `Founded by ${people.people.map((p) => p.name).join(" and ")}`,
+    business: company.business,
+  },
+
   fleet: {
     eyebrow: "01 — The fleet",
-    h2: "Twenty-two agents, named and accounted for.",
+    h2: "Twenty-two agent roles in the source roster.",
     lede: "Not a free-roaming loop. Each one is a function a durable workflow invokes for a judgment-heavy sub-task: a system prompt, a curated tool subset, an output contract, a spend cap, and a defined escalation.",
     groups: {
       domain: "Domain",
@@ -55,12 +66,12 @@ export const home = {
 
   ledger: {
     eyebrow: "02 — The replacement ledger",
-    h2: "Eight seats a person used to sit in.",
+    h2: "Eight operating responsibilities in the source roster.",
     lede: "The left column is quoted verbatim from our internal agent roster, written before this website existed. We did not rewrite them to read better. They read like someone's actual job because they were — ours.",
     wasLabel: "before · human",
     nowLabel: "after · agent",
     footnote:
-      "…and 14 more agents doing work that had no human predecessor at all.",
+      "Fourteen additional agent responsibilities are defined in the same roster.",
     sourceNote: "Quoted from our agent roster.",
   },
 
@@ -77,8 +88,8 @@ export const home = {
 
   economics: {
     eyebrow: "04 — The operating layer",
-    h2: "$2,400 and 45 hours became $7.40 and 2 hours.",
-    lede: "The same piece of work, priced two ways. The left column is what an outside operator charges to run it, plus the hours it takes them. Ours is metered agent and infrastructure cost, plus the hours a person spends at the gates.",
+    h2: "An operating cost model, with its assumptions.",
+    lede: "A historical scenario comparing outsourced management with agent-assisted work. Costs and human hours below are inputs to this model; actual workloads need their own measurement.",
     hoursLabel: "human hours",
     costLabel: "operating cost",
     excludedLabel: "excluded from this comparison",
@@ -124,24 +135,24 @@ export const home = {
   lab: {
     eyebrow: "08 — The lab",
     h2: "What else two people shipped.",
-    lede: "The fleet frees the calendar, and the calendar fills with builds. Everything below is verifiable without taking our word for it — a live site, a public listing, a demo video, or a judged result.",
+    lede: "Public product sites, developer tools and recorded demonstrations show the work behind our approach.",
     mentionsLabel: "Also on the bench",
   },
 
   record: {
     eyebrow: "09 — The competition record",
     h2: "The whole record, results as they fell.",
-    lede: "Public competitions are the cheapest neutral benchmark a two-person company can buy: outside judges, fixed deadlines, published winner lists. We enter with the fleet and publish the whole column — the ribbons and the losses alike.",
+    lede: "Our team's competition history, with public evidence where available. Entries retain their original dates and recorded outcomes.",
     entriesLabel: "entries",
     results: {
       won: "1st place",
       hm: "Honorable Mention",
       selected: "Selected",
       entered: "No award",
-      pending: "Judging",
+      pending: "Pending at capture",
     },
     pendingNote:
-      "The last row is still being judged — the result lands on Aug 21, 2026, and this table will carry it either way.",
+      "The last row was pending at the August 19, 2026 capture. Its scheduled announcement was August 21, 2026; the result has not been refreshed here.",
   },
 
   services: {
@@ -152,7 +163,7 @@ export const home = {
       {
         id: "run",
         name: "Run",
-        body: "Creator campaigns, operated end to end: a brief goes in; sourcing, outreach, replies, shipping and verification come out. This is Social Seeding, already operating — section 07.",
+        body: "We operate client workloads. Social Seeding brings specialist agent roles to creator campaign operations, with human decisions and implementation scope described in section 07.",
       },
       {
         id: "build",
@@ -186,7 +197,10 @@ export const home = {
     submit: "Send the line",
     sent: "Received. A person will answer.",
     error: "That didn't go through. Mail us instead:",
-    fallback: "No form? The addresses in the footer work the same.",
+    fallback: {
+      prefix: "Email us:",
+      suffix: "— both founders read every line.",
+    },
   },
 
   partners: {
@@ -196,9 +210,9 @@ export const home = {
 
   footer: {
     wordmark: "agentba.se",
-    line: "A company whose operating work is performed by software agents. Seoul.",
+    line: "A company whose operating work is performed by software agents. USA.",
     snapshot: "Figures on this page come from committed snapshots, the newest dated",
-    rights: "AgentBase.",
+    rights: `${company.legalName} · ${company.country}`,
   },
 };
 

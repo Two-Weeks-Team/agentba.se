@@ -1,12 +1,14 @@
 import { home as en } from "@/content/en/home";
 import { home as ko } from "@/content/ko/home";
 import type { HomeContent } from "@/content/en/home";
+import company from "@/data/company.json";
 
 export const LOCALES = ["en", "ko"] as const;
 export type Locale = (typeof LOCALES)[number];
 export const DEFAULT_LOCALE: Locale = "en";
 
-export const SITE = "https://agentba.se";
+export const SITE = company.url;
+export const CONTACT_EMAIL = company.email;
 
 const DICT: Record<Locale, HomeContent> = { en, ko };
 
@@ -31,6 +33,9 @@ export function alternatesFor(locale: Locale) {
       en: `${SITE}/`,
       ko: `${SITE}/ko`,
       "x-default": `${SITE}/`,
+    },
+    types: {
+      "text/markdown": `${SITE}${locale === "ko" ? "/ko" : ""}/index.md`,
     },
   };
 }

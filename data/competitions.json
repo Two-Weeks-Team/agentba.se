@@ -2,6 +2,7 @@
   "$comment": "Every external competition entered, results as they fell — including the losses. Do not add a result without a public evidence link; 'selected' rows without one must say so in their note. Results were re-verified against the official winner pages on capturedAt. The one thing this file must never do is quietly drop a row that lost.",
   "maintained": "manual",
   "capturedAt": "2026-08-19",
+  "scope": "Historical team competition record, including entries before AgentBase LLC was founded in August 2026. Results and pending labels reflect the capture date; an unrefreshed pending row does not establish that judging is still in progress.",
   "entries": [
     {
       "id": "gemini3",

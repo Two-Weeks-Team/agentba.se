@@ -1,21 +1,21 @@
 {
-  "$comment": "The two people. Everything on this site is their responsibility.",
+  "$comment": "Public founder profiles. Business inquiries go to contact@agentba.se; individual delivery addresses belong only in the server-side intake handler.",
   "maintained": "manual",
-  "capturedAt": "2026-08-04",
+  "capturedAt": "2026-10-11",
   "people": [
     {
       "id": "sanggen",
-      "name": "Sanggen Chang",
+      "name": "Sangguen Chang",
       "nameKo": "장상근",
       "role": "CEO",
-      "email": "sangguen@agentba.se"
+      "linkedin": "https://www.linkedin.com/in/sgwannabe"
     },
     {
       "id": "sejun",
       "name": "Sejun Kim",
       "nameKo": "김세준",
       "role": "CTO",
-      "email": "sejun@agentba.se"
+      "linkedin": "https://www.linkedin.com/in/combba"
     }
   ]
 }

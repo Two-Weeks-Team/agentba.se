@@ -19,6 +19,7 @@ export function Ledger({ locale }: { locale: Locale }) {
 
   return (
     <Section id="ledger" eyebrow={t.eyebrow} h2={t.h2} lede={t.lede}>
+      <p className="scope-note" lang="en">{replacements.scope}</p>
       <ol className="ledger">
         {replacements.rows.map((row) => (
           <li key={row.agent} className="ledger__row">

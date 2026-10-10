@@ -2,35 +2,38 @@ import { existsSync, readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 
 /**
- * Every headline figure must be present in the built HTML.
+ * The approved landing-page narrative must be present in production HTML.
  *
  * The failure mode this guards against is common enough to have a name in the
  * research: a page whose numbers count up in the browser renders as `0` — or
  * as nothing at all — to a crawler, an OG preview, or an agent. The whole
- * argument of this site is its figures, so they cannot live only in the DOM
+ * argument of this site is its work, so it cannot live only in the DOM
  * after hydration.
  */
 const BUILD = ".next/server/app";
 
 const MUST_APPEAR_EN = [
-  "This company runs on agents",
-  "We don&#x27;t hire people. We build agents.",
-  "the human clicking Search + Step 2",
-  "AI 작성", // present in both locales: quoted verbatim from the source
-  "approveBudget",
-  "3,000",
-  "Seoul",
-  "Ulaanbaatar",
+  "Build a company.",
+  "its workforce.",
+  "AgentBase builds and operates AI agent fleets for real business operations.",
+  "Our goal is to replace human operating labor",
+  "A brief goes in.",
+  "The video is",
+  "Not a blank slate.",
+  "A judgment needs evidence.",
+  "A choice becomes a brief.",
+  "The ambition is",
+  "Capabilities",
   "socialseed.ing",
-  "ElevenLabs Grants",
-  "sangguen@agentba.se",
-  "sejun@agentba.se",
-  "teslam.io",
+  "Sangguen Chang",
+  "Sejun Kim",
+  "contact@agentba.se",
   "kbeauty.market",
-  "Gradient AI Hackathon",
-  "Honorable Mention",
-  "One line is enough.",
+  "Bring us a job",
   "memex.quest",
+  "AgentBase LLC",
+  "Closed beta.",
+  "Own checkout is not yet enabled.",
 ];
 
 const MUST_APPEAR_KO = [
@@ -38,13 +41,13 @@ const MUST_APPEAR_KO = [
   "우린 사람을 뽑지 않습니다",
   "AI 작성",
   "approveBudget",
-  "sejun@agentba.se",
+  "contact@agentba.se",
   "미수상",
   "한 줄이면 충분합니다.",
 ];
 
 /** Product-side disclosure that must not reappear on the company page. */
-const MUST_NOT_APPEAR = ["Wooliliwoo", "59,498", "7.9%"];
+const MUST_NOT_APPEAR = ["Wooliliwoo", "59,498", "7.9%", "sangguen@agentba.se", "sejun@agentba.se"];
 
 function html(file: string): string {
   const path = `${BUILD}/${file}`;
@@ -77,11 +80,18 @@ describe("server-rendered figures", () => {
     }
   });
 
-  it("renders a map without JavaScript", () => {
+  it("renders the approved C sections and readable diagram fallbacks without JavaScript", () => {
     const doc = html("index.html");
-    // The static SVG carries the whole world as one path.
-    expect(doc).toContain("viz-static");
-    expect(doc).toMatch(/<path d="m[-\d]/);
+    for (const id of ["hero", "work", "commerce", "memory", "architecture", "scale", "capabilities", "contact", "company"]) {
+      expect(doc).toContain(`id="${id}"`);
+    }
+    for (const id of ["hero-organization", "stage-organization", "social-demo", "commerce-demo", "memory-demo", "judgment-demo", "delivery-demo"]) {
+      expect(doc).toContain(`id="${id}"`);
+    }
+    expect(doc).toContain("Conceptual company structure");
+    expect(doc).toContain("Conceptual task structure");
+    expect(doc).toContain("/landing/init.js");
+    expect(doc).not.toContain("This company runs on agents");
   });
 
   it("declares the right language per locale", () => {
@@ -91,7 +101,7 @@ describe("server-rendered figures", () => {
 
   it("marks agents as software, and only the real people as people", () => {
     const doc = html("index.html");
-    expect(doc).toContain("SoftwareApplication");
+    expect(doc).toContain('"@type":"Organization"');
 
     // Person entries are legitimate — there are two actual founders. What must
     // never happen is an agent being marked up as one, which would encode the
