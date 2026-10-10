@@ -12,6 +12,10 @@
 .demo-mount { min-width: 0; }
 .demo-mount > p { padding-block: 24px; }
 .demo-mount > img { max-width: 100%; height: auto; border-radius: 12px; }
+.demo-tour-controls { display: flex; justify-content: flex-end; align-items: center; gap: 14px; min-height: 54px; padding-top: 10px; color: var(--muted); font: 12px/1.5 var(--font-body); }
+.demo-tour-toggle { min-height: 40px; padding: 8px 14px; border: 1px solid var(--line); border-radius: 8px; color: var(--ink); background: transparent; font: inherit; cursor: pointer; }
+.demo-tour-toggle:hover { background: var(--paper); }
+.demo-tour-toggle:disabled { cursor: default; opacity: .55; }
 .hero-work-links { display: flex; gap: 32px; }
 .hero-work-links a { font: 500 12px/1.6 var(--font-body); text-decoration: none; }
 .hero-work-links a:hover { text-decoration: underline; }

@@ -23,6 +23,8 @@
  * UI reference from 2026-09-12, not proof of current TikTok playback.
  */
 
+import { createAutoAdvance } from './auto-advance.js';
+
 const mounts = new WeakMap();
 let instanceCount = 0;
 
@@ -183,7 +185,7 @@ export function mountCommerceDemo(host) {
 
   let selected = 0;
 
-  function select(index) {
+  function select(index, announce = true) {
     if (index === selected) return;
     selected = index;
     const view = views[index];
@@ -201,7 +203,7 @@ export function mountCommerceDemo(host) {
     connection.textContent = view.context;
     findLabel.textContent = view.id === "product" ? "Back to the frame" : "Find it";
     findArrow.textContent = view.id === "product" ? "←" : "→";
-    status.textContent = `${view.label}. ${view.caption}. ${view.description}`;
+    if (announce) status.textContent = `${view.label}. ${view.caption}. ${view.description}`;
   }
 
   function onClick(event) {
@@ -232,8 +234,10 @@ export function mountCommerceDemo(host) {
   root.addEventListener("click", onClick);
   root.addEventListener("keydown", onKeyDown);
   host.appendChild(root);
+  const tour = createAutoAdvance({ host, label: 'Kbeauty', advance: () => select((selected + 1) % views.length, false) });
 
   const dispose = () => {
+    tour.destroy();
     root.removeEventListener("click", onClick);
     root.removeEventListener("keydown", onKeyDown);
     root.remove();

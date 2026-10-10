@@ -1,6 +1,6 @@
 /**
  * Independent, local-only foundation demonstrations. No automatic mounting,
- * model calls, telemetry, persistence, timers for playback, or deployments.
+ * model calls, telemetry, persistence, or deployments.
  *
  * Glasshat a7f3302: hats.py:24-31; adk_agents.py:117-151;
  * engine.py:354-438; audit.py:313-352. The trace below explains architecture;
@@ -9,6 +9,8 @@
  * dispatch-spec-cycle.sh:29-69. LunchPull's original gallery is the visual
  * reference. These three new sample concepts are not historical outputs.
  */
+
+import { createAutoAdvance } from './auto-advance.js';
 
 const mounted = new WeakMap();
 let serial = 0;
@@ -174,7 +176,8 @@ export function mountJudgmentDemo(host) {
   function getState() {
     return { kind: 'judgment', step, perspective: step === 'perspectives' ? perspective : null, illustrative: true };
   }
-  function render() {
+  function render(announce = true) {
+    trace.setAttribute('aria-live', announce ? 'polite' : 'off');
     root.dataset.step = step;
     group.dataset.active = String(step === 'perspectives');
     for (const [id, button] of phaseButtons) button.setAttribute('aria-pressed', String(step === id));
@@ -211,6 +214,18 @@ export function mountJudgmentDemo(host) {
 
   render();
   host.replaceChildren(root);
+  const tour = createAutoAdvance({
+    host, label: 'Glasshat',
+    advance() {
+      const index = PERSPECTIVES.findIndex(item => item.id === perspective);
+      if (step === 'evidence') { step = 'perspectives'; perspective = PERSPECTIVES[0].id; }
+      else if (step === 'perspectives' && index < PERSPECTIVES.length - 1) perspective = PERSPECTIVES[index + 1].id;
+      else step = REVIEW_STEPS[(REVIEW_STEPS.indexOf(step) + 1) % REVIEW_STEPS.length];
+      render(false);
+      emit(getState());
+    },
+  });
+  ctx.cleanups.push(() => tour.destroy());
   const controller = { root, getState, setStep, follow: advance, destroy: ctx.destroy };
   mounted.set(host, controller);
   return controller;
@@ -381,6 +396,16 @@ export function mountDeliveryDemo(host) {
 
   render();
   host.replaceChildren(root);
+  const tour = createAutoAdvance({
+    host, label: 'PreviewForge',
+    advance() {
+      const index = DIRECTIONS.findIndex(item => item.id === direction);
+      direction = DIRECTIONS[(index + 1) % DIRECTIONS.length].id;
+      render(false);
+      emit(getState());
+    },
+  });
+  ctx.cleanups.push(() => tour.destroy());
   const controller = { root, getState, selectDirection, destroy: ctx.destroy };
   mounted.set(host, controller);
   return controller;

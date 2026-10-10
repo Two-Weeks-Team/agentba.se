@@ -1,4 +1,5 @@
 import * as THREE from './vendor/three/three.module.js';
+import { createAutoAdvance } from './auto-advance.js';
 
 const frames = [
   { mode: 'Current session', kicker: 'A familiar dead end', title: 'The build is stuck. Again.', code: '$ cargo build --release\n\nerror: linker `cc` not found', body: 'A new agent session encounters a problem that an earlier session has already worked through.', next: 'Find past experience →', caption: 'The useful experience is in the earlier work.' },
@@ -14,17 +15,26 @@ export function mountMemoryDemo(host) {
     <div class="mm-terminal"><div class="mm-terminal-head"><span data-memory-mode></span><span>Memex</span></div><div class="mm-terminal-body" aria-live="polite"></div><div class="mm-terminal-footer"><span class="mm-position"></span><button type="button" class="mm-next"></button></div></div></div>
     <div class="mm-bottom"><span>Source-linked recall → a next action you can inspect.</span><a href="${new URL('./media-proposal/memex-replay.png', import.meta.url).href}" target="_blank" rel="noopener noreferrer">View the original replay interface ↗</a></div>`;
   let step = 0, updateDeck = () => {};
-  const render = () => {
+  const body = host.querySelector('.mm-terminal-body');
+  // Stack the three frames in one grid cell so the tallest frame reserves
+  // space. Automatic playback must not move the reading area or its controls.
+  const panels = frames.map((f, index) => {
+    const panel = document.createElement('div');
+    panel.className = 'mm-frame';
+    for (const [tag, cls, content] of [['p','mm-kicker',f.kicker],['h4','',f.title],['pre','',f.code],['p','',f.body]]) {
+      const el = document.createElement(tag); el.className = cls; el.textContent = content; panel.append(el);
+    }
+    if (index > 0) { const p = document.createElement('p'); p.className = 'mm-source'; p.textContent = 'Synthetic source / 11-infra-fix-ci-cache.jsonl'; panel.append(p); }
+    return panel;
+  });
+  body.replaceChildren(...panels);
+  const render = (announce = true) => {
     const f = frames[step];
     host.dataset.step = String(step);
     host.querySelectorAll('[data-memory-step]').forEach(button => button.setAttribute('aria-pressed', String(Number(button.dataset.memoryStep) === step)));
     host.querySelector('[data-memory-mode]').textContent = f.mode;
-    const body = host.querySelector('.mm-terminal-body');
-    body.replaceChildren();
-    for (const [tag, cls, content] of [['p','mm-kicker',f.kicker],['h4','',f.title],['pre','',f.code],['p','',f.body]]) {
-      const el = document.createElement(tag); el.className = cls; el.textContent = content; body.append(el);
-    }
-    if (step > 0) { const p = document.createElement('p'); p.className = 'mm-source'; p.textContent = 'Synthetic source / 11-infra-fix-ci-cache.jsonl'; body.append(p); }
+    body.setAttribute('aria-live', announce ? 'polite' : 'off');
+    panels.forEach((panel, index) => panel.setAttribute('aria-hidden', String(index !== step)));
     host.querySelector('.mm-position').textContent = `0${step + 1} / 03`;
     host.querySelector('.mm-next').textContent = f.next;
     host.querySelector('.mm-spatial-caption').textContent = f.caption;
@@ -35,6 +45,7 @@ export function mountMemoryDemo(host) {
   render();
   try { updateDeck = spatialArchive(host.querySelector('.mm-spatial')); updateDeck(step); }
   catch (error) { host.querySelector('.mm-spatial').dataset.renderer = 'fallback'; console.warn('Memory archive is using its text diagram.', error); }
+  createAutoAdvance({ host, label: 'Memex', advance() { step = (step + 1) % frames.length; render(false); } });
 }
 
 function spatialArchive(host) {

@@ -3,8 +3,9 @@
  * 3b22f09ace6a86bd0d1ed324c25272d5e232c871.
  * Personas/artwork: apps/web/lib/fleet.ts, apps/web/public/fleet/*.webp.
  * Sample documents below are authored fixtures, never model/run results.
- * No backend, storage, timers, tool execution, or message sending.
+ * No backend, storage, tool execution, or message sending.
  */
+import { createAutoAdvance } from './auto-advance.js';
 
 const PORTRAITS = new URL("./media-proposal/social-badges/fleet/", import.meta.url);
 const STEPS = ["Assignment", "Draft", "Human review"];
@@ -229,7 +230,7 @@ export function mountSocialDemo(host) {
           <div class="ss-artifact" id="${prefix}-artifact"></div>
           <div class="ss-handoff"><span class="ss-handoff-symbol" aria-hidden="true">↗</span><div><span class="ss-handoff-label">Human handoff</span><p class="ss-handoff-copy"></p></div><button type="button" class="ss-role-next" data-ss-handoff hidden></button></div>
         </div>
-        <div class="ss-controls"><span class="ss-manual">Manual walkthrough</span><div class="ss-control-buttons"><button class="ss-back" type="button" data-ss-action="back"><span aria-hidden="true">←</span> Back</button><button class="ss-next" type="button" data-ss-action="next"></button></div></div>
+        <div class="ss-controls"><span class="ss-manual">Sample walkthrough</span><div class="ss-control-buttons"><button class="ss-back" type="button" data-ss-action="back"><span aria-hidden="true">←</span> Back</button><button class="ss-next" type="button" data-ss-action="next"></button></div></div>
       </div>
     </div>
     <footer class="ss-caption"><span>Interactive illustration · original agent artwork · sample assignment</span><span>No agent is running. Nothing is sent.</span></footer>
@@ -348,6 +349,16 @@ export function mountSocialDemo(host) {
   root.addEventListener("click", onClick);
   root.addEventListener("keydown", onKeyDown);
   render(false);
+  const tour = createAutoAdvance({
+    host, label: 'Social Seeding',
+    advance() {
+      if (step === STEPS.length - 1) {
+        selected = PERSONAS[(PERSONAS.indexOf(selected) + 1) % PERSONAS.length];
+        step = 0;
+      } else step += 1;
+      render(false);
+    },
+  });
   const api = {
     selectPersona,
     setStep,
@@ -355,6 +366,7 @@ export function mountSocialDemo(host) {
     destroy() {
       if (destroyed) return;
       destroyed = true;
+      tour.destroy();
       root.removeEventListener("click", onClick);
       root.removeEventListener("keydown", onKeyDown);
       root.remove();

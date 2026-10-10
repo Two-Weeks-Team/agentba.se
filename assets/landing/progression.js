@@ -1,3 +1,5 @@
+import { createAutoAdvance } from './auto-advance.js';
+
 (function() {
       // Conceptual progression: examples grounded in the inspected campaign workflow.
       // Company scope remains an ambition, not a claim of a deployed autonomous company.
@@ -40,7 +42,8 @@
         }
       };
 
-      const tabs = Array.from(document.querySelectorAll('.tab-btn'));
+      const tablist = document.getElementById('organization-lab');
+      const tabs = Array.from(tablist.querySelectorAll('.tab-btn'));
       const stageLabel = document.getElementById('stage-label');
       const stageTitle = document.getElementById('stage-title');
       const stageBody = document.getElementById('stage-body');
@@ -48,6 +51,8 @@
       const canvasTierTag = document.getElementById('canvas-tier-tag');
       const nodeCountIndicator = document.getElementById('node-count-indicator');
       const organization = document.getElementById('stage-organization');
+      const panel = document.getElementById('stage-panel');
+      const pauseButton = panel.querySelector('[data-scene-pause]');
 
       function updateStage(stageKey) {
         const data = stagesData[stageKey];
@@ -70,7 +75,7 @@
           item.textContent = name;
           return item;
         }));
-        document.getElementById('stage-panel').setAttribute('aria-labelledby', 'tab-' + stageKey);
+        panel.setAttribute('aria-labelledby', 'tab-' + stageKey);
         organization.closest('.organization-view').querySelector('[role="group"]').setAttribute('aria-label', stageKey + ' diagram controls');
         window.dispatchEvent(new CustomEvent('agentbase:stage', { detail: { key: stageKey } }));
 
@@ -94,7 +99,6 @@
       });
 
       // Keyboard navigation support: ArrowLeft, ArrowRight, Home, End
-      const tablist = document.querySelector('.tabs-nav-bar');
       tablist.addEventListener('keydown', function(e) {
         const currentIndex = tabs.findIndex(tab => tab.getAttribute('aria-selected') === 'true');
         let newIndex = currentIndex;
@@ -118,5 +122,15 @@
           targetTab.focus();
           updateStage(targetTab.getAttribute('data-stage'));
         }
+      });
+
+      createAutoAdvance({
+        host: panel,
+        hoverTarget: tablist,
+        pauseControl: pauseButton,
+        advance() {
+          const index = tabs.findIndex(tab => tab.getAttribute('aria-selected') === 'true');
+          updateStage(tabs[(index + 1) % tabs.length].getAttribute('data-stage'));
+        },
       });
     })();

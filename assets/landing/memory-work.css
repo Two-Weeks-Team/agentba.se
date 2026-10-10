@@ -142,7 +142,9 @@
   font-size: 11px;
   line-height: 1.6;
 }
-.mm-terminal-body { flex: 1; min-width: 0; padding: 24px; }
+.mm-terminal-body { display: grid; flex: 1; min-width: 0; padding: 24px; }
+.mm-frame { grid-area: 1 / 1; min-width: 0; visibility: hidden; }
+.mm-frame[aria-hidden="false"] { visibility: visible; }
 .mm-terminal .mm-kicker {
   margin-bottom: 12px;
   color: #c3c6b9;
