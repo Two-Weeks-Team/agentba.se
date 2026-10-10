@@ -1,5 +1,5 @@
 // Local walkthrough playback only: advancing never invokes a product or service.
-export function createAutoAdvance({ host, advance, label, hoverTarget = host, pauseControl, delay = 7000 }) {
+export function createAutoAdvance({ host, advance, label, hoverTarget = host, pauseControl, delay = 3500 }) {
   const doc = host.ownerDocument;
   const view = doc.defaultView;
   const motion = view.matchMedia('(prefers-reduced-motion: reduce)');

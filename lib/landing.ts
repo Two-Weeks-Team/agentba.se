@@ -1,4 +1,5 @@
 import { readFileSync } from "node:fs";
+import { createHash } from "node:crypto";
 import { join } from "node:path";
 import company from "@/data/company.json";
 import people from "@/data/people.json";
@@ -9,6 +10,13 @@ export const LANDING_STYLES = [
   "organization-scene.css", "c.css", "media-page.css", "social-work.css",
   "commerce-work.css", "memory-work.css", "foundation-work.css",
 ];
+
+// A revised demo must not pick up a stylesheet from an earlier preview.
+export function landingStylesheetHref(file: string) {
+  const content = readFileSync(join(process.cwd(), "assets/landing", file));
+  const version = createHash("sha256").update(content).digest("hex").slice(0, 12);
+  return `/landing/${file}?v=${version}`;
+}
 
 const escape = (value: string) => value.replace(/&/g, "&amp;").replace(/</g, "&lt;")
   .replace(/>/g, "&gt;").replace(/"/g, "&quot;");

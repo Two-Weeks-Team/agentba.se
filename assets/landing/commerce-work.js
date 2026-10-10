@@ -1,5 +1,5 @@
 /**
- * Kbeauty: a clip-first discovery walkthrough, using generated stills.
+ * Kbeauty: a clip-first discovery walkthrough, with an original product film.
  * Load commerce-work.css separately. No dependencies or production requests.
  *
  * mountCommerceDemo(host) returns a cleanup function; remounting is safe.
@@ -11,6 +11,8 @@
  * docs/BRIEF.md:94–103 identifies these as generated, unbranded imagery.
  * Copied without alteration: pdp-on-skin.webp, pdp-texture-swatch.webp,
  * pdp-ampoule-hero.webp. They illustrate one SAMPLE, not a verified real SKU.
+ * product-film.mp4/png: original procedural 3D illustration, authored in
+ * scripts/commerce-film.html. No creator footage, review, or product claim.
  *
  * Interaction sources at that commit:
  * components/shop/clip-stage.tsx:77–105,143–179: clips first, photo last,
@@ -37,13 +39,13 @@ const referenceImage = new URL(
 const views = [
   {
     id: "in-use",
-    label: "In use",
-    file: "pdp-on-skin.webp",
-    alt: "Generated illustration of skincare drops on a cheek; not a real creator or customer review.",
-    title: "Start with the moment.",
-    description: "A clip draws you in. The product stays beside it, ready to explore.",
-    caption: "An illustrated use view",
-    context: "Use view → linked product",
+    label: "Film",
+    file: "product-film.png",
+    alt: "Original 3D illustration of an unbranded skincare bottle and dropper; not a customer review.",
+    title: "Start with the moving image.",
+    description: "A clip draws you in. Explore the texture and product without losing the connection.",
+    caption: "A product in motion",
+    context: "Product film → linked product",
   },
   {
     id: "texture",
@@ -107,7 +109,10 @@ export function mountCommerceDemo(host) {
               src="${media(view.file)}" alt="${view.alt}" width="${index === 0 ? 733 : 1024}"
               height="${index === 0 ? 1100 : 1024}" decoding="async" ${index ? "hidden" : ""}>
           `).join("")}
-          <span class="kb-image-label">Generated still</span>
+          <video class="kb-frame-video" muted loop playsinline preload="none" poster="${media('product-film.png')}" aria-label="Silent illustrative film of a sample skincare bottle"></video>
+          <span class="kb-image-label" data-kb-media-label>Illustrative film</span>
+          <button type="button" class="kb-film-toggle" data-kb-film-toggle aria-label="Play illustrative product film">Play</button>
+          <span class="kb-film-progress" aria-hidden="true"><span></span></span>
           <figcaption class="kb-frame-caption">
             <span class="kb-frame-caption-title" data-kb-caption>${views[0].caption}</span>
             <span class="kb-frame-index" data-kb-index>01 / 03</span>
@@ -150,7 +155,7 @@ export function mountCommerceDemo(host) {
         <details class="kb-source">
           <summary class="kb-source-toggle"><span>About this walkthrough</span><span class="kb-source-symbol" aria-hidden="true"></span></summary>
           <div class="kb-source-content">
-            <p>On kbeauty.market, creator and brand clips keep their original source links. This walkthrough uses generated imagery, not creator footage.</p>
+            <p>On kbeauty.market, creator and brand clips keep their original source links. This walkthrough uses an original 3D film and generated stills of a sample product, not customer footage or a review.</p>
             <a class="kb-reference-link" href="${referenceImage}" target="_blank" rel="noopener noreferrer">
               <span>Actual product UI · Sep 12, 2026<span class="kb-sr-only"> (opens image in a new tab)</span></span><span aria-hidden="true">↗</span>
             </a>
@@ -179,6 +184,54 @@ export function mountCommerceDemo(host) {
   const findLabel = root.querySelector("[data-kb-find-label]");
   const findArrow = root.querySelector("[data-kb-find-arrow]");
   const status = root.querySelector("[data-kb-status]");
+  const video = root.querySelector('video');
+  const videoToggle = root.querySelector('[data-kb-film-toggle]');
+  const videoProgress = root.querySelector('.kb-film-progress');
+  const mediaLabel = root.querySelector('[data-kb-media-label]');
+  const motion = document.defaultView.matchMedia('(prefers-reduced-motion: reduce)');
+  const videoEvents = new AbortController();
+  const onVideo = (target, type, handler) => target.addEventListener(type, handler, { signal: videoEvents.signal });
+  let videoVisible = false, videoPaused = false, manualPlay = false, disposed = false;
+  video.muted = true;
+
+  function videoControls() {
+    const playing = !video.paused && !video.ended;
+    videoToggle.textContent = playing ? 'Pause' : 'Play';
+    videoToggle.setAttribute('aria-label', `${playing ? 'Pause' : 'Play'} illustrative product film`);
+    root.dataset.videoState = video.error ? 'error' : playing ? 'playing' : 'paused';
+  }
+
+  function syncVideo() {
+    const film = selected === 0;
+    video.hidden = !film;
+    videoToggle.hidden = !film;
+    videoProgress.hidden = !film;
+    const shouldPlay = film && videoVisible && !document.hidden && !videoPaused &&
+      host.dataset.autoplay !== 'paused' && (!motion.matches || manualPlay);
+    if (!shouldPlay) { video.pause(); videoControls(); return; }
+    if (!video.getAttribute('src')) video.src = media('product-film.mp4');
+    if (video.paused) video.play().catch(() => { if (!disposed) videoControls(); });
+  }
+
+  onVideo(videoToggle, 'click', () => {
+    if (video.paused) { videoPaused = false; manualPlay = true; }
+    else { videoPaused = true; manualPlay = false; }
+    syncVideo();
+  });
+  for (const type of ['playing', 'pause', 'error']) onVideo(video, type, videoControls);
+  onVideo(video, 'timeupdate', () => {
+    const progress = Number.isFinite(video.duration) && video.duration > 0 ? video.currentTime / video.duration : 0;
+    videoProgress.firstElementChild.style.transform = `scaleX(${progress})`;
+  });
+  onVideo(document, 'visibilitychange', syncVideo);
+  onVideo(motion, 'change', () => { manualPlay = false; syncVideo(); });
+  const videoObserver = new IntersectionObserver(([entry]) => {
+    videoVisible = entry.isIntersecting && entry.intersectionRatio >= .2;
+    syncVideo();
+  }, { threshold: .2 });
+  videoObserver.observe(frame);
+  const playbackObserver = new MutationObserver(syncVideo);
+  playbackObserver.observe(host, { attributes: true, attributeFilter: ['data-autoplay'] });
   const destination = publicDestination(host);
   root.querySelector("[data-kb-live-link]").href = destination.href;
   root.querySelector("[data-kb-live-label]").textContent = destination.product ? "Explore the live product" : "Visit kbeauty.market";
@@ -201,9 +254,11 @@ export function mountCommerceDemo(host) {
     title.textContent = view.title;
     description.textContent = view.description;
     connection.textContent = view.context;
+    mediaLabel.textContent = index === 0 ? 'Illustrative film' : 'Generated still';
     findLabel.textContent = view.id === "product" ? "Back to the frame" : "Find it";
     findArrow.textContent = view.id === "product" ? "←" : "→";
     if (announce) status.textContent = `${view.label}. ${view.caption}. ${view.description}`;
+    syncVideo();
   }
 
   function onClick(event) {
@@ -237,7 +292,14 @@ export function mountCommerceDemo(host) {
   const tour = createAutoAdvance({ host, label: 'Kbeauty', advance: () => select((selected + 1) % views.length, false) });
 
   const dispose = () => {
+    disposed = true;
     tour.destroy();
+    videoObserver.disconnect();
+    playbackObserver.disconnect();
+    videoEvents.abort();
+    video.pause();
+    video.removeAttribute('src');
+    video.load();
     root.removeEventListener("click", onClick);
     root.removeEventListener("keydown", onKeyDown);
     root.remove();

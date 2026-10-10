@@ -142,6 +142,7 @@
   font-size: 11px;
   line-height: 1.6;
 }
+/* Also support an earlier cached module without the inline frame layout. */
 .mm-terminal-body { display: grid; flex: 1; min-width: 0; padding: 24px; }
 .mm-frame { grid-area: 1 / 1; min-width: 0; visibility: hidden; }
 .mm-frame[aria-hidden="false"] { visibility: visible; }

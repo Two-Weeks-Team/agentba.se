@@ -16,11 +16,14 @@ export function mountMemoryDemo(host) {
     <div class="mm-bottom"><span>Source-linked recall → a next action you can inspect.</span><a href="${new URL('./media-proposal/memex-replay.png', import.meta.url).href}" target="_blank" rel="noopener noreferrer">View the original replay interface ↗</a></div>`;
   let step = 0, updateDeck = () => {};
   const body = host.querySelector('.mm-terminal-body');
-  // Stack the three frames in one grid cell so the tallest frame reserves
-  // space. Automatic playback must not move the reading area or its controls.
+  // Keep the sizing and visibility with the frames, not in a separately cached
+  // stylesheet. Even older CSS must show only one step, with a stable height.
+  body.style.display = 'grid';
   const panels = frames.map((f, index) => {
     const panel = document.createElement('div');
     panel.className = 'mm-frame';
+    panel.style.gridArea = '1 / 1';
+    panel.style.minWidth = '0';
     for (const [tag, cls, content] of [['p','mm-kicker',f.kicker],['h4','',f.title],['pre','',f.code],['p','',f.body]]) {
       const el = document.createElement(tag); el.className = cls; el.textContent = content; panel.append(el);
     }
@@ -34,7 +37,10 @@ export function mountMemoryDemo(host) {
     host.querySelectorAll('[data-memory-step]').forEach(button => button.setAttribute('aria-pressed', String(Number(button.dataset.memoryStep) === step)));
     host.querySelector('[data-memory-mode]').textContent = f.mode;
     body.setAttribute('aria-live', announce ? 'polite' : 'off');
-    panels.forEach((panel, index) => panel.setAttribute('aria-hidden', String(index !== step)));
+    panels.forEach((panel, index) => {
+      panel.style.visibility = index === step ? 'visible' : 'hidden';
+      panel.setAttribute('aria-hidden', String(index !== step));
+    });
     host.querySelector('.mm-position').textContent = `0${step + 1} / 03`;
     host.querySelector('.mm-next').textContent = f.next;
     host.querySelector('.mm-spatial-caption').textContent = f.caption;

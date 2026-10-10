@@ -1,5 +1,4 @@
-/* Warm product chrome keeps the original generated imagery in the foreground.
-   The finite image entrance illustrates a view change, never video playback. */
+/* Warm product chrome for an original illustrative film and generated stills. */
 .commerce-demo {
   --kb-ink: var(--ink, #242421);
   --kb-muted: var(--muted, #66665e);
@@ -79,7 +78,8 @@
   border-radius: 12px;
   background: #e7e1d5;
 }
-.commerce-demo .kb-frame-image {
+.commerce-demo .kb-frame-image,
+.commerce-demo .kb-frame-video {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -87,6 +87,20 @@
   object-fit: cover;
   animation: kb-image-arrive 420ms ease-out both;
 }
+.commerce-demo .kb-frame-video { animation: none; }
+.commerce-demo .kb-film-toggle {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid #e3dfd5;
+  background: #fffdf8;
+  font-size: 12px;
+}
+.commerce-demo .kb-film-toggle:hover { background: #eeede6; }
+.commerce-demo .kb-film-progress { position: absolute; inset: auto 0 0; height: 3px; background: #24242114; }
+.commerce-demo .kb-film-progress > span { display: block; height: 100%; background: #a78d5b; transform: scaleX(0); transform-origin: left; }
 .commerce-demo .kb-frame-image--product { object-fit: contain; background: #f4eee5; }
 .commerce-demo .kb-image-label {
   position: absolute;
@@ -99,6 +113,7 @@
   background: #fffdf8;
   color: var(--kb-ink);
 }
+.commerce-demo[data-kb-view="in-use"] .kb-image-label { max-width: calc(100% - 92px); }
 .commerce-demo .kb-frame-caption {
   position: absolute;
   inset: auto 10px 10px;

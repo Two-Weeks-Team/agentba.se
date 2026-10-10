@@ -9,11 +9,11 @@ that same source; production never depends on an untracked preview directory.
 
 - `organization-scene.js` and `organization-blueprint.mjs`: interactive conceptual
   task, role, department and company diagrams; not live business telemetry.
-- `progression.js`: advances the four scopes every seven seconds while visible.
+- `progression.js`: advances the four scopes every 3.5 seconds while visible.
   Hovering the tabs or using keyboard navigation pauses the sequence; leaving
   resumes with a full interval. The diagram's motion control and reduced-motion
   preference also stop automatic stage changes.
-- `auto-advance.js`: shared seven-second playback for all five product demos.
+- `auto-advance.js`: shared 3.5-second playback for all five product demos.
   Social Seeding cycles through all three steps for each persona; Glasshat
   includes all six perspectives. Kbeauty, Memex and PreviewForge show every view.
   Hovering or keyboard interaction pauses a demo; a separate pause control also
@@ -23,11 +23,14 @@ that same source; production never depends on an untracked preview directory.
 - `social-work.js`: illustrative workflows and AI persona portraits from the
   team's social-seeding-v2 interface. Drafts are unsent examples. Role buttons
   do not invoke agents or send outreach.
-- `commerce-work.js`: clip-first discovery illustrated with the kbeauty.market
-  repository's generated sample stills. The code records the source commit and
-  component paths. The demo makes no checkout or real-video-playback claim.
+- `commerce-work.js`: clip-first discovery with an original silent 3D product
+  film and the kbeauty.market repository's generated sample stills. The film
+  autoplays only while visible; reduced-motion users can start it manually.
+  Hover holds the selected view so visitors can watch the film. The sample is
+  not customer footage or a review. Source: `scripts/commerce-film.html`.
 - `memory-work.js`: synthetic Memex session and source-turn walkthrough. The
-  linked replay capture is a product interface reference.
+  linked replay capture is a product interface reference. Frame visibility and
+  shared sizing travel with the JavaScript so older CSS cannot stack all steps.
 - `foundation-work.js`: Glasshat review and PreviewForge decision-to-brief
   interactions, with links to public demonstrations in the page.
 
