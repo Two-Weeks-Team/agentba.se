@@ -21,7 +21,11 @@ export function metadataFor(locale: Locale): Metadata {
     title: meta.title,
     description: meta.description,
     alternates: alternatesFor(locale),
-    icons: { icon: BROWSER_ICONS, shortcut: BROWSER_ICONS[0]!.url },
+    icons: {
+      icon: [{ url: "/icon.svg", type: "image/svg+xml", sizes: "any" }, ...BROWSER_ICONS],
+      shortcut: BROWSER_ICONS[0]!.url,
+      apple: { url: "/apple-icon.png", type: "image/png", sizes: "180x180" },
+    },
     openGraph: {
       type: "website",
       siteName: company.name,

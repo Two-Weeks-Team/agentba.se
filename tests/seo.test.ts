@@ -91,6 +91,10 @@ describe("public SEO and company identity", () => {
       const html = readFileSync(source.file, "utf8");
       validateHead(html, source.canonical);
       validateCompany(html);
+      if (source.name !== "C redesign") {
+        expect(links(html, "icon").some(tag => attr(tag, "type") === "image/svg+xml")).toBe(true);
+        expect(links(html, "apple-touch-icon").some(tag => attr(tag, "sizes") === "180x180")).toBe(true);
+      }
     });
   }
 
