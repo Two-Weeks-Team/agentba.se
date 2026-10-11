@@ -58,6 +58,19 @@ try {
   for (const bot of ['ClaudeBot', 'Claude-User', 'Claude-SearchBot']) assert(robots.includes(bot), `Missing bot rule: ${bot}`);
   assert((await get('/sitemap.xml')).text.includes('https://agentba.se'));
 
+  // The landing asset inventory does not include Next's file-based icons.
+  // Verify those explicitly so an old favicon cannot pass deployment QA.
+  for (const [path, source, mime] of [
+    ['/favicon.ico', 'app/favicon.ico', /image\/(?:x-icon|vnd\.microsoft\.icon)/],
+    ['/icon.svg', 'app/icon.svg', /image\/svg\+xml/],
+    ['/apple-icon.png', 'app/apple-icon.png', /image\/png/],
+    ['/logo-512.png', 'public/logo-512.png', /image\/png/],
+  ]) {
+    const { bytes, type } = await get(path);
+    assert.match(type, mime);
+    assert.equal(digest(bytes), digest(readFileSync(source)), `Stale brand icon: ${path}`);
+  }
+
   const assets = readdirSync('assets/landing', { recursive: true }).filter(file => /\.(js|mjs|css|webp|png|svg|ttf|woff2|txt|mp4|webm)$/.test(file));
   assert(assets.length > 30, 'Runtime asset inventory is incomplete');
   for (let offset = 0; offset < assets.length; offset += 5) {

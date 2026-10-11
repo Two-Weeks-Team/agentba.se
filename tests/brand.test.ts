@@ -59,4 +59,45 @@ describe("icon set", () => {
     // A truncated path would still be valid SVG and would still render *something*.
     expect(svg).toContain(MARK_PATH.slice(0, 80));
   });
+
+  it("keeps the original dark mark on a transparent browser icon", () => {
+    const svg = readFileSync("app/icon.svg", "utf8");
+    expect(svg).toContain('fill="#101113"');
+    expect(svg).not.toContain("<rect");
+    // Nested SVG offsets were ignored by the ICO rasterizer.
+    expect(svg.match(/<svg\b/g)).toHaveLength(1);
+  });
+
+  it("centers dark artwork on transparency in every ICO size", () => {
+    const ico = readFileSync("app/favicon.ico");
+    expect(ico.readUInt16LE(4)).toBe(3);
+    for (const [index, size] of [16, 32, 48].entries()) {
+      const entry = 6 + index * 16;
+      expect(ico[entry]).toBe(size);
+      expect(ico[entry + 1]).toBe(size);
+      const bitmap = ico.readUInt32LE(entry + 12);
+      expect(ico.readUInt32LE(bitmap)).toBe(40); // BITMAPINFOHEADER
+      expect(ico.readUInt16LE(bitmap + 14)).toBe(32); // BGRA
+      const ink: { x: number; y: number }[] = [];
+      let transparent = 0;
+      for (let y = 0; y < size; y++) {
+        for (let x = 0; x < size; x++) {
+          const pixel = bitmap + 40 + ((size - 1 - y) * size + x) * 4;
+          const alpha = ico[pixel + 3]!;
+          if (alpha === 0) transparent++;
+          if (alpha > 128) {
+            expect(Math.max(...ico.subarray(pixel, pixel + 3))).toBeLessThan(40);
+            ink.push({ x, y });
+          }
+        }
+      }
+      expect(transparent / (size * size)).toBeGreaterThan(0.4);
+      expect(ink.length).toBeGreaterThan(size * size * 0.2);
+      for (const axis of ["x", "y"] as const) {
+        const min = Math.min(...ink.map(point => point[axis]));
+        const max = Math.max(...ink.map(point => point[axis]));
+        expect(Math.abs((min + max) / 2 - (size - 1) / 2)).toBeLessThanOrEqual(1);
+      }
+    }
+  });
 });
