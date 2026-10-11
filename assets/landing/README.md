@@ -9,11 +9,11 @@ that same source; production never depends on an untracked preview directory.
 
 - `organization-scene.js` and `organization-blueprint.mjs`: interactive conceptual
   task, role, department and company diagrams; not live business telemetry.
-- `progression.js`: advances the four scopes every 3.5 seconds while visible.
+- `progression.js`: advances the four scopes every second while visible.
   Hovering the tabs or using keyboard navigation pauses the sequence; leaving
   resumes with a full interval. The diagram's motion control and reduced-motion
   preference also stop automatic stage changes.
-- `auto-advance.js`: shared 3.5-second playback for all five product demos.
+- `auto-advance.js`: shared one-second playback for all five product demos.
   Social Seeding cycles through all three steps for each persona; Glasshat
   includes all six perspectives. Kbeauty, Memex and PreviewForge show every view.
   Hovering or keyboard interaction pauses a demo; a separate pause control also
