@@ -72,6 +72,70 @@ export const targets = [
   ['stage-panel', '#tab-task'],
 ];
 
+// The prior layout passed existence/overflow checks but reduced the main scene
+// to a thumbnail. Check its visual prominence, not just that a canvas exists.
+export async function checkMemoryPresentation(page) {
+  const result = await page.evaluate(() => {
+    const host = document.getElementById('memory-demo');
+    const rect = selector => {
+      const r = host.querySelector(selector).getBoundingClientRect();
+      return {x:r.x,y:r.y,width:r.width,height:r.height};
+    };
+    return {hostWidth:host.clientWidth,scene:rect('.mm-spatial'),terminal:rect('.mm-terminal'),
+      imageVisible:host.querySelector('.mm-replay-image').getClientRects().length>0,
+      renderer:host.querySelector('.mm-spatial').dataset.renderer};
+  });
+  const desktop = result.hostWidth > 760;
+  assert.ok(result.scene.height >= (desktop ? 340 : 260), 'Memex scene has become a miniature');
+  assert.ok(result.scene.width >= result.hostWidth * (desktop ? .42 : .8), 'Memex scene is too narrow');
+  if (desktop) {
+    assert.ok(result.scene.x < result.terminal.x, 'Read from the past session to the current result');
+    assert.ok(Math.abs(result.scene.y-result.terminal.y) < 60, 'Scene and result must share a visual row');
+    assert.ok(result.scene.height/result.terminal.height >= .75, 'The result overwhelms the memory scene');
+  } else {
+    assert.ok(result.scene.y+result.scene.height <= result.terminal.y, 'Mobile scene must precede the result');
+  }
+  assert.equal(result.imageVisible, false, 'A miniature product screenshot must not compete with the main scene');
+  assert.ok(['webgl','fallback'].includes(result.renderer), 'Memory scene is missing');
+  return result;
+}
+
+export async function checkMemoryReplay(page) {
+  await page.cdp('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:'no-preference'}]});
+  await page.click('.mm-open-replay');
+  await page.waitForFunction(()=>document.querySelector('.mm-replay-dialog').open && document.getElementById('memory-demo').dataset.autoplay==='expanded');
+  const step=await page.evaluate(()=>document.getElementById('memory-demo').dataset.step);
+  await new Promise(resolve=>setTimeout(resolve,2200));
+  assert.equal(await page.evaluate(()=>document.getElementById('memory-demo').dataset.step),step,'Replay must pause the walkthrough');
+  const result=await page.evaluate(()=>{
+    const dialog=document.querySelector('.mm-replay-dialog'), image=dialog.querySelector('img');
+    const rect=dialog.getBoundingClientRect(), scroll=dialog.querySelector('.mm-replay-scroll');
+    return {loaded:image.complete&&image.naturalWidth===1920,imageWidth:dialog.querySelector('.mm-replay-image').clientWidth,
+      withinViewport:rect.left>=0&&rect.right<=innerWidth&&rect.top>=0&&rect.bottom<=innerHeight,
+      focusInside:dialog.contains(document.activeElement),horizontalPan:scroll.scrollWidth>scroll.clientWidth};
+  });
+  assert.ok(result.loaded, 'Original Replay asset must load');
+  assert.ok(result.imageWidth>=1000, 'Original Replay must be large enough to inspect');
+  assert.ok(result.withinViewport, 'Replay viewer must fit the viewport');
+  assert.ok(result.focusInside, 'The modal must contain keyboard focus');
+  await page.keyboard.press('Escape');
+  assert.ok(await page.evaluate(()=>!document.querySelector('.mm-replay-dialog').open&&document.activeElement.matches('.mm-open-replay')),'Escape must close the viewer and return focus');
+  return {...result,paused:true,escapeAndFocusReturn:true};
+}
+
+export async function rejectMiniatureMemory(page) {
+  const previous=await page.evaluate(()=>{
+    const scene=document.querySelector('.mm-spatial'), previous=scene.style.height;
+    scene.style.height='180px';return previous;
+  });
+  try {
+    await assert.rejects(checkMemoryPresentation(page), /scene has become a miniature/, 'The previous tiny scene must fail validation');
+  } finally {
+    await page.evaluate(height=>{document.querySelector('.mm-spatial').style.height=height;},previous);
+  }
+  return {rejectedMiniatureScene:true};
+}
+
 export async function checkTiming(page, [id, tab]) {
   await page.evaluate(id => {
     document.documentElement.style.scrollBehavior = 'auto';

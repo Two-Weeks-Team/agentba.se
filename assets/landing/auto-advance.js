@@ -34,7 +34,7 @@ export function createAutoAdvance({ host, advance, label, hoverTarget = host, co
     progress?.cancel();
     if (disposed) return;
     const state = motion.matches ? 'reduced' : paused || pauseControl?.getAttribute('aria-pressed') === 'true' ? 'paused'
-      : host.querySelector('details[open]') ? 'expanded' : keyboardFocus ? 'focus' : hovering ? 'hover'
+      : host.querySelector('details[open], dialog[open]') ? 'expanded' : keyboardFocus ? 'focus' : hovering ? 'hover'
       : doc.hidden ? 'hidden' : !visible ? 'offscreen' : 'running';
     host.dataset.autoplay = state;
     if (button) {

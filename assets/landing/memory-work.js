@@ -13,19 +13,25 @@ export function mountMemoryDemo(host) {
   host.innerHTML = `<div class="mm-topline"><span class="mm-wordmark">Memex / session memory</span><span>Synthetic session walkthrough</span></div>
     <div class="mm-steps" role="group" aria-label="Memory walkthrough steps"><button type="button" data-memory-step="0" aria-pressed="true">01 / Encounter a failure</button><button type="button" data-memory-step="1" aria-pressed="false">02 / Recall experience</button><button type="button" data-memory-step="2" aria-pressed="false">03 / Inspect the source</button></div>
     <div class="mm-stage">
+      <div class="mm-spatial"><div class="mm-spatial-title">Past sessions / a memory to return to</div><div class="mm-fallback"><p>Python dependencies</p><p>Containerize API</p><p>Rust CI / missing toolchain</p></div><div class="mm-spatial-caption"></div></div>
       <div class="mm-terminal"><div class="mm-terminal-head"><span data-memory-mode></span><span>Memex</span></div><div class="mm-terminal-body" aria-live="polite"></div>
         <details class="mm-detail"><summary>Inspect the session detail</summary><div class="mm-detail-body"><pre></pre><p class="mm-source">Synthetic source / 11-infra-fix-ci-cache.jsonl</p></div></details>
         <div class="mm-terminal-footer"><span class="mm-position"></span><button type="button" class="mm-next"></button></div>
       </div>
-      <div class="mm-evidence">
-        <figure class="mm-replay"><a class="mm-replay-image" href="${replayUrl}" target="_blank" rel="noopener noreferrer" aria-label="Open the original Memex Replay screenshot at full size"><img src="${replayUrl}" width="1920" height="1248" loading="lazy" decoding="async" alt="Memex Replay interface showing eight turns of a synthetic Rust CI session and the recorded missing-linker error."></a><figcaption><span><strong>The source, in Replay</strong><span>Original product interface · synthetic Rust CI session</span></span><a href="${replayUrl}" target="_blank" rel="noopener noreferrer" aria-label="View the full Memex Replay screenshot">View full size ↗</a></figcaption></figure>
-        <div class="mm-spatial"><div class="mm-spatial-title">Past sessions / spatial archive</div><div class="mm-fallback"><p>Python dependencies</p><p>Containerize API</p><p>Rust CI / missing toolchain</p></div><div class="mm-spatial-caption"></div></div>
-      </div>
     </div>
-    <div class="mm-bottom"><span>Recall a next action. Inspect the session behind it.</span><span>Illustration, not a live retrieval run.</span></div>`;
+    <div class="mm-bottom"><span>Illustrated workflow · synthetic session</span><button type="button" class="mm-open-replay" aria-haspopup="dialog">View the original Replay interface <span aria-hidden="true">↗</span></button></div>
+    <dialog class="mm-replay-dialog" aria-labelledby="mm-replay-title"><div class="mm-replay-head"><div><h4 id="mm-replay-title">Inside Memex Replay</h4><p>Original product interface · synthetic Rust CI session</p></div><button type="button" class="mm-close-replay" autofocus aria-label="Close Replay image">Close <span aria-hidden="true">×</span></button></div><div class="mm-replay-scroll" tabindex="0" aria-label="Original Replay interface. Scroll horizontally on smaller screens to inspect the session."><div class="mm-replay-image"><img src="${replayUrl}" width="1920" height="1248" loading="lazy" decoding="async" alt="Memex Replay interface showing eight turns of a synthetic Rust CI session and the recorded missing-linker error."></div></div><div class="mm-replay-bottom"><span>Eight turns. One recorded session.</span><a href="${replayUrl}" target="_blank" rel="noopener noreferrer">Open full image ↗</a></div></dialog>`;
   let step = 0, updateDeck = () => {};
   const body = host.querySelector('.mm-terminal-body');
   const detail = host.querySelector('.mm-detail');
+  const replay = host.querySelector('.mm-replay-dialog');
+  host.querySelector('.mm-open-replay').addEventListener('click', () => { replay.showModal(); autoplay.restart(); });
+  host.querySelector('.mm-close-replay').addEventListener('click', () => replay.close());
+  replay.addEventListener('click', event => {
+    if (event.target !== replay) return;
+    const rect = replay.getBoundingClientRect();
+    if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) replay.close();
+  });
   // Keep the sizing and visibility with the frames, not in a separately cached
   // stylesheet. Even older CSS must show only one step, with a stable height.
   body.style.display = 'grid';
@@ -63,7 +69,7 @@ export function mountMemoryDemo(host) {
   catch (error) { host.querySelector('.mm-spatial').dataset.renderer = 'fallback'; console.warn('Memory archive is using its text diagram.', error); }
   const autoplay = createAutoAdvance({ host, label: 'Memex', advance() {
     // Keep an expanded record readable even with an older autoplay module.
-    if (detail.open) return;
+    if (detail.open || replay.open) return;
     step = (step + 1) % frames.length;
     render(false);
   } });
@@ -72,6 +78,7 @@ export function mountMemoryDemo(host) {
     // also gives cached autoplay modules a full interval after the record closes.
     autoplay.restart();
   });
+  replay.addEventListener('close', () => autoplay.restart());
 }
 
 function spatialArchive(host) {
@@ -82,7 +89,7 @@ function spatialArchive(host) {
   renderer.domElement.setAttribute('aria-label', 'Past sessions arranged in a spatial archive. The Rust CI session moves forward when its experience is retrieved.');
   host.prepend(renderer.domElement);
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(34, 1, .1, 60);
+  const camera = new THREE.OrthographicCamera(-5, 5, 4, -4, .1, 60);
   camera.position.set(0, 0, 12);
   const world = new THREE.Group(); scene.add(world);
   const names = ['Python / Dependencies', 'API / Container setup', 'Rust CI / Missing toolchain'];
@@ -91,13 +98,13 @@ function spatialArchive(host) {
     const ctx = canvas.getContext('2d');
     ctx.fillStyle = index === 2 ? '#e8ece2' : '#fdfcf8'; ctx.fillRect(0,0,900,520);
     ctx.strokeStyle = index === 2 ? '#87957e' : '#c6c9bf'; ctx.lineWidth = 2; ctx.strokeRect(1,1,898,518);
-    ctx.fillStyle = index === 2 ? '#36472f' : '#242421'; ctx.font = '22px monospace'; ctx.fillText('Session / '+String(index+1).padStart(2,'0'),45,59);
+    ctx.fillStyle = index === 2 ? '#36472f' : '#242421'; ctx.font = '28px monospace'; ctx.fillText('Session / '+String(index+1).padStart(2,'0'),45,59);
     ctx.beginPath(); ctx.moveTo(45,83); ctx.lineTo(855,83); ctx.stroke();
-    ctx.font = 'bold 35px monospace'; ctx.fillText(name,45,163);
-    ctx.font = '25px monospace';
-    const lines = index === 2 ? ['$ cargo build --release','linker `cc` not found','→ inspect the recorded next action'] : index === 1 ? ['$ docker build','A recorded development session','Tools · context · result'] : ['$ pip install -r requirements.txt','A recorded development session','Tools · context · result'];
+    ctx.font = 'bold 36px monospace'; ctx.fillText(name,45,163);
+    ctx.font = '31px monospace';
+    const lines = index === 2 ? ['$ cargo build --release','linker `cc` not found','→ Recall the next action'] : index === 1 ? ['$ docker build','A past development session','Tools · context · result'] : ['$ pip install -r requirements.txt','A past development session','Tools · context · result'];
     lines.forEach((text,i) => ctx.fillText(text,45,237+i*54));
-    ctx.font = '20px monospace'; ctx.fillText('Synthetic session / local archive',45,470);
+    ctx.font = '26px monospace'; ctx.fillText('Synthetic session / local archive',45,470);
     const texture = new THREE.CanvasTexture(canvas); texture.colorSpace = THREE.SRGBColorSpace;
     const mesh = new THREE.Mesh(new THREE.PlaneGeometry(6.2,3.58), new THREE.MeshBasicMaterial({ map:texture, side:THREE.DoubleSide }));
     world.add(mesh); return mesh;
@@ -112,7 +119,15 @@ function spatialArchive(host) {
   }
   function tick() { frame=0; if(!visible||document.hidden)return; draw(motion.matches); if(!motion.matches && --remaining>0)frame=requestAnimationFrame(tick); }
   function refresh() { cancelAnimationFrame(frame); remaining=42; if(visible&&!document.hidden)frame=requestAnimationFrame(tick); else draw(true); }
-  const ro=new ResizeObserver(() => { const {width,height}=host.getBoundingClientRect(); if(!width||!height)return; renderer.setSize(width,height,false);camera.aspect=width/height;camera.position.z=width<400?13.5:12;camera.updateProjectionMatrix();draw(true); }); ro.observe(host);
+  const ro=new ResizeObserver(() => {
+    const {width,height}=host.getBoundingClientRect(); if(!width||!height)return;
+    renderer.setSize(width,height,false);
+    // Fit the card deck, not a fixed perspective distance: a short viewport
+    // must never turn the main illustration into a miniature on a wide grid.
+    const aspect=width/height, viewWidth=Math.max(7.6,6.1*aspect), viewHeight=viewWidth/aspect;
+    camera.left=-viewWidth/2;camera.right=viewWidth/2;camera.top=viewHeight/2;camera.bottom=-viewHeight/2;
+    camera.updateProjectionMatrix();draw(true);
+  }); ro.observe(host);
   const io=new IntersectionObserver(([entry]) => { visible=entry.isIntersecting;if(visible)refresh();else {cancelAnimationFrame(frame);frame=0;} },{threshold:.05});io.observe(host);
   document.addEventListener('visibilitychange',refresh);
   motion.addEventListener('change',refresh);

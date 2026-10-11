@@ -30,8 +30,13 @@ that same source; production never depends on an untracked preview directory.
   The film keeps looping as adjacent product explanations advance. The sample is
   not customer footage or a review. Source: `scripts/commerce-film.html`.
 - `memory-work.js`: synthetic Memex session and source-turn walkthrough. The
-  visible replay capture is a product interface reference. Frame visibility and
-  shared sizing travel with the JavaScript so older CSS cannot stack all steps.
+  session archive and result share one stage. Fit the orthographic camera to
+  the deck; keep the diagram at least 340px tall on desktop and 260px on mobile.
+  The original Replay capture opens in a large, keyboard-accessible image viewer
+  instead of shrinking both it and the diagram into one column. The viewer pauses
+  playback and preserves readable image dimensions on mobile with horizontal pan.
+  Frame visibility and shared sizing travel with the JavaScript so older CSS
+  cannot stack all steps.
 - `reserve-space.js`: measures all content states at the current width to keep
   mobile layouts stable without clipping content. Font loading and resizing
   trigger a fresh measurement.
@@ -49,6 +54,12 @@ and top playback controls. Run it at narrow mobile, tablet, and desktop widths.
 The timing, pause, expanded-detail, and film checks cover the two-second pace,
 hover release, explicit controls, continuous video, and reduced-motion behavior.
 `rejectFastInterval(page)` confirms that one-second playback fails the check.
+`checkMemoryPresentation(page)` checks the scene's actual size and its balance
+with the result panel. `checkMemoryReplay(page)` checks the original image viewer,
+focus return, Escape, and playback pause. `rejectMiniatureMemory(page)` verifies
+that the previous 180px scene fails the presentation check. Inspect screenshots
+of all three stages and the open viewer at desktop and mobile sizes as well;
+DOM presence and overflow checks do not establish visual quality.
 
 `node scripts/check-deployment.mjs <base-url> <report-path>` verifies published
 documents and runtime asset hashes, including video files and range responses.

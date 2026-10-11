@@ -82,23 +82,48 @@
 }
 .mm-stage {
   display: grid;
-  grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
-  gap: 24px;
-  align-items: start;
-  padding: 24px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 32px;
+  align-items: center;
+  padding: 28px 24px;
 }
-.mm-evidence { display: grid; min-width: 0; gap: 18px; }
-.mm-replay { min-width: 0; margin: 0; }
+.mm-replay-dialog {
+  width: min(1320px, calc(100vw - 48px));
+  max-width: none;
+  max-height: calc(100dvh - 48px);
+  margin: auto;
+  padding: 0;
+  overflow: auto;
+  border: 1px solid var(--mm-line);
+  border-radius: 16px;
+  background: var(--mm-paper);
+  color: var(--ink, #242421);
+}
+.mm-replay-dialog::backdrop { background: #171a16bf; }
+html:has(.mm-replay-dialog[open]) { overflow: hidden; }
+.mm-replay-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 24px;
+}
+.mm-replay-head h4 { font: 400 28px/1.2 var(--font-display); letter-spacing: -.02em; }
+.mm-replay-head p { margin-top: 6px; color: var(--mm-muted); font-size: 12px; }
+.mm-close-replay { flex: none; padding: 8px 14px; border: 1px solid var(--mm-line); background: transparent; color: inherit; font-size: 13px; }
+.mm-close-replay:hover { background: #eeede6; }
+.mm-replay-scroll { overflow-x: auto; margin-inline: 24px; border-radius: 10px; }
 .mm-replay-image {
   position: relative;
-  display: block;
-  aspect-ratio: 3.25;
+  min-width: 1100px;
+  aspect-ratio: 3.25 / 1;
   overflow: hidden;
   border: 1px solid #494e43;
   border-radius: 10px;
   background: #202020;
 }
-/* Crop only the surrounding empty canvas; the full original remains linked. */
+/* Preserve the actual UI at a readable size; pan it on narrow screens.
+   Crop only unused canvas. The untouched original remains linked. */
 .mm-replay-image img {
   position: absolute;
   top: 0;
@@ -108,31 +133,27 @@
   height: auto;
   transform: translateY(-14.58%);
 }
-.mm-replay figcaption {
+.mm-replay-bottom {
   display: flex;
-  align-items: start;
+  align-items: center;
   justify-content: space-between;
   gap: 8px 14px;
-  margin-top: 10px;
+  padding: 12px 24px;
   color: var(--mm-muted);
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.6;
 }
-.mm-replay figcaption > span,
-.mm-replay figcaption strong { display: block; }
-.mm-replay figcaption strong { margin-bottom: 2px; color: var(--ink, #242421); font-size: 13px; font-weight: 500; }
-.mm-replay figcaption a {
+.mm-replay-bottom a {
   display: inline-flex;
   align-items: center;
   flex-shrink: 0;
   min-height: 44px;
-  margin-top: -6px;
   color: var(--ink, #242421);
   text-decoration-thickness: 1px;
   text-underline-offset: 4px;
 }
-.mm-replay a:hover { color: #53634b; }
-.mm-spatial { position: relative; height: 180px; min-width: 0; overflow: hidden; }
+.mm-replay-bottom a:hover { color: #53634b; }
+.mm-spatial { position: relative; height: 400px; min-width: 0; overflow: hidden; }
 .mm-spatial canvas { display: block; width: 100%; height: 100%; }
 .mm-spatial-title,
 .mm-spatial-caption {
@@ -146,7 +167,7 @@
   text-wrap: pretty;
 }
 .mm-spatial-title { top: 0; text-transform: none; }
-.mm-spatial-caption { bottom: 0; max-width: 44ch; }
+.mm-spatial-caption { bottom: 0; max-width: 44ch; color: #50574a; }
 .mm-fallback {
   position: absolute;
   inset: 30px 12px;
@@ -167,7 +188,7 @@
 .mm-terminal {
   display: flex;
   flex-direction: column;
-  align-self: start;
+  align-self: center;
   min-width: 0;
   border: 1px solid #41463c;
   border-radius: 16px;
@@ -287,6 +308,18 @@
   text-underline-offset: 4px;
 }
 .mm-bottom a:hover { color: #53634b; }
+.mm-open-replay {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 0;
+  border: 0;
+  background: none;
+  color: var(--ink, #242421);
+  font-size: 12px;
+  text-align: left;
+}
+.mm-open-replay:hover { text-decoration: underline; text-underline-offset: 4px; }
 
 /* Respond to the demo's available space, including a narrow desktop column. */
 @container mm-memory (max-width: 760px) {
@@ -294,8 +327,7 @@
   .mm-steps { margin-inline: 18px; }
   .mm-steps button { padding: 10px 12px; font-size: 12px; }
   .mm-stage { grid-template-columns: minmax(0, 1fr); gap: 20px; padding: 20px; }
-  .mm-evidence { gap: 14px; }
-  .mm-spatial { height: 170px; }
+  .mm-spatial { height: 330px; }
   .mm-bottom { padding-inline: 20px; }
 }
 @container mm-memory (max-width: 420px) {
@@ -304,7 +336,7 @@
   .mm-steps { gap: 3px; margin-inline: 12px; padding: 4px; }
   .mm-steps button { min-height: 64px; padding: 8px 6px; font-size: 11px; }
   .mm-stage { gap: 18px; padding: 16px 12px; }
-  .mm-spatial { height: 150px; margin-inline: 4px; }
+  .mm-spatial { height: 290px; margin-inline: 4px; }
   .mm-spatial-title,
   .mm-spatial-caption { font-size: 11px; }
   .mm-fallback { inset: 25px 0; gap: 4px; }
@@ -317,11 +349,16 @@
   .mm-detail { margin-inline: 16px; }
   .mm-detail-body pre { margin-block: 2px 10px; }
   .mm-next { padding-inline: 12px; }
-  .mm-replay-image { aspect-ratio: 2.8; }
-  .mm-replay figcaption { gap: 4px 10px; font-size: 10px; }
-  .mm-replay figcaption strong { font-size: 12px; }
-  .mm-replay figcaption a { font-size: 11px; }
   .mm-bottom { align-items: flex-start; gap: 4px; padding: 12px 16px; font-size: 11px; }
+}
+@media (max-width: 600px) {
+  .mm-replay-dialog { width: calc(100vw - 24px); max-height: calc(100dvh - 24px); }
+  .mm-replay-head { align-items: start; padding: 20px 16px; }
+  .mm-replay-head h4 { font-size: 24px; }
+  .mm-replay-head p { max-width: 26ch; line-height: 1.6; }
+  .mm-replay-scroll { margin-inline: 16px; }
+  .mm-replay-bottom { flex-wrap: wrap; padding: 12px 16px; }
+  .mm-replay-bottom::before { content: 'Scroll sideways to inspect the full session →'; width: 100%; color: var(--ink, #242421); }
 }
 @media (prefers-reduced-motion: reduce) {
   .memory-demo * { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
