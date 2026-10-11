@@ -6,6 +6,7 @@
  * No backend, storage, tool execution, or message sending.
  */
 import { createAutoAdvance } from './auto-advance.js';
+import { reserveSpace } from './reserve-space.js';
 
 const PORTRAITS = new URL("./media-proposal/social-badges/fleet/", import.meta.url);
 const STEPS = ["Assignment", "Draft", "Human review"];
@@ -191,6 +192,26 @@ function portrait(persona) {
   return new URL(`${persona.id}.webp`, PORTRAITS).href;
 }
 
+function identityMarkup(persona) {
+  return `
+      <div class="ss-badge-slot" aria-hidden="true"></div>
+      <div class="ss-id-band"><span>Social Seeding</span><span>AI role</span></div>
+      <div class="ss-id-face"><img class="ss-id-portrait" src="${escape(portrait(persona))}" alt="${escape(persona.name)}, illustrated AI persona" width="160" height="160" decoding="async"><div class="ss-id-nameplate"><h3 class="ss-id-name">${persona.name}</h3><p class="ss-id-role">${persona.role}</p></div></div>
+      <p class="ss-responsibility">${escape(persona.responsibility)}</p>
+      <details class="ss-implementation"><summary>Role &amp; tools <span aria-hidden="true">+</span></summary><div class="ss-method"><span class="ss-small-label">Tools / method</span><ul class="ss-tools">${persona.tools.map((tool) => `<li>${escape(tool)}</li>`).join("")}</ul></div>
+      <p class="ss-scope"><span class="ss-small-label">Implementation scope</span>${escape(persona.scope)}</p></details>`;
+}
+
+function artifactMarkup(current) {
+  return `
+      <article class="ss-paper ${current.paragraphs ? "ss-paper-email" : "ss-paper-note"}" aria-label="${escape(current.label)}">
+        <div class="ss-paper-header"><span>${escape(current.label)}</span><span class="ss-paper-corner" aria-hidden="true">↗</span></div>
+        ${current.paragraphs
+          ? `<div class="ss-email-subject"><span>Subject</span>${escape(current.subject)}</div><div class="ss-email-body">${current.paragraphs.map((paragraph) => `<p>${escape(paragraph)}</p>`).join("")}</div>`
+          : `<dl class="ss-note-rows">${current.rows.map(([label, text]) => `<div class="ss-note-row"><dt>${escape(label)}</dt><dd>${escape(text)}</dd></div>`).join("")}</dl>`}
+      </article>`;
+}
+
 /**
  * Mount into a dedicated element. Repeated mounts clean up the previous instance.
  * Returns { destroy, selectPersona, setStep, replay }; no backend is connected.
@@ -228,12 +249,12 @@ export function mountSocialDemo(host) {
         <div class="ss-work-content">
           <header class="ss-result-heading"><p class="ss-eyebrow"></p><h3 class="ss-result-title"></h3></header>
           <div class="ss-artifact" id="${prefix}-artifact"></div>
-          <div class="ss-handoff"><span class="ss-handoff-symbol" aria-hidden="true">↗</span><div><span class="ss-handoff-label">Human handoff</span><p class="ss-handoff-copy"></p></div><button type="button" class="ss-role-next" data-ss-handoff hidden></button></div>
+          <div class="ss-handoff"><p class="ss-handoff-copy"></p><button type="button" class="ss-role-next" data-ss-handoff hidden></button></div>
         </div>
         <div class="ss-controls"><span class="ss-manual">Sample walkthrough</span><div class="ss-control-buttons"><button class="ss-back" type="button" data-ss-action="back"><span aria-hidden="true">←</span> Back</button><button class="ss-next" type="button" data-ss-action="next"></button></div></div>
       </div>
     </div>
-    <footer class="ss-caption"><span>Interactive illustration · original agent artwork · sample assignment</span><span>No agent is running. Nothing is sent.</span></footer>
+    <footer class="ss-caption"><span>Illustrative workflow · original AI personas</span><span>Sample only. Nothing is sent.</span></footer>
     <p class="ss-announcer" role="status" aria-live="polite" aria-atomic="true"></p>`;
 
   host.replaceChildren(root);
@@ -259,28 +280,16 @@ export function mountSocialDemo(host) {
       button.setAttribute("aria-pressed", String(index === step));
       button.setAttribute("aria-label", `Show ${selected.name}’s ${STEPS[index].toLowerCase()}`);
     });
-    identity.innerHTML = `
-      <div class="ss-badge-slot" aria-hidden="true"></div>
-      <div class="ss-id-band"><span>Social Seeding</span><span>AI role</span></div>
-      <div class="ss-id-face"><img class="ss-id-portrait" src="${escape(portrait(selected))}" alt="${escape(selected.name)}, illustrated AI persona" width="160" height="160" decoding="async"><div class="ss-id-nameplate"><h3 class="ss-id-name">${selected.name}</h3><p class="ss-id-role">${selected.role}</p></div></div>
-      <p class="ss-responsibility">${escape(selected.responsibility)}</p>
-      <details class="ss-implementation"><summary>Role &amp; tools <span aria-hidden="true">+</span></summary><div class="ss-method"><span class="ss-small-label">Tools / method</span><ul class="ss-tools">${selected.tools.map((tool) => `<li>${escape(tool)}</li>`).join("")}</ul></div>
-      <p class="ss-scope"><span class="ss-small-label">Implementation scope</span>${escape(selected.scope)}</p></details>`;
+    identity.innerHTML = identityMarkup(selected);
     eyebrow.textContent = `${selected.name} / ${STEPS[step]}`;
     title.textContent = current.title;
-    artifact.innerHTML = `
-      <article class="ss-paper ${current.paragraphs ? "ss-paper-email" : "ss-paper-note"}" aria-label="${escape(current.label)}">
-        <div class="ss-paper-header"><span>${escape(current.label)}</span><span class="ss-paper-corner" aria-hidden="true">↗</span></div>
-        ${current.paragraphs
-          ? `<div class="ss-email-subject"><span>Subject</span>${escape(current.subject)}</div><div class="ss-email-body">${current.paragraphs.map((paragraph) => `<p>${escape(paragraph)}</p>`).join("")}</div>`
-          : `<dl class="ss-note-rows">${current.rows.map(([label, text]) => `<div class="ss-note-row"><dt>${escape(label)}</dt><dd>${escape(text)}</dd></div>`).join("")}</dl>`}
-      </article>`;
+    artifact.innerHTML = artifactMarkup(current);
     handoff.textContent = selected.handoff;
     const nextRole = PERSONAS[(PERSONAS.indexOf(selected) + 1) % PERSONAS.length];
     const nextRoleButton = root.querySelector('.ss-role-next');
     nextRoleButton.hidden = step !== 2;
     nextRoleButton.dataset.ssHandoff = nextRole.id;
-    nextRoleButton.textContent = `Explore ${nextRole.name}’s role →`;
+    nextRoleButton.textContent = `Next: ${nextRole.name} →`;
     back.disabled = step === 0;
     next.innerHTML = step === 2 ? 'Replay <span aria-hidden="true">↺</span>' : `${step === 0 ? "View draft" : "Human review"} <span aria-hidden="true">→</span>`;
     next.setAttribute("aria-label", step === 2 ? `Replay ${selected.name}’s sample assignment` : `Show ${selected.name}’s ${STEPS[step + 1].toLowerCase()}`);
@@ -349,6 +358,31 @@ export function mountSocialDemo(host) {
   root.addEventListener("click", onClick);
   root.addEventListener("keydown", onKeyDown);
   render(false);
+  const releaseSpace = reserveSpace(root, clone => {
+    const clonedIdentity = clone.querySelector('.ss-id');
+    const clonedContent = clone.querySelector('.ss-work-content');
+    clonedIdentity.style.minHeight = '';
+    clonedContent.style.minHeight = '';
+    clonedIdentity.style.alignSelf = 'start';
+    clone.querySelector('.ss-work').style.alignSelf = 'start';
+    let identityHeight = 0, contentHeight = 0;
+    for (const persona of PERSONAS) {
+      clonedIdentity.innerHTML = identityMarkup(persona);
+      identityHeight = Math.max(identityHeight, clonedIdentity.getBoundingClientRect().height);
+      for (const [index, current] of persona.stages.entries()) {
+        clone.querySelector('.ss-eyebrow').textContent = `${persona.name} / ${STEPS[index]}`;
+        clone.querySelector('.ss-result-title').textContent = current.title;
+        clone.querySelector('.ss-artifact').innerHTML = artifactMarkup(current);
+        clone.querySelector('.ss-handoff-copy').textContent = persona.handoff;
+        const nextRole = clone.querySelector('.ss-role-next');
+        nextRole.hidden = index !== 2;
+        nextRole.textContent = `Next: ${PERSONAS[(PERSONAS.indexOf(persona) + 1) % PERSONAS.length].name} →`;
+        contentHeight = Math.max(contentHeight, clonedContent.getBoundingClientRect().height);
+      }
+    }
+    identity.style.minHeight = `${Math.ceil(identityHeight)}px`;
+    root.querySelector('.ss-work-content').style.minHeight = `${Math.ceil(contentHeight)}px`;
+  });
   const tour = createAutoAdvance({
     host, label: 'Social Seeding',
     advance() {
@@ -367,6 +401,7 @@ export function mountSocialDemo(host) {
       if (destroyed) return;
       destroyed = true;
       tour.destroy();
+      releaseSpace();
       root.removeEventListener("click", onClick);
       root.removeEventListener("keydown", onKeyDown);
       root.remove();

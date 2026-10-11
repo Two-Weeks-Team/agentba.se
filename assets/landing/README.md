@@ -9,15 +9,16 @@ that same source; production never depends on an untracked preview directory.
 
 - `organization-scene.js` and `organization-blueprint.mjs`: interactive conceptual
   task, role, department and company diagrams; not live business telemetry.
-- `progression.js`: advances the four scopes every second while visible.
+- `progression.js`: advances the four scopes every two seconds while visible.
   Hovering the tabs or using keyboard navigation pauses the sequence; leaving
-  resumes with a full interval. The diagram's motion control and reduced-motion
-  preference also stop automatic stage changes.
-- `auto-advance.js`: shared one-second playback for all five product demos.
+  resumes with a full interval. Walkthrough playback and diagram motion have
+  separate controls; reduced-motion preference stops both.
+- `auto-advance.js`: shared two-second playback for all five product demos.
   Social Seeding cycles through all three steps for each persona; Glasshat
   includes all six perspectives. Kbeauty, Memex and PreviewForge show every view.
   Hovering or keyboard interaction pauses a demo; a separate pause control also
-  works on touch screens. Offscreen/background demos and reduced-motion users
+  sits above each demo, alongside a two-second progress indicator. Expanded
+  detail stays open for reading. Offscreen/background demos and reduced-motion users
   do not auto-advance. Automatic changes never move focus, announce live-region
   content, follow external links, download files, or execute real work.
 - `social-work.js`: illustrative workflows and AI persona portraits from the
@@ -26,13 +27,31 @@ that same source; production never depends on an untracked preview directory.
 - `commerce-work.js`: clip-first discovery with an original silent 3D product
   film and the kbeauty.market repository's generated sample stills. The film
   autoplays only while visible; reduced-motion users can start it manually.
-  Hover holds the selected view so visitors can watch the film. The sample is
+  The film keeps looping as adjacent product explanations advance. The sample is
   not customer footage or a review. Source: `scripts/commerce-film.html`.
 - `memory-work.js`: synthetic Memex session and source-turn walkthrough. The
-  linked replay capture is a product interface reference. Frame visibility and
+  visible replay capture is a product interface reference. Frame visibility and
   shared sizing travel with the JavaScript so older CSS cannot stack all steps.
+- `reserve-space.js`: measures all content states at the current width to keep
+  mobile layouts stable without clipping content. Font loading and resizing
+  trigger a fresh measurement.
+- `media/social/campaign-intake.png`: original NewCampaignForm UI rendered
+  locally from social-seeding-v2 commit 3b22f09; unfilled example fields, no
+  customer or campaign data.
 - `foundation-work.js`: Glasshat review and PreviewForge decision-to-brief
   interactions, with links to public demonstrations in the page.
+
+## Walkthrough verification
+
+Import `scripts/check-walkthroughs.mjs` into an existing ego-browser Page session.
+`checkWalkthroughStates(page)` checks all 43 states for stable height, overflow,
+and top playback controls. Run it at narrow mobile, tablet, and desktop widths.
+The timing, pause, expanded-detail, and film checks cover the two-second pace,
+hover release, explicit controls, continuous video, and reduced-motion behavior.
+`rejectFastInterval(page)` confirms that one-second playback fails the check.
+
+`node scripts/check-deployment.mjs <base-url> <report-path>` verifies published
+documents and runtime asset hashes, including video files and range responses.
 
 Only referenced runtime media is published. Alternative designs, working
 captures and research notes remain local under `design-previews` and `docs`.

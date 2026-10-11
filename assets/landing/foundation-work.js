@@ -11,6 +11,7 @@
  */
 
 import { createAutoAdvance } from './auto-advance.js';
+import { reserveSpace } from './reserve-space.js';
 
 const mounted = new WeakMap();
 let serial = 0;
@@ -176,6 +177,20 @@ export function mountJudgmentDemo(host) {
   function getState() {
     return { kind: 'judgment', step, perspective: step === 'perspectives' ? perspective : null, illustrative: true };
   }
+  const perspectiveView = item => ({
+    path: `parallel review / ${item.name.toLowerCase()}`,
+    title: item.lens,
+    rows: [['Review', item.note], ['Output', 'Assessment + supporting rationale']],
+  });
+  function fillTrace(target, view) {
+    target.querySelector('.gh-trace-path').textContent = view.path;
+    target.querySelector('.gh-trace-title').textContent = view.title;
+    const rows = target.querySelector('.gh-trace-rows');
+    rows.replaceChildren();
+    for (const [key, value] of view.rows) {
+      rows.append(element(doc, 'dt', 'gh-trace-key', key), element(doc, 'dd', 'gh-trace-value', value));
+    }
+  }
   function render(announce = true) {
     trace.setAttribute('aria-live', announce ? 'polite' : 'off');
     root.dataset.step = step;
@@ -185,17 +200,7 @@ export function mountJudgmentDemo(host) {
       button.setAttribute('aria-pressed', String(step === 'perspectives' && perspective === id));
     }
     const item = PERSPECTIVES.find((entry) => entry.id === perspective);
-    const view = step === 'perspectives' ? {
-      path: `parallel review / ${item.name.toLowerCase()}`,
-      title: item.lens,
-      rows: [['Review', item.note], ['Output', 'Assessment + supporting rationale']],
-    } : REVIEW_TRACES[step];
-    tracePath.textContent = view.path;
-    traceTitle.textContent = view.title;
-    traceRows.replaceChildren();
-    for (const [key, value] of view.rows) {
-      traceRows.append(element(doc, 'dt', 'gh-trace-key', key), element(doc, 'dd', 'gh-trace-value', value));
-    }
+    fillTrace(trace, step === 'perspectives' ? perspectiveView(item) : REVIEW_TRACES[step]);
     follow.textContent = step === 'report' ? 'Review again ↺' : 'Follow the review →';
   }
   function setStep(next, nextPerspective = perspective) {
@@ -214,6 +219,17 @@ export function mountJudgmentDemo(host) {
 
   render();
   host.replaceChildren(root);
+  ctx.cleanups.push(reserveSpace(root, clone => {
+    const sample = clone.querySelector('.gh-trace');
+    sample.style.minHeight = '';
+    sample.style.alignSelf = 'start';
+    let height = 0;
+    for (const view of [...Object.values(REVIEW_TRACES), ...PERSPECTIVES.map(perspectiveView)]) {
+      fillTrace(sample, view);
+      height = Math.max(height, sample.getBoundingClientRect().height);
+    }
+    trace.style.minHeight = `${Math.ceil(height)}px`;
+  }));
   const tour = createAutoAdvance({
     host, label: 'Glasshat',
     advance() {
@@ -396,6 +412,22 @@ export function mountDeliveryDemo(host) {
 
   render();
   host.replaceChildren(root);
+  ctx.cleanups.push(reserveSpace(root, clone => {
+    const sample = clone.querySelector('.pf-preview');
+    const nextBrief = clone.querySelector('.pf-handoff');
+    sample.style.minHeight = '';
+    nextBrief.style.minHeight = '';
+    let previewHeight = 0, handoffHeight = 0;
+    for (const item of DIRECTIONS) {
+      sample.replaceChildren(lunchConcept(doc, item.id));
+      clone.querySelector('.pf-spec-text').textContent = item.brief;
+      clone.querySelector('.pf-record-body').textContent = JSON.stringify({ concept: item.id, sample: true }, null, 2);
+      previewHeight = Math.max(previewHeight, sample.getBoundingClientRect().height);
+      handoffHeight = Math.max(handoffHeight, nextBrief.getBoundingClientRect().height);
+    }
+    preview.style.minHeight = `${Math.ceil(previewHeight)}px`;
+    handoff.style.minHeight = `${Math.ceil(handoffHeight)}px`;
+  }));
   const tour = createAutoAdvance({
     host, label: 'PreviewForge',
     advance() {

@@ -1,5 +1,5 @@
 // Local walkthrough playback only: advancing never invokes a product or service.
-export function createAutoAdvance({ host, advance, label, hoverTarget = host, pauseControl, delay = 1000 }) {
+export function createAutoAdvance({ host, advance, label, hoverTarget = host, controlsBefore = host, pauseControl, delay = 2000 }) {
   const doc = host.ownerDocument;
   const view = doc.defaultView;
   const motion = view.matchMedia('(prefers-reduced-motion: reduce)');
@@ -11,36 +11,41 @@ export function createAutoAdvance({ host, advance, label, hoverTarget = host, pa
   let keyboardFocus = false;
   let paused = false;
   let disposed = false;
-  let controls, status, button;
-
-  if (!pauseControl) {
-    controls = doc.createElement('div');
-    controls.className = 'demo-tour-controls';
-    status = doc.createElement('span');
-    button = doc.createElement('button');
-    button.type = 'button';
-    button.className = 'demo-tour-toggle';
-    button.setAttribute('aria-controls', host.id);
-    controls.append(status, button);
-    host.after(controls);
-    on(button, 'click', () => { paused = !paused; restart(); });
-  }
+  let progress;
+  const controls = doc.createElement('div');
+  controls.className = 'demo-tour-controls';
+  controls.dataset.tourFor = host.id;
+  const status = doc.createElement('span');
+  const meter = doc.createElement('span');
+  meter.className = 'demo-tour-progress';
+  meter.setAttribute('aria-hidden', 'true');
+  const fill = doc.createElement('span');
+  meter.append(fill);
+  const button = doc.createElement('button');
+  button.type = 'button';
+  button.className = 'demo-tour-toggle';
+  button.setAttribute('aria-controls', host.id);
+  controls.append(status, meter, button);
+  controlsBefore.before(controls);
+  on(button, 'click', () => { paused = !paused; restart(); });
 
   function restart() {
     view.clearTimeout(timer);
+    progress?.cancel();
     if (disposed) return;
     const state = motion.matches ? 'reduced' : paused || pauseControl?.getAttribute('aria-pressed') === 'true' ? 'paused'
-      : pauseControl?.disabled ? 'unavailable' : keyboardFocus ? 'focus' : hovering ? 'hover'
+      : host.querySelector('details[open]') ? 'expanded' : keyboardFocus ? 'focus' : hovering ? 'hover'
       : doc.hidden ? 'hidden' : !visible ? 'offscreen' : 'running';
     host.dataset.autoplay = state;
     if (button) {
-      status.textContent = state === 'reduced' ? 'Manual walkthrough' : ['paused', 'focus', 'hover'].includes(state) ? 'Walkthrough paused' : 'Auto walkthrough';
+      status.textContent = state === 'reduced' ? 'Manual walkthrough' : ['paused', 'focus', 'hover', 'expanded'].includes(state) ? 'Walkthrough paused' : 'Auto walkthrough · 2 sec';
       button.textContent = paused ? 'Resume' : 'Pause';
       button.setAttribute('aria-label', `${paused ? 'Resume' : 'Pause'} ${label} walkthrough`);
       button.setAttribute('aria-pressed', String(paused));
       button.disabled = motion.matches;
     }
     if (state !== 'running') return;
+    progress = fill.animate([{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }], { duration: delay, fill: 'forwards' });
     // A manual selection or pause always gives the next state a full interval.
     timer = view.setTimeout(() => { advance(); restart(); }, delay);
   }
@@ -64,6 +69,8 @@ export function createAutoAdvance({ host, advance, label, hoverTarget = host, pa
   });
   on(hoverTarget, 'keydown', () => { keyboardFocus = true; restart(); });
   on(hoverTarget, 'click', restart);
+  // Native details stay open for reading until the visitor closes them.
+  host.addEventListener('toggle', restart, { capture: true, signal: abort.signal });
   on(motion, 'change', restart);
   on(doc, 'visibilitychange', restart);
   on(view, 'pagehide', () => view.clearTimeout(timer));
@@ -83,6 +90,7 @@ export function createAutoAdvance({ host, advance, label, hoverTarget = host, pa
     destroy() {
       disposed = true;
       view.clearTimeout(timer);
+      progress?.cancel();
       abort.abort();
       observer.disconnect();
       pauseObserver.disconnect();

@@ -13,7 +13,7 @@
           <li><a href="#company">Company</a></li>
         </ul>
       </nav>
-      <a href="mailto:contact@agentba.se" class="nav-cta">Build with us <span aria-hidden="true">↗</span></a>
+      <a href="#contact" class="nav-cta">Build with us <span aria-hidden="true">↗</span></a>
     </div>
   </header>
   <main id="main" tabindex="-1">
@@ -35,7 +35,8 @@
             <a href="#work" class="btn btn-solid">Explore the work <span aria-hidden="true">↓</span></a>
             <a href="#contact" class="btn btn-outline">Build with us</a>
           </div>
-          <p class="hero-desc">Our goal is to replace human operating labor with software organizations. People set the direction and remain accountable.</p>
+          <p class="hero-desc">We run client workloads, build agent fleets inside companies, and prove new systems in two-week engagements.</p>
+          <a class="hero-engagements" href="#contact">Run · Build · Prove <span aria-hidden="true">↗</span></a>
         </div>
 
         <div class="organization-scene-footer">
@@ -59,17 +60,21 @@
 
     <section class="section media-section" id="work" aria-labelledby="work-title">
       <div class="container">
-        <div class="chapter-line"><span class="eyebrow">01 / Give the work a workforce</span><a href="https://socialseed.ing" target="_blank" rel="noopener noreferrer" class="project-link">Social Seeding ↗</a></div>
-        <div class="section-intro media-intro"><h2 id="work-title">A brief goes in.<br> A team gets to work.</h2><p>A creator campaign needs a scout, a writer, a conversation handler and someone to check the outcome. Social Seeding is built around specialist roles, a shared campaign brief and human decision points.</p></div>
+        <div class="chapter-line"><span class="eyebrow">01 / Social Seeding · Creator campaign operations</span><a href="https://socialseed.ing" target="_blank" rel="noopener noreferrer" class="project-link">Social Seeding ↗</a></div>
+        <div class="section-intro media-intro"><h2 id="work-title">A brief goes in.<br> A team gets to work.</h2><p>One campaign brief, seven specialist roles. Social Seeding gives discovery, outreach, replies and reporting a shared context—with people reviewing the decisions.</p></div>
         <div id="social-demo" class="demo-mount"><p>Meet Theo, the outreach writer. Campaign facts become an email draft; a person decides whether it can be sent.</p><img src="/landing/media-proposal/social-badges/fleet/outreach-writer.webp" alt="Theo, an AI outreach writer persona" width="384" height="384"></div>
+        <figure class="product-evidence social-product-evidence">
+          <a class="product-evidence-image" href="/landing/media/social/campaign-intake.png" target="_blank" rel="noopener noreferrer" aria-label="Open the original Social Seeding campaign intake screen"><img src="/landing/media/social/campaign-intake.png" alt="Original Social Seeding V2 campaign intake interface with product name, category and product description fields" width="1488" height="840" loading="lazy" decoding="async"></a>
+          <figcaption><span class="small-label">From the product / Campaign intake</span><h3>The brief becomes shared context.</h3><p class="evidence-source">Original V2 interface, rendered from the product source with empty example fields.</p><a class="text-link" href="/landing/media/social/campaign-intake.png" target="_blank" rel="noopener noreferrer">View the interface ↗</a></figcaption>
+        </figure>
         <div class="media-footnote"><p data-product-scope="social-seeding">Closed beta. The V2 walkthrough shows agent roles at different stages of implementation; people review outreach drafts before sending.</p><p data-product-relationship="social-seeding">AgentBase LLC is the parent company of E Corp., the operator listed on socialseed.ing.</p></div>
       </div>
     </section>
 
     <section class="section media-section" id="commerce" aria-labelledby="commerce-title">
       <div class="container">
-        <div class="chapter-line"><span class="eyebrow">02 / Rethink how the business works</span><a class="project-link" href="https://kbeauty.market" target="_blank" rel="noopener noreferrer">kbeauty.market ↗</a></div>
-        <div class="section-intro media-intro"><h2 id="commerce-title">The video is<br> the front door.</h2><p>Discover a product through a creator or brand clip. Move from the scene to the product, keep the source in view, and switch to photographs when you need a closer look. Kbeauty starts with the product in context.</p></div>
+        <div class="chapter-line"><span class="eyebrow">02 / kbeauty.market · Video-first discovery</span><a class="project-link" href="https://kbeauty.market" target="_blank" rel="noopener noreferrer">kbeauty.market ↗</a></div>
+        <div class="section-intro media-intro"><h2 id="commerce-title">The video is<br> the front door.</h2><p>Start with a creator or brand clip. Find the product behind it, inspect the details, and keep a path back to the source. Kbeauty connects discovery to context.</p></div>
         <div id="commerce-demo" class="demo-mount"><p>A video-first storefront connects clips, their original sources and product information in one place.</p></div>
         <div class="media-footnote"><p>The opportunity: change how people discover products, then build the operating tools around that experience.</p><p data-product-scope="kbeauty">Storefront browsing preview. Own checkout is not yet enabled.</p></div>
       </div>
@@ -77,8 +82,8 @@
 
     <section class="section media-section" id="memory" aria-labelledby="memory-title">
       <div class="container">
-        <div class="chapter-line"><span class="eyebrow">03 / Let experience survive the session</span><a class="project-link" href="https://memex.quest" target="_blank" rel="noopener noreferrer">Memex ↗</a></div>
-        <div class="section-intro media-intro"><h2 id="memory-title">New session.<br> Not a blank slate.</h2><p>A workforce needs a memory. Memex turns past agent sessions into retrievable experience. When work gets stuck, Loop Breaker can suggest a next action from a similar past session—and open the exact turn behind it.</p></div>
+        <div class="chapter-line"><span class="eyebrow">03 / Memex · Memory for agent work</span><a class="project-link" href="https://memex.quest" target="_blank" rel="noopener noreferrer">Memex ↗</a></div>
+        <div class="section-intro media-intro"><h2 id="memory-title">New session.<br> Not a blank slate.</h2><p>Memex makes past agent sessions retrievable. When work gets stuck, Loop Breaker suggests a next action from a similar session—and opens the exact turn behind it.</p></div>
         <div id="memory-demo" class="demo-mount"><p>Repeated build failure → retrieve a similar session → inspect the recorded next action. Interactive illustration using a synthetic Rust CI session.</p></div>
         <div class="media-footnote"><p>Memex provides local memory for Claude Code and Codex through MCP and session hooks.</p><p>This is a synthetic session walkthrough, not a live retrieval run.</p></div>
       </div>
@@ -101,24 +106,23 @@
         <span class="eyebrow">05 / From a responsibility to an organization</span>
         <div class="section-intro">
           <h2 id="scale-title">The ambition is<br>  an entire organization.</h2>
-          <p>A sourcing agent owns one job. A campaign workflow coordinates several. Our long-term goal is to connect agent departments around a business objective, with people deciding what the company should do and what it may commit to.</p>
+          <p>Our goal is to replace human operating labor with software organizations. From one assignment to connected departments, agents take on the work. People set the direction and remain accountable.</p>
         </div>
-        <p class="progression-intro">Explore the four scopes below. This is the conceptual path from a bounded assignment to an agent-operated company.</p>
       <div class="tabs-nav-bar" id="organization-lab" role="tablist" aria-label="Conceptual Progression Stages">
         <button role="tab" id="tab-task" class="tab-btn" aria-controls="stage-panel" aria-selected="true" data-stage="task" tabindex="0">
-          <span>01 / Task</span>
+          <span><span class="tab-index">01 / </span>Task</span>
           <span class="tab-sub">Single bounded assignment</span>
         </button>
         <button role="tab" id="tab-role" class="tab-btn" aria-controls="stage-panel" aria-selected="false" data-stage="role" tabindex="-1">
-          <span>02 / Role</span>
+          <span><span class="tab-index">02 / </span>Role</span>
           <span class="tab-sub">Persistent responsibility</span>
         </button>
         <button role="tab" id="tab-department" class="tab-btn" aria-controls="stage-panel" aria-selected="false" data-stage="department" tabindex="-1">
-          <span>03 / Department</span>
+          <span><span class="tab-index">03 / </span>Department</span>
           <span class="tab-sub">Cross-specialist coordination</span>
         </button>
         <button role="tab" id="tab-company" class="tab-btn" aria-controls="stage-panel" aria-selected="false" data-stage="company" tabindex="-1">
-          <span>04 / Company</span>
+          <span><span class="tab-index">04 / </span>Company</span>
           <span class="tab-sub">Autonomous business operations</span>
         </button>
       </div>
@@ -138,7 +142,7 @@
           <h3 class="stage-title" id="stage-title">Complete a defined assignment.</h3>
 
           <p class="stage-body" id="stage-body">
-            Read the brief, use the relevant context, and return a result someone can inspect. A single assignment establishes the contract: what comes in, what work is allowed, and what counts as done.
+            Read the brief, use the relevant context, and return a result someone can inspect. Define the input, the allowed work, and what counts as done.
           </p>
 
           <div class="stage-example">
@@ -172,14 +176,14 @@
     <section class="section capabilities-section" id="capabilities" aria-labelledby="capabilities-title">
       <div class="container">
         <span class="eyebrow">06 / The capabilities behind the work</span>
-        <div class="section-intro"><h2 id="capabilities-title">Capabilities<br> we build with.</h2><p>Roles, memory, judgment and execution are the parts we work on. The next step is to connect them into organizations that carry responsibility from one assignment to the next.</p></div>
+        <div class="section-intro"><h2 id="capabilities-title">Capabilities<br> we build with.</h2><p>The building blocks behind the work: specialist roles, persistent memory, inspectable judgment, and execution.</p></div>
         <div class="capabilities-table">
           <a href="#work"><span class="cap-index">01</span><span><strong>Coordinate specialist agents</strong><small>Defined roles, shared context, durable handoffs.</small></span><span class="cap-tools">Role tools · workflow checkpoints</span><span aria-hidden="true">↗</span></a>
           <a href="#work"><span class="cap-index">02</span><span><strong>Draft from supplied facts</strong><small>Structured outputs that stay connected to the brief.</small></span><span class="cap-tools">OpenAI · tool calling · structured outputs</span><span aria-hidden="true">↗</span></a>
           <a href="#memory"><span class="cap-index">03</span><span><strong>Retrieve useful experience</strong><small>Find a past action and inspect its original context.</small></span><span class="cap-tools">Memex · Qdrant · multi-vector retrieval</span><span aria-hidden="true">↗</span></a>
           <a href="#memory"><span class="cap-index">04</span><span><strong>Carry context across tools</strong><small>Bring source-linked session memory into the next task.</small></span><span class="cap-tools">MCP · source-linked memory</span><span aria-hidden="true">↗</span></a>
           <a href="#judgment"><span class="cap-index">05</span><span><strong>Inspect and audit judgments</strong><small>Keep the evidence and correction process visible.</small></span><span class="cap-tools">Google ADK · parallel evaluation · bounded correction</span><span aria-hidden="true">↗</span></a>
-          <a href="#delivery"><span class="cap-index">06</span><span><strong>Turn decisions into development artifacts</strong><small>Move from a visual choice to a reviewable specification.</small></span><span class="cap-tools">PreviewForge · decision records · artifact checks</span><span aria-hidden="true">↗</span></a>
+          <a href="#delivery"><span class="cap-index">06</span><span><strong>Turn decisions into specifications</strong><small>Move from a visual choice to a reviewable specification.</small></span><span class="cap-tools">PreviewForge · decision records · artifact checks</span><span aria-hidden="true">↗</span></a>
         </div>
         <div class="current-models"><span class="small-label">Current fleet models</span><p>Google Gemini <span aria-hidden="true">/</span> OpenAI</p><span>Capabilities demonstrated across our products and tools.</span></div>
       </div>
@@ -190,9 +194,9 @@
         <span class="eyebrow">07 / Work with AgentBase</span>
         <div class="section-intro"><h2 id="contact-title">Bring us a job<br> that needs doing.</h2><p>Start with a recurring operation, a process to change, or a system to build. Choose a working model below.</p></div>
         <div class="engagement-models-grid" aria-label="How we work with companies">
-          <div class="model-col"><span class="small-label">01 / An operation to run</span><h3>Run</h3><p>Bring a recurring workload. We operate it with an agent fleet, around the context and decisions the work requires.</p></div>
-          <div class="model-col"><span class="small-label">02 / A company to equip</span><h3>Build</h3><p>Bring an existing business process. We embed an agent fleet in the company, with defined responsibilities and human decision points.</p></div>
-          <div class="model-col"><span class="small-label">03 / A system to prove</span><h3>Prove</h3><p>Bring a bounded problem. We ship a working system in a two-week engagement so there is something concrete to put to work.</p></div>
+          <div class="model-col"><span class="small-label">01 / An operation to run</span><h3>Run</h3><p>We operate recurring workloads with an agent fleet and clear decision points.</p></div>
+          <div class="model-col"><span class="small-label">02 / A company to equip</span><h3>Build</h3><p>We embed an agent fleet in your company, with defined responsibilities and human oversight.</p></div>
+          <div class="model-col"><span class="small-label">03 / A system to prove</span><h3>Prove</h3><p>We turn a bounded problem into a working system in a two-week engagement.</p></div>
         </div>
         <div class="contact-invitation"><p>Start with an example input, the decisions a person makes, and the output that counts as done.</p><div><a href="mailto:contact@agentba.se" class="contact-email">contact@agentba.se <span aria-hidden="true">↗</span></a><p class="contact-caption">Email us — both founders read every line.</p></div></div>
       </div>

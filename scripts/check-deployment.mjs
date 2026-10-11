@@ -43,6 +43,9 @@ try {
       assert(result.text.includes('/landing/init.js'), 'Redesign runtime entry is missing');
       assert(result.text.includes('Build a company.'), 'Old homepage is deployed');
       assert(!result.text.includes('This company runs on agents'), 'Old homepage is deployed');
+      assert(result.text.includes('We run client workloads, build agent fleets inside companies'), 'Business introduction is stale');
+      assert(result.text.includes('/landing/media/social/campaign-intake.png'), 'Original product interface is missing');
+      assert.match(result.text, /href="#contact" class="nav-cta"/, 'Build with us must open the engagement section');
     }
   }
   for (const file of readdirSync('public/data').filter(file => file.endsWith('.json') && !paths.includes(`/data/${file}`))) {
@@ -55,7 +58,7 @@ try {
   for (const bot of ['ClaudeBot', 'Claude-User', 'Claude-SearchBot']) assert(robots.includes(bot), `Missing bot rule: ${bot}`);
   assert((await get('/sitemap.xml')).text.includes('https://agentba.se'));
 
-  const assets = readdirSync('assets/landing', { recursive: true }).filter(file => /\.(js|mjs|css|webp|png|svg|ttf|woff2|txt)$/.test(file));
+  const assets = readdirSync('assets/landing', { recursive: true }).filter(file => /\.(js|mjs|css|webp|png|svg|ttf|woff2|txt|mp4|webm)$/.test(file));
   assert(assets.length > 30, 'Runtime asset inventory is incomplete');
   for (let offset = 0; offset < assets.length; offset += 5) {
     const checks = await Promise.allSettled(assets.slice(offset, offset + 5).map(async file => {
@@ -63,6 +66,15 @@ try {
       assert.equal(digest(bytes), digest(readFileSync(`assets/landing/${file}`)), `Stale runtime asset: ${file}`);
     }));
     for (const check of checks) if (check.status === 'rejected') throw check.reason;
+  }
+  for (const file of assets.filter(file => /\.(mp4|webm)$/.test(file))) {
+    const path = `/landing/${file}`;
+    const response = await fetch(new URL(path, base), { headers: { Range: 'bytes=0-1023' }, signal: AbortSignal.timeout(20000) });
+    assert.equal(response.status, 206, `${path}: video must support partial playback requests`);
+    const bytes = Buffer.from(await response.arrayBuffer());
+    assert.equal(bytes.length, 1024, `${path}: invalid video range`);
+    assert.deepEqual(bytes, readFileSync(`assets/landing/${file}`).subarray(0, 1024));
+    report.checks.push({ path, range: 'bytes=0-1023', status: response.status, bytes: bytes.length });
   }
   const imageRoutes = ['/og/agentbase.png', ...['', 'ko/'].flatMap(prefix =>
     readdirSync(`.next/server/app/${prefix}`).filter(file => /^opengraph-image.*\.body$/.test(file))

@@ -1,4 +1,5 @@
 import { createAutoAdvance } from './auto-advance.js';
+import { reserveSpace } from './reserve-space.js';
 
 (function() {
       // Conceptual progression: examples grounded in the inspected campaign workflow.
@@ -7,7 +8,7 @@ import { createAutoAdvance } from './auto-advance.js';
         task: {
           label: "Stage 01 · Task",
           title: "Complete a defined assignment.",
-          body: "Read the brief, use the relevant context, and return a result someone can inspect. A single assignment establishes the contract: what comes in, what work is allowed, and what counts as done.",
+          body: "Read the brief, use the relevant context, and return a result someone can inspect. Define the input, the allowed work, and what counts as done.",
           example: "Illustrative assignment: research a creator against a campaign brief and return the evidence for their fit.",
           nodes: ["Brief", "Research", "Summary"],
           tierTag: "An assignment, made visible",
@@ -52,7 +53,7 @@ import { createAutoAdvance } from './auto-advance.js';
       const nodeCountIndicator = document.getElementById('node-count-indicator');
       const organization = document.getElementById('stage-organization');
       const panel = document.getElementById('stage-panel');
-      const pauseButton = panel.querySelector('[data-scene-pause]');
+
 
       function updateStage(stageKey) {
         const data = stagesData[stageKey];
@@ -124,10 +125,23 @@ import { createAutoAdvance } from './auto-advance.js';
         }
       });
 
+      reserveSpace(panel.querySelector('.organization-copy'), clone => {
+        clone.style.minHeight = '';
+        let height = 0;
+        for (const data of Object.values(stagesData)) {
+          clone.querySelector('.stage-eyebrow-tag').textContent = data.label;
+          clone.querySelector('.stage-title').textContent = data.title;
+          clone.querySelector('.stage-body').textContent = data.body;
+          clone.querySelector('.stage-example-content').textContent = data.example;
+          height = Math.max(height, clone.getBoundingClientRect().height);
+        }
+        panel.querySelector('.organization-copy').style.minHeight = `${Math.ceil(height)}px`;
+      });
       createAutoAdvance({
         host: panel,
+        label: 'organization',
+        controlsBefore: tablist,
         hoverTarget: tablist,
-        pauseControl: pauseButton,
         advance() {
           const index = tabs.findIndex(tab => tab.getAttribute('aria-selected') === 'true');
           updateStage(tabs[(index + 1) % tabs.length].getAttribute('data-stage'));

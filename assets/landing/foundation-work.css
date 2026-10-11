@@ -52,10 +52,10 @@
 }
 .judgment-demo .gh-shell,
 .delivery-demo .pf-shell {
-  min-height: 620px;
+  min-height: 560px;
   display: grid;
 }
-.judgment-demo .gh-shell { grid-template-rows: auto minmax(308px, auto) minmax(180px, 1fr) auto; }
+.judgment-demo .gh-shell { grid-template-rows: auto minmax(246px, auto) minmax(180px, 1fr) auto; }
 .judgment-demo .gh-label,
 .delivery-demo .pf-label {
   display: flex;
@@ -171,6 +171,8 @@
 }
 .judgment-demo .gh-hint,
 .delivery-demo .pf-status { flex: 1 1 120px; max-width: 25ch; color: var(--gh-muted); font-size: 12px; line-height: 1.6; }
+.judgment-demo .gh-hint { flex-basis: 0; }
+.judgment-demo .gh-follow { min-width: 156px; }
 .judgment-demo .gh-follow,
 .delivery-demo .pf-download {
   max-width: 100%;
@@ -185,7 +187,7 @@
 .judgment-demo .gh-follow:hover,
 .delivery-demo .pf-download:hover { background: #45453e; border-color: #45453e; }
 
-.delivery-demo .pf-shell { grid-template-rows: auto auto minmax(248px, auto) minmax(180px, 1fr) auto; }
+.delivery-demo .pf-shell { grid-template-rows: auto auto minmax(232px, auto) minmax(160px, 1fr) auto; }
 .delivery-demo .pf-directions {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -211,7 +213,7 @@
   font-weight: 500;
 }
 .delivery-demo .pf-preview { min-width: 0; }
-.delivery-demo .pf-concept { display: flex; flex-direction: column; gap: 18px; height: 100%; min-height: 248px; padding: 20px 24px; }
+.delivery-demo .pf-concept { display: flex; flex-direction: column; gap: 18px; height: 100%; min-height: 232px; padding: 20px 24px; }
 .delivery-demo .pf-concept-masthead { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px 12px; }
 .delivery-demo .pf-wordmark { font-size: 15px; font-weight: 600; letter-spacing: -.035em; }
 .delivery-demo .pf-sample { font-size: 10px; line-height: 1.5; text-transform: none; }
@@ -266,7 +268,7 @@
 }
 
 @container gh-foundation (max-width: 460px) {
-  .judgment-demo .gh-shell { min-height: 0; grid-template-rows: auto minmax(280px, auto) minmax(210px, auto) auto; }
+  .judgment-demo .gh-shell { min-height: 0; grid-template-rows: auto minmax(254px, auto) minmax(210px, auto) auto; }
   .judgment-demo .gh-label { padding-inline: 18px; }
   .judgment-demo .gh-diagram { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: auto auto auto; gap: 14px 12px; padding: 22px 18px; }
   .judgment-demo .gh-evidence { grid-column: 1 / -1; width: 72%; justify-self: center; }

@@ -2,32 +2,41 @@ import * as THREE from './vendor/three/three.module.js';
 import { createAutoAdvance } from './auto-advance.js';
 
 const frames = [
-  { mode: 'Current session', kicker: 'A familiar dead end', title: 'The build is stuck. Again.', code: '$ cargo build --release\n\nerror: linker `cc` not found', body: 'A new agent session encounters a problem that an earlier session has already worked through.', next: 'Find past experience →', caption: 'The useful experience is in the earlier work.' },
-  { mode: 'Loop Breaker / suggestion', kicker: 'Retrieve the next action', title: 'A similar run has a way forward.', code: 'Past session · Rust CI\n\n“The CI image lacks a C toolchain.\nI’ll install build-essential\nbefore the build step.”', body: 'Inspect the action that followed the failure. A retrieved suggestion is a lead to examine, not a guaranteed fix.', next: 'Open the exact turn →', caption: 'A relevant past session is brought forward.' },
-  { mode: 'Replay / source turn', kicker: 'Inspect the source turn', title: 'The action. The record. The result.', code: '.github/workflows/ci.yml\n\n+ apt-get install -y build-essential\n  cargo build\n\nNext turn / $ cargo build --release\nFinished release [optimized]', body: 'The source shows the workflow change and the subsequent build output. Use the evidence to decide what applies now.', next: 'Replay the walkthrough ↺', caption: 'The source turn stays attached to the suggestion.' },
+  { mode: 'Current session', title: 'The build is stuck. Again.', result: '$ cargo build --release\n→ linker `cc` not found', code: '$ cargo build --release\n\nerror: linker `cc` not found', body: 'A missing C toolchain stops the run. A past session has already encountered this failure.', next: 'Find past experience →', caption: 'Find experience in earlier work.' },
+  { mode: 'Loop Breaker / suggestion', title: 'A similar run has a way forward.', result: 'Past session · Rust CI\n→ Install the missing C toolchain', code: 'Past session · Rust CI\n\n“The CI image lacks a C toolchain.\nI’ll install build-essential\nbefore the build step.”', body: 'Recall the next action from a similar session, with its source attached. Inspect it before applying it.', next: 'Open the exact turn →', caption: 'Bring a relevant session forward.' },
+  { mode: 'Replay / source turn', title: 'The action. The record. The result.', result: '+ build-essential\n→ Finished release [optimized]', code: '.github/workflows/ci.yml\n\n+ apt-get install -y build-essential\n  cargo build\n\nNext turn / $ cargo build --release\nFinished release [optimized]', body: 'See the recorded change and later build output. Decide what applies to the current run.', next: 'Replay the walkthrough ↺', caption: 'Keep the source attached to the action.' },
 ];
 
 export function mountMemoryDemo(host) {
+  const replayUrl = new URL('./media-proposal/memex-replay.png', import.meta.url).href;
   host.classList.add('memory-demo');
-  host.innerHTML = `<div class="mm-topline"><span class="mm-wordmark">memex / time machine</span><span>Interactive illustration · synthetic session</span></div>
+  host.innerHTML = `<div class="mm-topline"><span class="mm-wordmark">Memex / session memory</span><span>Synthetic session walkthrough</span></div>
     <div class="mm-steps" role="group" aria-label="Memory walkthrough steps"><button type="button" data-memory-step="0" aria-pressed="true">01 / Encounter a failure</button><button type="button" data-memory-step="1" aria-pressed="false">02 / Recall experience</button><button type="button" data-memory-step="2" aria-pressed="false">03 / Inspect the source</button></div>
-    <div class="mm-stage"><div class="mm-spatial"><div class="mm-spatial-title">Past work / a spatial session archive</div><div class="mm-fallback"><p>Python dependencies</p><p>Containerize API</p><p>Rust CI / missing toolchain</p></div><div class="mm-spatial-caption"></div></div>
-    <div class="mm-terminal"><div class="mm-terminal-head"><span data-memory-mode></span><span>Memex</span></div><div class="mm-terminal-body" aria-live="polite"></div><div class="mm-terminal-footer"><span class="mm-position"></span><button type="button" class="mm-next"></button></div></div></div>
-    <div class="mm-bottom"><span>Source-linked recall → a next action you can inspect.</span><a href="${new URL('./media-proposal/memex-replay.png', import.meta.url).href}" target="_blank" rel="noopener noreferrer">View the original replay interface ↗</a></div>`;
+    <div class="mm-stage">
+      <div class="mm-terminal"><div class="mm-terminal-head"><span data-memory-mode></span><span>Memex</span></div><div class="mm-terminal-body" aria-live="polite"></div>
+        <details class="mm-detail"><summary>Inspect the session detail</summary><div class="mm-detail-body"><pre></pre><p class="mm-source">Synthetic source / 11-infra-fix-ci-cache.jsonl</p></div></details>
+        <div class="mm-terminal-footer"><span class="mm-position"></span><button type="button" class="mm-next"></button></div>
+      </div>
+      <div class="mm-evidence">
+        <figure class="mm-replay"><a class="mm-replay-image" href="${replayUrl}" target="_blank" rel="noopener noreferrer" aria-label="Open the original Memex Replay screenshot at full size"><img src="${replayUrl}" width="1920" height="1248" loading="lazy" decoding="async" alt="Memex Replay interface showing eight turns of a synthetic Rust CI session and the recorded missing-linker error."></a><figcaption><span><strong>The source, in Replay</strong><span>Original product interface · synthetic Rust CI session</span></span><a href="${replayUrl}" target="_blank" rel="noopener noreferrer" aria-label="View the full Memex Replay screenshot">View full size ↗</a></figcaption></figure>
+        <div class="mm-spatial"><div class="mm-spatial-title">Past sessions / spatial archive</div><div class="mm-fallback"><p>Python dependencies</p><p>Containerize API</p><p>Rust CI / missing toolchain</p></div><div class="mm-spatial-caption"></div></div>
+      </div>
+    </div>
+    <div class="mm-bottom"><span>Recall a next action. Inspect the session behind it.</span><span>Illustration, not a live retrieval run.</span></div>`;
   let step = 0, updateDeck = () => {};
   const body = host.querySelector('.mm-terminal-body');
+  const detail = host.querySelector('.mm-detail');
   // Keep the sizing and visibility with the frames, not in a separately cached
   // stylesheet. Even older CSS must show only one step, with a stable height.
   body.style.display = 'grid';
-  const panels = frames.map((f, index) => {
+  const panels = frames.map(f => {
     const panel = document.createElement('div');
     panel.className = 'mm-frame';
     panel.style.gridArea = '1 / 1';
     panel.style.minWidth = '0';
-    for (const [tag, cls, content] of [['p','mm-kicker',f.kicker],['h4','',f.title],['pre','',f.code],['p','',f.body]]) {
+    for (const [tag, cls, content] of [['h4','',f.title],['pre','mm-result',f.result],['p','',f.body]]) {
       const el = document.createElement(tag); el.className = cls; el.textContent = content; panel.append(el);
     }
-    if (index > 0) { const p = document.createElement('p'); p.className = 'mm-source'; p.textContent = 'Synthetic source / 11-infra-fix-ci-cache.jsonl'; panel.append(p); }
     return panel;
   });
   body.replaceChildren(...panels);
@@ -36,6 +45,7 @@ export function mountMemoryDemo(host) {
     host.dataset.step = String(step);
     host.querySelectorAll('[data-memory-step]').forEach(button => button.setAttribute('aria-pressed', String(Number(button.dataset.memoryStep) === step)));
     host.querySelector('[data-memory-mode]').textContent = f.mode;
+    detail.querySelector('pre').textContent = f.code;
     body.setAttribute('aria-live', announce ? 'polite' : 'off');
     panels.forEach((panel, index) => {
       panel.style.visibility = index === step ? 'visible' : 'hidden';
@@ -46,12 +56,22 @@ export function mountMemoryDemo(host) {
     host.querySelector('.mm-spatial-caption').textContent = f.caption;
     updateDeck(step);
   };
-  host.querySelectorAll('[data-memory-step]').forEach(button => button.addEventListener('click', () => { step = Number(button.dataset.memoryStep); render(); }));
-  host.querySelector('.mm-next').addEventListener('click', () => { step = (step + 1) % frames.length; render(); });
+  host.querySelectorAll('[data-memory-step]').forEach(button => button.addEventListener('click', () => { detail.open = false; step = Number(button.dataset.memoryStep); render(); }));
+  host.querySelector('.mm-next').addEventListener('click', () => { detail.open = false; step = (step + 1) % frames.length; render(); });
   render();
   try { updateDeck = spatialArchive(host.querySelector('.mm-spatial')); updateDeck(step); }
   catch (error) { host.querySelector('.mm-spatial').dataset.renderer = 'fallback'; console.warn('Memory archive is using its text diagram.', error); }
-  createAutoAdvance({ host, label: 'Memex', advance() { step = (step + 1) % frames.length; render(false); } });
+  const autoplay = createAutoAdvance({ host, label: 'Memex', advance() {
+    // Keep an expanded record readable even with an older autoplay module.
+    if (detail.open) return;
+    step = (step + 1) % frames.length;
+    render(false);
+  } });
+  detail.addEventListener('toggle', () => {
+    // The shared controls expose expanded details as a pause. Restarting here
+    // also gives cached autoplay modules a full interval after the record closes.
+    autoplay.restart();
+  });
 }
 
 function spatialArchive(host) {

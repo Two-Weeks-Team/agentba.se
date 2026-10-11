@@ -40,7 +40,7 @@
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 8px 24px;
-  padding: 22px 28px;
+  padding: 18px 24px;
   color: var(--mm-muted);
   font-size: 12px;
 }
@@ -54,7 +54,7 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 4px;
-  margin-inline: 24px;
+  margin-inline: 20px;
   padding: 5px;
   border: 1px solid var(--mm-line);
   border-radius: 12px;
@@ -82,12 +82,57 @@
 }
 .mm-stage {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr);
-  gap: 28px;
-  align-items: center;
-  padding: 28px;
+  grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+  padding: 24px;
 }
-.mm-spatial { position: relative; height: 440px; min-width: 0; overflow: hidden; }
+.mm-evidence { display: grid; min-width: 0; gap: 18px; }
+.mm-replay { min-width: 0; margin: 0; }
+.mm-replay-image {
+  position: relative;
+  display: block;
+  aspect-ratio: 3.25;
+  overflow: hidden;
+  border: 1px solid #494e43;
+  border-radius: 10px;
+  background: #202020;
+}
+/* Crop only the surrounding empty canvas; the full original remains linked. */
+.mm-replay-image img {
+  position: absolute;
+  top: 0;
+  left: -15.48%;
+  width: 131%;
+  max-width: none;
+  height: auto;
+  transform: translateY(-14.58%);
+}
+.mm-replay figcaption {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 8px 14px;
+  margin-top: 10px;
+  color: var(--mm-muted);
+  font-size: 11px;
+  line-height: 1.6;
+}
+.mm-replay figcaption > span,
+.mm-replay figcaption strong { display: block; }
+.mm-replay figcaption strong { margin-bottom: 2px; color: var(--ink, #242421); font-size: 13px; font-weight: 500; }
+.mm-replay figcaption a {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  min-height: 44px;
+  margin-top: -6px;
+  color: var(--ink, #242421);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+.mm-replay a:hover { color: #53634b; }
+.mm-spatial { position: relative; height: 180px; min-width: 0; overflow: hidden; }
 .mm-spatial canvas { display: block; width: 100%; height: 100%; }
 .mm-spatial-title,
 .mm-spatial-caption {
@@ -100,21 +145,21 @@
   line-height: 1.65;
   text-wrap: pretty;
 }
-.mm-spatial-title { top: 8px; text-transform: none; }
-.mm-spatial-caption { bottom: 4px; max-width: 44ch; }
+.mm-spatial-title { top: 0; text-transform: none; }
+.mm-spatial-caption { bottom: 0; max-width: 44ch; }
 .mm-fallback {
   position: absolute;
-  inset: 68px 12px 60px;
+  inset: 30px 12px;
   display: grid;
   align-content: center;
-  gap: 12px;
+  gap: 5px;
 }
 .mm-fallback p {
-  padding: 18px;
+  padding: 6px 12px;
   border: 1px solid var(--mm-line);
   border-radius: 8px;
   background: var(--mm-paper);
-  font-size: 13px;
+  font-size: 12px;
   line-height: 1.6;
 }
 .mm-fallback p:last-child { border-color: #a5b19a; background: #e8ece2; }
@@ -122,9 +167,8 @@
 .mm-terminal {
   display: flex;
   flex-direction: column;
-  align-self: stretch;
+  align-self: start;
   min-width: 0;
-  min-height: 460px;
   border: 1px solid #41463c;
   border-radius: 16px;
   background: var(--mm-console);
@@ -137,13 +181,13 @@
   flex-wrap: wrap;
   gap: 6px 16px;
   border-bottom: 1px solid #494e43;
-  padding: 14px 22px;
+  padding: 12px 20px;
   color: #c3c6b9;
   font-size: 11px;
   line-height: 1.6;
 }
 /* Also support an earlier cached module without the inline frame layout. */
-.mm-terminal-body { display: grid; flex: 1; min-width: 0; padding: 24px; }
+.mm-terminal-body { display: grid; min-width: 0; padding: 20px; }
 .mm-frame { grid-area: 1 / 1; min-width: 0; visibility: hidden; }
 .mm-frame[aria-hidden="false"] { visibility: visible; }
 .mm-terminal .mm-kicker {
@@ -160,18 +204,18 @@
   text-transform: none;
 }
 .mm-terminal pre {
-  margin-block: 20px;
+  margin-block: 16px;
   border: 1px solid #494e43;
   border-left: 2px solid #a5b19a;
   border-radius: 8px;
-  padding: 14px 16px;
+  padding: 12px 14px;
   background: #252821;
   color: #f1f2e9;
-  font: 12px/1.85 var(--font-mono, monospace);
+  font: 12px/1.7 var(--font-mono, monospace);
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
-.mm-terminal p:not(.mm-kicker) { color: #d0d2c6; font-size: 13px; line-height: 1.8; }
+.mm-terminal p:not(.mm-kicker) { color: #d0d2c6; font-size: 13px; line-height: 1.7; }
 .mm-terminal p.mm-source {
   margin-top: 16px;
   color: #bcc2b1;
@@ -179,6 +223,27 @@
   overflow-wrap: anywhere;
 }
 .mm-terminal strong { color: #f5f3eb; font-weight: 500; }
+.mm-detail { min-width: 0; margin-inline: 20px; border-top: 1px solid #494e43; }
+.mm-detail summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 44px;
+  padding-block: 10px;
+  color: #e4e7db;
+  font-size: 12px;
+  line-height: 1.6;
+  list-style: none;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.mm-detail summary::-webkit-details-marker { display: none; }
+.mm-detail summary::after { content: '+'; font-size: 18px; line-height: 1; }
+.mm-detail[open] summary::after { content: '−'; }
+.mm-detail-body { padding-bottom: 18px; }
+.mm-detail-body pre { margin-block: 4px 10px; }
+.mm-terminal .mm-detail-body .mm-source { margin-top: 0; }
 .mm-terminal-footer {
   display: flex;
   align-items: center;
@@ -186,7 +251,7 @@
   flex-wrap: wrap;
   gap: 12px;
   border-top: 1px solid #494e43;
-  padding: 14px 22px;
+  padding: 12px 20px;
 }
 .mm-position { color: #c3c6b9; font: 11px/1.6 var(--font-mono, monospace); }
 .mm-next {
@@ -208,7 +273,7 @@
   flex-wrap: wrap;
   gap: 4px 24px;
   border-top: 1px solid var(--mm-line);
-  padding: 12px 28px;
+  padding: 12px 24px;
   color: var(--mm-muted);
   font-size: 12px;
   line-height: 1.7;
@@ -225,32 +290,38 @@
 
 /* Respond to the demo's available space, including a narrow desktop column. */
 @container mm-memory (max-width: 760px) {
-  .mm-topline { padding: 20px 22px; }
+  .mm-topline { padding: 18px 20px; }
   .mm-steps { margin-inline: 18px; }
   .mm-steps button { padding: 10px 12px; font-size: 12px; }
-  .mm-stage { grid-template-columns: minmax(0, 1fr); gap: 22px; padding: 22px; }
-  .mm-spatial { height: 310px; }
-  .mm-terminal { min-height: 0; }
-  .mm-bottom { padding-inline: 22px; }
+  .mm-stage { grid-template-columns: minmax(0, 1fr); gap: 20px; padding: 20px; }
+  .mm-evidence { gap: 14px; }
+  .mm-spatial { height: 170px; }
+  .mm-bottom { padding-inline: 20px; }
 }
 @container mm-memory (max-width: 420px) {
-  .mm-topline { gap: 6px; padding: 18px; }
+  .mm-topline { gap: 4px; padding: 14px 16px; }
   .mm-topline > span:last-child { max-width: 32ch; font-size: 11px; }
   .mm-steps { gap: 3px; margin-inline: 12px; padding: 4px; }
-  .mm-steps button { min-height: 68px; padding: 10px 8px; font-size: 11px; }
-  .mm-stage { gap: 18px; padding: 18px 12px; }
-  .mm-spatial { height: 286px; margin-inline: 6px; }
+  .mm-steps button { min-height: 64px; padding: 8px 6px; font-size: 11px; }
+  .mm-stage { gap: 18px; padding: 16px 12px; }
+  .mm-spatial { height: 150px; margin-inline: 4px; }
   .mm-spatial-title,
   .mm-spatial-caption { font-size: 11px; }
-  .mm-fallback { inset-inline: 0; gap: 8px; }
-  .mm-fallback p { padding: 13px; }
-  .mm-terminal-body { padding: 22px 18px; }
+  .mm-fallback { inset: 25px 0; gap: 4px; }
+  .mm-fallback p { padding: 3px 10px; font-size: 11px; }
+  .mm-terminal-body { padding: 18px 16px; }
   .mm-terminal-head,
-  .mm-terminal-footer { padding: 14px 18px; }
-  .mm-terminal h4 { font-size: 26px; }
-  .mm-terminal pre { padding: 12px; font-size: 11px; }
+  .mm-terminal-footer { padding: 10px 16px; }
+  .mm-terminal h4 { font-size: 25px; }
+  .mm-terminal pre { margin-block: 14px; padding: 10px; font-size: 11px; }
+  .mm-detail { margin-inline: 16px; }
+  .mm-detail-body pre { margin-block: 2px 10px; }
   .mm-next { padding-inline: 12px; }
-  .mm-bottom { align-items: flex-start; padding: 14px 18px; }
+  .mm-replay-image { aspect-ratio: 2.8; }
+  .mm-replay figcaption { gap: 4px 10px; font-size: 10px; }
+  .mm-replay figcaption strong { font-size: 12px; }
+  .mm-replay figcaption a { font-size: 11px; }
+  .mm-bottom { align-items: flex-start; gap: 4px; padding: 12px 16px; font-size: 11px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .memory-demo * { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
