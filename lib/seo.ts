@@ -5,6 +5,12 @@ import { alternatesFor, getContent, pathFor, SITE, type Locale } from "@/lib/i18
 
 export const OG_IMAGE_PATH = "/og/agentbase.png";
 export const OG_SIZE = { width: 1200, height: 630 };
+// Use path versions: Safari can keep the old ICO despite a new query string.
+export const BROWSER_ICONS = [32, 64].map(size => ({
+  url: `/icons/agentbase-mark-v2-${size}.png`,
+  type: "image/png",
+  sizes: `${size}x${size}`,
+}));
 
 /** Shared by both Next.js roots and the static redesign preview. */
 export function metadataFor(locale: Locale): Metadata {
@@ -15,6 +21,7 @@ export function metadataFor(locale: Locale): Metadata {
     title: meta.title,
     description: meta.description,
     alternates: alternatesFor(locale),
+    icons: { icon: BROWSER_ICONS, shortcut: BROWSER_ICONS[0]!.url },
     openGraph: {
       type: "website",
       siteName: company.name,

@@ -65,6 +65,8 @@ try {
     ['/icon.svg', 'app/icon.svg', /image\/svg\+xml/],
     ['/apple-icon.png', 'app/apple-icon.png', /image\/png/],
     ['/logo-512.png', 'public/logo-512.png', /image\/png/],
+    ['/icons/agentbase-mark-v2-32.png', 'public/icons/agentbase-mark-v2-32.png', /image\/png/],
+    ['/icons/agentbase-mark-v2-64.png', 'public/icons/agentbase-mark-v2-64.png', /image\/png/],
   ]) {
     const { bytes, type } = await get(path);
     assert.match(type, mime);

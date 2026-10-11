@@ -8,7 +8,7 @@
  * Run: node scripts/generate-icons.mjs   (needs imagemagick for the raster sizes)
  */
 import { execFileSync } from "node:child_process";
-import { readFileSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 
 const INK = "#101113";
 const PAPER = "#f2efe6";
@@ -51,6 +51,18 @@ execFileSync("magick", [
   "app/favicon.ico",
 ]);
 console.log("app/favicon.ico — 16/32/48 (transparent, centered original mark)");
+
+// Give Safari native PNG candidates at new paths, independent of the old
+// /favicon.ico cache and Next's query-string versions.
+mkdirSync("public/icons", { recursive: true });
+for (const size of [32, 64]) {
+  const output = `public/icons/agentbase-mark-v2-${size}.png`;
+  execFileSync("magick", [
+    "-background", "none", "app/icon.svg",
+    "-resize", `${size}x${size}`, "-strip", output,
+  ]);
+  console.log(`${output} — transparent ${size}x${size}`);
+}
 
 // schema.org Organization.logo wants a stable raster URL, and Next.js serves
 // app/icon.svg from a hashed path — so the structured-data copy lives in public/.

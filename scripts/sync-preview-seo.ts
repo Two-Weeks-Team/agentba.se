@@ -4,7 +4,7 @@ import company from "../data/company.json";
 import { getContent, SITE } from "../lib/i18n";
 import { renderLlmsTxt, renderMarkdown } from "../lib/machine";
 import { LANDING_STYLES, landingStylesheetHref, renderLandingHtml } from "../lib/landing";
-import { companyGraph, OG_IMAGE_PATH, OG_SIZE, serializeJsonLd } from "../lib/seo";
+import { BROWSER_ICONS, companyGraph, OG_IMAGE_PATH, OG_SIZE, serializeJsonLd } from "../lib/seo";
 
 // Export the production source for local design review. This file is generated;
 // the production page never reads from the design-previews directory.
@@ -47,10 +47,12 @@ const html = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 ${head}
 <link rel="icon" href="assets/mark-dark.svg" type="image/svg+xml">
+${BROWSER_ICONS.map(icon => `<link rel="icon" href="${icon.url.slice(1)}" type="${icon.type}" sizes="${icon.sizes}">`).join("\n")}
 ${LANDING_STYLES.map(file => `<link rel="stylesheet" href="${landingStylesheetHref(file).replace('/landing/', 'assets/')}">`).join("\n")}
 </head><body>${body}<script type="module" src="assets/init.js"></script></body></html>`;
 writeFileSync(path, html);
 cpSync("assets/landing", join(root, "assets"), { recursive: true });
+cpSync("public/icons", join(root, "icons"), { recursive: true });
 mkdirSync(join(root, "assets/og"), { recursive: true });
 copyFileSync("public/og/agentbase.png", join(root, "assets/og/agentbase.png"));
 rmSync(join(root, "data"), { recursive: true, force: true });

@@ -4,7 +4,7 @@ import company from "../data/company.json";
 import people from "../data/people.json";
 import sitemap from "../app/sitemap";
 import { renderLlmsTxt, renderMarkdown } from "../lib/machine";
-import { serializeJsonLd } from "../lib/seo";
+import { BROWSER_ICONS, serializeJsonLd } from "../lib/seo";
 
 const sources = [
   { name: "English application", file: ".next/server/app/index.html", canonical: "https://agentba.se/" },
@@ -47,6 +47,12 @@ function validateHead(html: string, canonical: string) {
   }
   expect(alternates.some(tag => attr(tag, "type") === "text/markdown")).toBe(true);
   expect(links(head!, "describedby").some(tag => attr(tag, "href").endsWith("/llms.txt"))).toBe(true);
+  for (const icon of BROWSER_ICONS) {
+    const candidates = links(head!, "icon");
+    expect(candidates.some(tag => new URL(attr(tag, "href"), canonical).pathname === icon.url
+      && attr(tag, "type") === icon.type && attr(tag, "sizes") === icon.sizes),
+    `missing versioned ${icon.sizes} PNG favicon`).toBe(true);
+  }
 }
 function validateCompany(html: string) {
   const scripts = [...html.matchAll(/<script\b[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)];
@@ -91,6 +97,7 @@ describe("public SEO and company identity", () => {
   it("rejects missing social artwork, a lost founder, and stale company locations", () => {
     const html = readFileSync(sources[2]!.file, "utf8");
     expect(() => validateHead(html.replace(/<meta property="og:image"[^>]*>/, ""), sources[2]!.canonical)).toThrow();
+    expect(() => validateHead(html.replace(/<link\b(?=[^>]*rel="icon")(?=[^>]*agentbase-mark-v2-)[^>]*>/g, ""), sources[2]!.canonical)).toThrow();
     expect(() => validateCompany(html.replace('"name":"Sejun Kim"', '"name":"Unknown"'))).toThrow();
     expect(() => validateCompany(html.replace('"identifier":"US"', '"identifier":"KR"'))).toThrow();
   });
@@ -101,6 +108,13 @@ describe("public SEO and company identity", () => {
     expect(imageDimensions(publicPath)).toEqual([1200, 630]);
     expect(imageDimensions(previewPath)).toEqual([1200, 630]);
     expect(readFileSync(publicPath).equals(readFileSync(previewPath))).toBe(true);
+  });
+
+  it("ships native PNG favicons at the sizes declared in metadata", () => {
+    for (const icon of BROWSER_ICONS) {
+      const size = Number(icon.sizes.split("x")[0]);
+      expect(imageDimensions(`public${icon.url}`)).toEqual([size, size]);
+    }
   });
 
   it("identifies the company and both founders in every AI document", () => {
