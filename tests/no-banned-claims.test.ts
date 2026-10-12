@@ -30,9 +30,8 @@ const BANNED_CLAIMS: Array<[RegExp, string]> = [
   [/listed on (the )?Google Cloud Marketplace/i, "marketplace-ready, not listed"],
 ];
 
-// E Corp. is a separate subsidiary, not a retired spelling of AgentBase.
-// Its approved relationship is checked in ai-discovery.test.ts, including a
-// negative case that swaps it into the parent company's legal-name field.
+// Public identification stays AgentBase LLC. The AI-discovery checks also
+// reject removed subsidiary details and any change to the verified legal name.
 
 /**
  * This is a company page, not a product page.

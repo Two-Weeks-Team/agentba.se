@@ -7,9 +7,10 @@ import { createHash } from 'node:crypto';
 const base = new URL(process.argv[2] || 'http://127.0.0.1:3110');
 const report = { base: base.href, checkedAt: new Date().toISOString(), checks: [], failures: [] };
 const digest = value => createHash('sha256').update(value).digest('hex');
-const contacts = value => {
+const publicContent = value => {
   const decoded = value.replace(/\\u([\da-f]{4})/gi, (_, hex) => String.fromCharCode(parseInt(hex, 16)));
   assert((decoded.match(/[\w.+-]+@agentba\.se/gi) || []).every(email => email.toLowerCase() === 'contact@agentba.se'), 'Individual email in public response');
+  assert(!/\bE\s+Corp\b|이\s*주식회사|AgentBase LLC is the parent company/i.test(decoded), 'Removed corporate detail in public response');
 };
 async function get(path, userAgent) {
   const response = await fetch(new URL(path, base), { headers: userAgent ? { 'User-Agent': userAgent } : {}, signal: AbortSignal.timeout(20000) });
@@ -26,12 +27,12 @@ try {
   const index = await get('/llms.txt');
   assert.match(index.type, /text\/plain/);
   assert.equal(index.text, expectedIndex);
-  contacts(index.text);
+  publicContent(index.text);
   const paths = [...new Set([...index.text.matchAll(/\]\((https:\/\/agentba\.se[^)]*)\)/g)].map(m => new URL(m[1]).pathname))];
   assert.equal(paths.length, 14, 'AI reading-path inventory changed; review its full coverage');
   for (const path of paths) {
     const result = await get(path);
-    contacts(result.text);
+    publicContent(result.text);
     if (path.startsWith('/data/')) assert.deepEqual(JSON.parse(result.text), JSON.parse(readFileSync(`public${path}`, 'utf8')));
     if (path.endsWith('.md')) {
       const locale = path.startsWith('/ko/') ? 'ko' : 'en';
@@ -50,10 +51,10 @@ try {
   }
   for (const file of readdirSync('public/data').filter(file => file.endsWith('.json') && !paths.includes(`/data/${file}`))) {
     const result = await get(`/data/${file}`);
-    contacts(result.text);
+    publicContent(result.text);
     assert.deepEqual(JSON.parse(result.text), JSON.parse(readFileSync(`public/data/${file}`, 'utf8')));
   }
-  contacts((await get('/ko')).text);
+  publicContent((await get('/ko')).text);
   const robots = (await get('/robots.txt')).text;
   for (const bot of ['ClaudeBot', 'Claude-User', 'Claude-SearchBot']) assert(robots.includes(bot), `Missing bot rule: ${bot}`);
   assert((await get('/sitemap.xml')).text.includes('https://agentba.se'));
@@ -106,7 +107,7 @@ try {
   for (const bot of ['ClaudeBot', 'Claude-User', 'Claude-SearchBot']) {
     for (const path of ['/', '/llms.txt']) {
       const result = await get(path, bot);
-      contacts(result.text);
+      publicContent(result.text);
       assert(result.text.includes('AgentBase LLC'), `${bot}: no company identity`);
       if (path === '/') assert(result.text.includes('Build a company.'), `${bot}: wrong homepage`);
       else assert.equal(result.text, expectedIndex);

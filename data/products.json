@@ -10,9 +10,6 @@
       "domain": "socialseed.ing",
       "url": "https://socialseed.ing",
       "status": "closed-beta",
-      "operator": "E Corp.",
-      "parentCompany": "AgentBase LLC",
-      "relationship": "AgentBase LLC is the parent company of E Corp., the operator listed on socialseed.ing.",
       "scope": "Closed beta. The V2 walkthrough shows agent roles at different stages of implementation; people review outreach drafts before sending.",
       "one": {
         "en": "Creator campaign operations built around specialist agent roles, a shared brief and human decision points. The workflow covers sourcing, outreach, replies and verification.",

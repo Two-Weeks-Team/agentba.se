@@ -58,10 +58,12 @@ public pages, error states, Markdown, JSON and browser bundles expose only
 `contact@agentba.se`. Both export scripts replace their generated data
 directories so deleted source files cannot remain publicly available.
 
-Product scope and the AgentBase LLC/E Corp. relationship are recorded in
-`data/products.json`. The production page and C preview synchronize corresponding visible
-paragraphs from that data. E Corp. is a separate subsidiary, not a retired
-name for AgentBase. Source-defined agent roles are not live deployment counts.
+Product scope is recorded in `data/products.json`. The production page and C
+preview synchronize corresponding visible paragraphs from that data. Public
+company identification is AgentBase LLC. At the founder's request, the Korean
+entity name and parent/subsidiary relationship are omitted from the homepage,
+text mirrors and exported data. A planned legal-name change is not a completed
+change; do not invent a new product operator. Source-defined agent roles are not live deployment counts.
 Economics is a dated model, and pre-incorporation projects and competitions
 belong to the team's history. Do not attach those earlier awards to the LLC
 in organization schema. Preserve original capture dates when clarifying copy;
@@ -82,8 +84,8 @@ a founder and corrupt the country code to confirm that invalid output fails.
 
 The AI-discovery suite checks all linked documents, every exported JSON file,
 both generated indexes, client bundles and the reusable redesign content.
-Negative cases inject individual emails, remove a resource and swap a
-subsidiary into the parent legal-name field. A mocked intake test confirms
+Negative cases inject individual emails and removed corporate details, remove
+a resource and replace the verified legal-name field. A mocked intake test confirms
 that the existing two delivery recipients are preserved without sending mail.
 
 The production migration adds a regression check requiring the approved C

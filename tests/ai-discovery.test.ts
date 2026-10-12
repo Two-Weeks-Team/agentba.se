@@ -9,13 +9,16 @@ import { renderLlmsTxt, renderMarkdown } from "../lib/machine";
 const preview = "design-previews/2026-10-10/vision";
 const built = ".next/server/app";
 
-function publicContacts(text: string) {
+function publicContent(text: string) {
   // RSC serializes HTML delimiters as Unicode escapes; decode them before
   // matching addresses so `\u003econtact` is not treated as a mailbox name.
   const decoded = text.replace(/\\u([\da-f]{4})/gi, (_, hex: string) => String.fromCharCode(parseInt(hex, 16)));
   const addresses = decoded.match(/[\w.+-]+@agentba\.se/gi) ?? [];
   const unexpected = addresses.filter(address => address.toLowerCase() !== company.email);
   if (unexpected.length) throw new Error(`Individual address in public content: ${unexpected.join(", ")}`);
+  if (/\bE\s+Corp\b|이\s*주식회사|AgentBase LLC is the parent company/i.test(decoded)) {
+    throw new Error("Removed corporate detail in public content");
+  }
 }
 
 function companyIdentity(text: string) {
@@ -81,15 +84,15 @@ describe("AI discovery across every published reading path", () => {
       expect(paths).toHaveLength(14);
       const dataFiles = readdirSync("data").sort();
       expect(readdirSync(`${target === "application" ? "public" : preview}/data`).sort()).toEqual(dataFiles);
-      publicContacts(index);
+      publicContent(index);
       for (const path of paths) {
         const text = resource(path, target);
         expect(text.trim().length, `${target}${path} is empty`).toBeGreaterThan(30);
-        publicContacts(text);
+        publicContent(text);
       }
       for (const file of readdirSync("data").filter(file => file.endsWith(".json"))) {
         const text = resource(`/data/${file}`, target);
-        publicContacts(text);
+        publicContent(text);
         expect(JSON.parse(text), `${target}: stale ${file}`).toEqual(JSON.parse(readFileSync(`data/${file}`, "utf8")));
       }
       companyIdentity(resource("/data/company.json", target));
@@ -109,7 +112,6 @@ describe("AI discovery across every published reading path", () => {
         for (const id of products.featured) {
           const product = products.products.find(p => p.id === id)!;
           expect(text).toContain(product.scope);
-          if (product.relationship) expect(text).toContain(product.relationship);
         }
         expect(text).toContain("before AgentBase LLC");
       }
@@ -126,32 +128,37 @@ describe("AI discovery across every published reading path", () => {
     expect(costs.measuredAt).toBeUndefined();
     expect(costs.agentbase.costNote.en).not.toMatch(/metered|measured/i);
     const social = products.products.find(p => p.id === "social-seeding")!;
-    expect(social.parentCompany).toBe(company.legalName);
-    expect(social.operator).toBe("E Corp.");
+    for (const field of ["operator", "parentCompany", "relationship"]) {
+      expect(social).not.toHaveProperty(field);
+    }
     expect(social.status).toBe("closed-beta");
     expect(products.products.find(p => p.id === "kbeauty")!.status).toBe("storefront-preview");
   });
 
-  it("keeps founder delivery addresses out of all client bundles, including error states", () => {
+  it("keeps private contacts and removed corporate details out of client bundles and locale pages", () => {
     const root = ".next/static";
     const chunks = readdirSync(root, { recursive: true }).filter(file => typeof file === "string" && file.endsWith(".js")) as string[];
     expect(chunks.length).toBeGreaterThan(0);
-    for (const file of chunks) publicContacts(readFileSync(join(root, file), "utf8"));
+    for (const file of chunks) publicContent(readFileSync(join(root, file), "utf8"));
+    for (const path of ["index.html", "ko.html"]) publicContent(readFileSync(join(built, path), "utf8"));
   });
 
   it("keeps the reusable redesign content free of the retired application pitch", () => {
     const source = readFileSync("content/en/landing.html", "utf8");
-    publicContacts(source);
+    publicContent(source);
     expect(source).not.toContain("applying to build our next fleet generation on Claude");
     for (const person of people.people) expect(source).toContain(person.name);
     expect(source).toContain(company.identity);
   });
 
-  it("rejects a leaked address, an unverified link and a subsidiary used as the parent entity", () => {
-    expect(() => publicContacts(`${index}\nsangguen@agentba.se`)).toThrow("Individual address");
-    expect(() => publicContacts('{"email":"sejun@agentba.se"}')).toThrow("Individual address");
-    expect(() => publicContacts('\\u003esejun@agentba.se')).toThrow("Individual address");
-    expect(() => publicContacts('\\u003econtact@agentba.se')).not.toThrow();
+  it("rejects leaked contacts, removed corporate details, unverified links and a substituted entity", () => {
+    expect(() => publicContent(`${index}\nsangguen@agentba.se`)).toThrow("Individual address");
+    expect(() => publicContent('{"email":"sejun@agentba.se"}')).toThrow("Individual address");
+    expect(() => publicContent('\\u003esejun@agentba.se')).toThrow("Individual address");
+    expect(() => publicContent('\\u003econtact@agentba.se')).not.toThrow();
+    for (const stale of ["E Corp.", "이 주식회사", "AgentBase LLC is the parent company"]) {
+      expect(() => publicContent(`${index}\n${stale}`)).toThrow("Removed corporate detail");
+    }
     expect(() => resource("/unlisted.md", "application")).toThrow("Unverified internal document");
     expect(() => resource("/data/missing.json", "preview")).toThrow();
     expect(() => companyIdentity(JSON.stringify({ ...company, legalName: "E Corp." }))).toThrow();

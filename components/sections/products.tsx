@@ -21,7 +21,6 @@ export function Products({ locale }: { locale: Locale }) {
             </a>
             <p className="prod__one">{p.one[locale]}</p>
             <p className="prod__one" lang="en">{p.scope}</p>
-            {p.relationship ? <p className="prod__one" lang="en">{p.relationship}</p> : null}
           </li>
         ))}
       </ul>

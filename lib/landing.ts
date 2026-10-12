@@ -38,7 +38,6 @@ export function renderLandingHtml() {
     const product = products.products.find(p => p.id === id);
     if (!product) throw new Error(`Missing featured product: ${id}`);
     fact(`data-product-scope="${id}"`, product.scope);
-    if (product.relationship) fact(`data-product-relationship="${id}"`, product.relationship);
   }
   const founders = /(<ul\b[^>]*data-founders[^>]*>)[\s\S]*?(<\/ul>)/;
   if (!founders.test(html)) throw new Error("Missing landing-page founders");

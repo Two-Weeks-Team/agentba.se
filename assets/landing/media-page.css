@@ -8,7 +8,7 @@
 .media-intro > p { max-width: 57ch; }
 .media-footnote { display: flex; gap: 40px; justify-content: space-between; padding-top: 22px; font: 12px/1.8 var(--font-body); color: var(--muted); }
 .media-footnote p { max-width: 68ch; flex: 1; }
-.media-footnote p:last-child { max-width: 47ch; }
+.media-footnote p:last-child:not(:only-child) { max-width: 47ch; }
 .demo-mount { min-width: 0; }
 .demo-mount > p { padding-block: 24px; }
 .demo-mount > img { max-width: 100%; height: auto; border-radius: 12px; }
@@ -85,7 +85,7 @@
   .project-link { padding: 0; font-size: 12px; }
   .media-intro { margin-bottom: 30px; }
   .media-footnote { display: grid; gap: 12px; font-size: 11px; padding-top: 20px; }
-  .media-footnote p:last-child { max-width: none; }
+  .media-footnote p:last-child:not(:only-child) { max-width: none; }
   .hero-work-links { gap: 14px; }
   .hero-work-links a { font-size: 10px; }
   .hero-work-links span { font-size: 10px; }

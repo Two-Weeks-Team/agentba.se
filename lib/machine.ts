@@ -128,7 +128,7 @@ export function renderMarkdown(locale: Locale): string {
 
   out.push(`## ${t.products.eyebrow}`, "", t.products.h2, "");
   for (const p of products.products) {
-    out.push(`- [${p.name}](${p.url}) — ${p.one[locale]} ${p.scope}${p.relationship ? ` ${p.relationship}` : ""}`);
+    out.push(`- [${p.name}](${p.url}) — ${p.one[locale]} ${p.scope}`);
   }
   out.push("");
 
@@ -217,7 +217,7 @@ export function renderFeaturedWork(): string {
   const productLinks = products.featured.map((id) => {
     const product = products.products.find((p) => p.id === id);
     if (!product) throw new Error(`Missing featured product: ${id}`);
-    return `- [${product.name}](${product.url}): ${product.one.en} ${product.scope}${product.relationship ? ` ${product.relationship}` : ""}`;
+    return `- [${product.name}](${product.url}): ${product.one.en} ${product.scope}`;
   });
   const technologyLinks = portfolio.featured.map((id) => {
     const project = portfolio.entries.find((p) => p.id === id);
@@ -258,7 +258,7 @@ ${renderFeaturedWork()}
 - [Company page, Korean](${SITE}/ko/index.md): the Korean page as Markdown, with the same company facts
 - [company.json](${SITE}/data/company.json): legal entity, founding month, business, mission and contact
 - [people.json](${SITE}/data/people.json): the two founders' names, roles and LinkedIn profiles; business contact is ${CONTACT_EMAIL}
-- [products.json](${SITE}/data/products.json): product scope, implementation stages and the relationship between AgentBase LLC and E Corp.
+- [products.json](${SITE}/data/products.json): products, public links, implementation stages and operating scope
 
 ## Optional
 - [portfolio.json](${SITE}/data/portfolio.json): team projects, including work begun before AgentBase LLC was founded in August 2026; developer tools, prototypes and public evidence links
