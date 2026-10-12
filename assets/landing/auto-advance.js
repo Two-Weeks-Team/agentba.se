@@ -1,3 +1,4 @@
+import { t } from './locale.js';
 // Local walkthrough playback only: advancing never invokes a product or service.
 export function createAutoAdvance({ host, advance, label, hoverTarget = host, controlsBefore = host, pauseControl, delay = 2000 }) {
   const doc = host.ownerDocument;
@@ -38,9 +39,9 @@ export function createAutoAdvance({ host, advance, label, hoverTarget = host, co
       : doc.hidden ? 'hidden' : !visible ? 'offscreen' : 'running';
     host.dataset.autoplay = state;
     if (button) {
-      status.textContent = state === 'reduced' ? 'Manual walkthrough' : ['paused', 'focus', 'hover', 'expanded'].includes(state) ? 'Walkthrough paused' : 'Auto walkthrough · 2 sec';
-      button.textContent = paused ? 'Resume' : 'Pause';
-      button.setAttribute('aria-label', `${paused ? 'Resume' : 'Pause'} ${label} walkthrough`);
+      status.textContent = t(state === 'reduced' ? 'Manual walkthrough' : ['paused', 'focus', 'hover', 'expanded'].includes(state) ? 'Walkthrough paused' : 'Auto walkthrough · 2 sec');
+      button.textContent = t(paused ? 'Resume' : 'Pause');
+      button.setAttribute('aria-label', document.documentElement.lang === 'ko' ? `${t(label)} 둘러보기 ${t(paused ? 'Resume' : 'Pause')}` : `${paused ? 'Resume' : 'Pause'} ${label} walkthrough`);
       button.setAttribute('aria-pressed', String(paused));
       button.disabled = motion.matches;
     }

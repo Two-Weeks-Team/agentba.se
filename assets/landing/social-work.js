@@ -1,3 +1,4 @@
+import { t, localize } from './locale.js';
 /*
  * Local illustration grounded in Two-Weeks-Team/social-seeding-v2,
  * 3b22f09ace6a86bd0d1ed324c25272d5e232c871.
@@ -293,7 +294,8 @@ export function mountSocialDemo(host) {
     back.disabled = step === 0;
     next.innerHTML = step === 2 ? 'Replay <span aria-hidden="true">↺</span>' : `${step === 0 ? "View draft" : "Human review"} <span aria-hidden="true">→</span>`;
     next.setAttribute("aria-label", step === 2 ? `Replay ${selected.name}’s sample assignment` : `Show ${selected.name}’s ${STEPS[step + 1].toLowerCase()}`);
-    if (announce) announcer.textContent = `${selected.name}, ${selected.role}. ${STEPS[step]}: ${current.title} Illustrative sample only.`;
+    if (announce) announcer.textContent = document.documentElement.lang === "ko" ? `${selected.name}, ${t(selected.role)}. ${t(STEPS[step])}: ${t(current.title)} 예시입니다.` : `${selected.name}, ${selected.role}. ${STEPS[step]}: ${current.title} Illustrative sample only.`;
+    localize(root);
 
     // Keep the active person visible on small screens, including the initial
     // Theo selection and handoffs to a role outside the current roster window.
@@ -368,6 +370,7 @@ export function mountSocialDemo(host) {
     let identityHeight = 0, contentHeight = 0;
     for (const persona of PERSONAS) {
       clonedIdentity.innerHTML = identityMarkup(persona);
+      localize(clonedIdentity);
       identityHeight = Math.max(identityHeight, clonedIdentity.getBoundingClientRect().height);
       for (const [index, current] of persona.stages.entries()) {
         clone.querySelector('.ss-eyebrow').textContent = `${persona.name} / ${STEPS[index]}`;
@@ -377,6 +380,7 @@ export function mountSocialDemo(host) {
         const nextRole = clone.querySelector('.ss-role-next');
         nextRole.hidden = index !== 2;
         nextRole.textContent = `Next: ${PERSONAS[(PERSONAS.indexOf(persona) + 1) % PERSONAS.length].name} →`;
+        localize(clonedContent);
         contentHeight = Math.max(contentHeight, clonedContent.getBoundingClientRect().height);
       }
     }

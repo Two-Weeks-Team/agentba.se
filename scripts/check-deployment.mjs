@@ -54,7 +54,17 @@ try {
     publicContent(result.text);
     assert.deepEqual(JSON.parse(result.text), JSON.parse(readFileSync(`public/data/${file}`, 'utf8')));
   }
-  publicContent((await get('/ko')).text);
+  const korean = (await get('/ko')).text;
+  publicContent(korean);
+  assert(korean.includes('회사를 세우세요.'), '/ko still serves the old or English homepage');
+  assert(korean.includes('일할 에이전트를 배치하세요.'), '/ko is missing the translated hero');
+  for (const id of ['hero','work','commerce','memory','architecture','scale','capabilities','contact','company','social-demo','commerce-demo','memory-demo','judgment-demo','delivery-demo']) assert(korean.includes(`id="${id}"`), `/ko missing redesigned section: ${id}`);
+  assert(korean.includes('/landing/init.js'), '/ko is missing the shared interactive demos');
+  for (const file of ['c.css','media-page.css','memory-work.css']) {
+    const version=digest(readFileSync(`assets/landing/${file}`)).slice(0,12);
+    assert(korean.includes(`/landing/${file}?v=${version}`), `/ko uses stale styles: ${file}`);
+  }
+  assert(!korean.includes('우린 사람을 뽑지 않습니다'), 'Legacy Korean content remains');
   const robots = (await get('/robots.txt')).text;
   for (const bot of ['ClaudeBot', 'Claude-User', 'Claude-SearchBot']) assert(robots.includes(bot), `Missing bot rule: ${bot}`);
   assert((await get('/sitemap.xml')).text.includes('https://agentba.se'));
@@ -106,11 +116,12 @@ try {
     assert.equal(digest(bytes), digest(readFileSync('public/og/agentbase.png')), 'OG image differs from reviewed artwork');
   }
   for (const bot of ['ClaudeBot', 'Claude-User', 'Claude-SearchBot']) {
-    for (const path of ['/', '/llms.txt']) {
+    for (const path of ['/', '/ko', '/llms.txt']) {
       const result = await get(path, bot);
       publicContent(result.text);
       assert(result.text.includes('AgentBase LLC'), `${bot}: no company identity`);
       if (path === '/') assert(result.text.includes('Build a company.'), `${bot}: wrong homepage`);
+      else if (path === '/ko') assert(result.text.includes('회사를 세우세요.'), `${bot}: wrong Korean homepage`);
       else assert.equal(result.text, expectedIndex);
     }
   }

@@ -1,8 +1,8 @@
 # agentba.se
 
 AgentBase LLC's company site. The English landing page is served at `/`.
-The existing Korean page remains at `/ko`, with updated company
-facts and discovery metadata.
+The same landing is served in Korean at `/ko`; both languages share the structure,
+styles, media and interactive demonstrations.
 
 ## Production page
 
@@ -16,7 +16,7 @@ Social Seeding AI role cards and outreach walkthrough, kbeauty discovery,
 Memex recall, Glasshat review, PreviewForge decision handoff, four organization
 scopes, capabilities, Run / Build / Prove, and the company footer.
 
-The English visual system uses a warm paper background, Newsreader display
+The shared visual system uses a warm paper background, Newsreader display
 headings, Inter reading text, and softly framed product demonstrations. Shared
 tokens live in `assets/landing/c.css`; the organization and all five demos use
 the same palette. Keep monospace type for code and actual technical values.
@@ -26,9 +26,11 @@ media, vendored Three.js and local fonts. `prebuild` copies that complete set to
 `public/landing/`. Read its README for asset provenance and demo limitations.
 No archived alternatives or QA screenshots are deployed.
 
-The two locale groups have separate root layouts. Keep the English landing CSS
-separate from the legacy Korean styles. The English demo modules load after
-hydration and preserve readable text when JavaScript or WebGL is unavailable.
+The two locale groups use `components/pages/landing-layout.tsx` and the same
+`LandingPage` with a locale. `assets/landing/locales/ko-*.mjs` translate both
+server-rendered content and every demo state. Do not restore the legacy Korean
+`HomePage` route. The shared demo modules preserve readable text when JavaScript
+or WebGL is unavailable.
 
 ## Public facts and machine-readable documents
 
@@ -38,7 +40,7 @@ hydration and preserve readable text when JavaScript or WebGL is unavailable.
   links, current scope and historical context.
 - `/llms.txt`: company introduction and curated reading index.
 - `/index.md`: the production English narrative and featured-work links.
-- `/ko/index.md`: the existing Korean page's text mirror.
+- `/ko/index.md`: the same production narrative translated into Korean.
 - `/data/*.json`: dated evidence and explicit scope; historical definitions and
   modeled costs are not claims about live deployments or measured savings.
 
@@ -73,9 +75,9 @@ PostHog is initialized by `instrumentation-client.ts` when
 `/ingest/*`; keep `skipTrailingSlashRedirect` for ingestion POSTs. A build without
 the key loads no analytics.
 
-The new landing page uses the shared contact email. The existing Korean intake
-form posts to `/api/intake`, which uses the server-only `RESEND_API_KEY` to reach
-both founders. Missing delivery configuration returns 503 with the shared email
+Both landing pages use the shared contact email. The retained `/api/intake`
+endpoint uses the server-only `RESEND_API_KEY` to reach both founders; the current
+landing pages do not expose its legacy form. Missing delivery configuration returns 503 with the shared email
 fallback. Tests mock delivery and never send messages.
 
 ## Contact

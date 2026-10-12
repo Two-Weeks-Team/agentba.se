@@ -1,6 +1,6 @@
 // Browser regression checks; import with an ego-browser Page. Launches no browser.
 import assert from 'node:assert/strict';
-export async function checkWalkthroughStates(page) {
+export async function checkWalkthroughStates(page, onState) {
  await page.cdp('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:'reduce'}]});
  await page.waitForFunction(()=>{
   const hosts=[...document.querySelectorAll('[data-autoplay]')];
@@ -8,12 +8,15 @@ export async function checkWalkthroughStates(page) {
  });
  await page.evaluate(async()=>{await document.fonts.ready;await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));});
  const results=[];
- // Ego's wheel scrolling left roster controls underneath the sticky nav.
- // Centre observed targets before clicking; do not alter application state.
+ // Exercise every state through its actual control. Timing and hover checks
+ // below separately use pointer input and focus; state enumeration stays fast.
  async function click(selector) {
-  await page.evaluate(selector => document.querySelector(selector).scrollIntoView({block:'center',inline:'center',behavior:'instant'}),selector);
-  await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
-  await page.click(selector);
+  await page.evaluate(async selector => {
+   const control=document.querySelector(selector);
+   control.scrollIntoView({block:'center',inline:'center',behavior:'instant'});
+   control.click();
+   await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+  },selector);
  }
 
  async function record(id,key) {
@@ -24,6 +27,7 @@ export async function checkWalkthroughStates(page) {
   },{id,key});
   assert.equal(r.overflow,false,`${id}/${key} overflows the page`);
   assert.ok(r.visibleText>0,`${id}/${key} missing visible content`);
+  if (onState) await onState(page, id, key);
   results.push(r);
  }
  const personas=await page.evaluate(()=>[...document.querySelectorAll('button[data-ss-persona]')].map(e=>e.dataset.ssPersona));

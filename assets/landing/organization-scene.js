@@ -1,3 +1,4 @@
+import { t } from './locale.js';
 // A conceptual organization, not a feed of current business activity.
 // Three.js is pinned locally; the copy controller and text fallback work independently.
 import * as THREE from './vendor/three/three.module.js';
@@ -35,7 +36,7 @@ class OrganizationScene {
     this.canvas = this.renderer.domElement;
     this.canvas.tabIndex = 0;
     this.canvas.setAttribute('role', 'img');
-    this.canvas.setAttribute('aria-label', 'Interactive conceptual organization. Drag horizontally or use arrow keys to rotate. Home resets the view.');
+    this.canvas.setAttribute('aria-label', t('Interactive conceptual organization. Drag horizontally or use arrow keys to rotate. Home resets the view.'));
     host.append(this.canvas);
 
     this.scene = new THREE.Scene();
@@ -125,7 +126,7 @@ class OrganizationScene {
     this.labels = data.labels.map(({ name, p }) => {
       const el = document.createElement('span');
       el.className = 'scene-label';
-      el.textContent = name;
+      el.textContent = t(name);
       this.labelLayer.append(el);
       return { el, point: vector(p) };
     });
@@ -236,10 +237,10 @@ class OrganizationScene {
     const active = this.visible && !document.hidden && !this.static && !this.lost;
     this.host.dataset.motion = this.lost ? 'unavailable' : reducedMotion.matches ? 'reduced' : this.paused ? 'paused' : active ? 'running' : 'idle';
     this.pauseButton.disabled = reducedMotion.matches || this.lost;
-    this.pauseButton.textContent = reducedMotion.matches ? 'Motion off' : this.paused ? 'Play motion' : 'Pause motion';
+    this.pauseButton.textContent = t(reducedMotion.matches ? 'Motion off' : this.paused ? 'Play motion' : 'Pause motion');
     this.pauseButton.setAttribute('aria-pressed', String(this.paused || reducedMotion.matches));
     this.resetButton.disabled = this.lost;
-    this.hint.textContent = this.lost ? 'Text diagram available' : 'Drag to rotate';
+    this.hint.textContent = t(this.lost ? 'Text diagram available' : 'Drag to rotate');
     if (!this.lost) this.render(0);
     if (active && !this.frame) {
       this.lastTime = performance.now();
@@ -317,7 +318,7 @@ document.querySelectorAll('.organization-scene').forEach(host => {
   try { new OrganizationScene(host); }
   catch (error) {
     host.dataset.renderer = 'fallback';
-    host.closest('.organization-view').querySelector('[data-scene-hint]').textContent = 'Text diagram available';
+    host.closest('.organization-view').querySelector('[data-scene-hint]').textContent = t('Text diagram available');
     console.warn('The conceptual diagram is using its text fallback.', error);
   }
 });

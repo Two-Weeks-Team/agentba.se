@@ -34,7 +34,7 @@ describe("approved CI Kit v1.0", () => {
   });
 
   it("uses the complete logo in both headers and footers", () => {
-    for (const [file, logo] of [[".next/server/app/index.html", BRAND_LOGOS.black], [".next/server/app/ko.html", BRAND_LOGOS.white]]) {
+    for (const [file, logo] of [[".next/server/app/index.html", BRAND_LOGOS.black], [".next/server/app/ko.html", BRAND_LOGOS.black]]) {
       const html = readFileSync(file!, "utf8");
       expect((html.match(/<img\b[^>]*>/g) ?? []).filter(tag => tag.includes(`src="${logo}"`))).toHaveLength(2);
       expect(html).not.toContain('src="/landing/mark-dark.svg"');

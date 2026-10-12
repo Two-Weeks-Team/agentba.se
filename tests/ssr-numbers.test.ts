@@ -37,13 +37,9 @@ const MUST_APPEAR_EN = [
 ];
 
 const MUST_APPEAR_KO = [
-  "이 회사는 에이전트로 돌아갑니다",
-  "우린 사람을 뽑지 않습니다",
-  "AI 작성",
-  "approveBudget",
-  "contact@agentba.se",
-  "미수상",
-  "한 줄이면 충분합니다.",
+  "회사를 세우세요.", "일할 에이전트를 배치하세요.",
+  "Social Seeding", "Memex", "kbeauty.market", "기술 역량", "AgentBase LLC",
+  "Sangguen Chang", "Sejun Kim", "contact@agentba.se", "2026년 8월", "와이오밍",
 ];
 
 /** Product-side disclosure that must not reappear on the company page. */
@@ -81,17 +77,20 @@ describe("server-rendered figures", () => {
   });
 
   it("renders the approved C sections and readable diagram fallbacks without JavaScript", () => {
-    const doc = html("index.html");
+    for (const [file, locale] of [["index.html", "en"], ["ko.html", "ko"]]) {
+    const doc = html(file!);
     for (const id of ["hero", "work", "commerce", "memory", "architecture", "scale", "capabilities", "contact", "company"]) {
       expect(doc).toContain(`id="${id}"`);
     }
     for (const id of ["hero-organization", "stage-organization", "social-demo", "commerce-demo", "memory-demo", "judgment-demo", "delivery-demo"]) {
       expect(doc).toContain(`id="${id}"`);
     }
-    expect(doc).toContain("Conceptual company structure");
-    expect(doc).toContain("Conceptual task structure");
+    expect(doc).toContain(locale === "en" ? "Conceptual company structure" : "회사 구조 개념도");
+    expect(doc).toContain(locale === "en" ? "Conceptual task structure" : "과업 구조 개념도");
     expect(doc).toContain("/landing/init.js");
     expect(doc).not.toContain("This company runs on agents");
+    expect(doc).not.toContain("우린 사람을 뽑지 않습니다");
+    }
   });
 
   it("declares the right language per locale", () => {

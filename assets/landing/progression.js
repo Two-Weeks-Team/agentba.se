@@ -1,3 +1,4 @@
+import { t } from './locale.js';
 import { createAutoAdvance } from './auto-advance.js';
 import { reserveSpace } from './reserve-space.js';
 
@@ -60,24 +61,24 @@ import { reserveSpace } from './reserve-space.js';
         if (!data) return;
 
         // Update narrative elements
-        stageLabel.textContent = data.label;
-        stageTitle.textContent = data.title;
-        stageBody.textContent = data.body;
-        stageExample.textContent = data.example;
-        canvasTierTag.textContent = data.tierTag;
-        nodeCountIndicator.textContent = data.countTag;
+        stageLabel.textContent = t(data.label);
+        stageTitle.textContent = t(data.title);
+        stageBody.textContent = t(data.body);
+        stageExample.textContent = t(data.example);
+        canvasTierTag.textContent = t(data.tierTag);
+        nodeCountIndicator.textContent = t(data.countTag);
 
         // Keep the narrative and accessible fallback usable without WebGL.
         organization.dataset.sceneStage = stageKey;
-        organization.querySelector('.scene-fallback p').textContent = 'Conceptual ' + stageKey + ' structure';
+        organization.querySelector('.scene-fallback p').textContent = t('Conceptual ' + stageKey + ' structure');
         const list = organization.querySelector('.scene-fallback ol');
         list.replaceChildren(...data.nodes.map(name => {
           const item = document.createElement('li');
-          item.textContent = name;
+          item.textContent = t(name);
           return item;
         }));
         panel.setAttribute('aria-labelledby', 'tab-' + stageKey);
-        organization.closest('.organization-view').querySelector('[role="group"]').setAttribute('aria-label', stageKey + ' diagram controls');
+        organization.closest('.organization-view').querySelector('[role="group"]').setAttribute('aria-label', t(stageKey + ' diagram controls'));
         window.dispatchEvent(new CustomEvent('agentbase:stage', { detail: { key: stageKey } }));
 
         // Update tab accessibility states
@@ -129,10 +130,10 @@ import { reserveSpace } from './reserve-space.js';
         clone.style.minHeight = '';
         let height = 0;
         for (const data of Object.values(stagesData)) {
-          clone.querySelector('.stage-eyebrow-tag').textContent = data.label;
-          clone.querySelector('.stage-title').textContent = data.title;
-          clone.querySelector('.stage-body').textContent = data.body;
-          clone.querySelector('.stage-example-content').textContent = data.example;
+          clone.querySelector('.stage-eyebrow-tag').textContent = t(data.label);
+          clone.querySelector('.stage-title').textContent = t(data.title);
+          clone.querySelector('.stage-body').textContent = t(data.body);
+          clone.querySelector('.stage-example-content').textContent = t(data.example);
           height = Math.max(height, clone.getBoundingClientRect().height);
         }
         panel.querySelector('.organization-copy').style.minHeight = `${Math.ceil(height)}px`;

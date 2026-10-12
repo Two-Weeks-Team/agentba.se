@@ -1,3 +1,4 @@
+import { t, localize } from './locale.js';
 /**
  * Independent, local-only foundation demonstrations. No automatic mounting,
  * model calls, telemetry, persistence, or deployments.
@@ -19,7 +20,7 @@ let serial = 0;
 function element(doc, tag, className, text) {
   const node = doc.createElement(tag);
   if (className) node.className = className;
-  if (text !== undefined) node.textContent = text;
+  if (text !== undefined) node.textContent = t(text);
   return node;
 }
 
@@ -202,6 +203,7 @@ export function mountJudgmentDemo(host) {
     const item = PERSPECTIVES.find((entry) => entry.id === perspective);
     fillTrace(trace, step === 'perspectives' ? perspectiveView(item) : REVIEW_TRACES[step]);
     follow.textContent = step === 'report' ? 'Review again ↺' : 'Follow the review →';
+    localize(root);
   }
   function setStep(next, nextPerspective = perspective) {
     if (!ctx.isAlive()) return getState();
@@ -226,6 +228,7 @@ export function mountJudgmentDemo(host) {
     let height = 0;
     for (const view of [...Object.values(REVIEW_TRACES), ...PERSPECTIVES.map(perspectiveView)]) {
       fillTrace(sample, view);
+      localize(sample);
       height = Math.max(height, sample.getBoundingClientRect().height);
     }
     trace.style.minHeight = `${Math.ceil(height)}px`;
@@ -358,7 +361,7 @@ export function mountDeliveryDemo(host) {
   listen(download, 'click', () => {
     const view = doc.defaultView;
     if (!view?.URL?.createObjectURL || !view.Blob) {
-      announcement.textContent = 'This browser cannot download the file. The complete sample record is displayed above.';
+      announcement.textContent = t('This browser cannot download the file. The complete sample record is displayed above.');
       return;
     }
     const blob = new view.Blob([JSON.stringify(getState().choiceRecord, null, 2) + '\n'], { type: 'application/json' });
@@ -374,7 +377,7 @@ export function mountDeliveryDemo(host) {
       downloads.delete(url);
     }, 1000);
     downloads.set(url, timer);
-    announcement.textContent = 'Sample choice record prepared for download.';
+    announcement.textContent = t('Sample choice record prepared for download.');
   });
   footer.append(status, download, announcement);
   shell.append(header, tabs, preview, handoff, footer);
@@ -400,6 +403,7 @@ export function mountDeliveryDemo(host) {
     recordBody.textContent = JSON.stringify(getState().choiceRecord, null, 2);
     specText.textContent = item.brief;
     if (announce) announcement.textContent = `${item.name} selected. The sample choice record and specification handoff are updated.`;
+    localize(root);
   }
   function selectDirection(next) {
     if (!ctx.isAlive()) return getState();
@@ -422,6 +426,7 @@ export function mountDeliveryDemo(host) {
       sample.replaceChildren(lunchConcept(doc, item.id));
       clone.querySelector('.pf-spec-text').textContent = item.brief;
       clone.querySelector('.pf-record-body').textContent = JSON.stringify({ concept: item.id, sample: true }, null, 2);
+      localize(clone);
       previewHeight = Math.max(previewHeight, sample.getBoundingClientRect().height);
       handoffHeight = Math.max(handoffHeight, nextBrief.getBoundingClientRect().height);
     }

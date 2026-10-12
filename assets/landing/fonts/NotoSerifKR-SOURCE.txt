@@ -1,0 +1,12 @@
+Source: https://github.com/google/fonts/tree/main/ofl/notoserifkr
+Downloaded 2026-10-12: NotoSerifKR[wght].ttf
+Source SHA-256: 11f8d5de6f1b79195efba3828aaa2ec95c1178f5ae976fb23c8d53250a9938f3
+License: SIL OFL 1.1, included as NotoSerifKR-OFL.txt.
+
+Converted with fontTools: instantiateVariableFont(font, {'wght': 400}, inplace=True).
+Subset unicode ranges: U+0020-00FF, U+1100-11FF, U+2000-206F, U+3000-31FF,
+U+AC00-D7A3 (all modern Hangul syllables, not only the current page copy).
+WOFF2 output: NotoSerifKR-Regular.woff2
+Output SHA-256: 4a437437337ec592d44aa5d76c5c83c5aa98130b316b50767af005c93724c915
+Only the Korean route preloads this font. It supplies Hangul display glyphs;
+Newsreader continues to render Latin glyphs, and body text keeps the shared sans stack.

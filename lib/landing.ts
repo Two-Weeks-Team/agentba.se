@@ -4,7 +4,8 @@ import { join } from "node:path";
 import company from "@/data/company.json";
 import people from "@/data/people.json";
 import products from "@/data/products.json";
-import { SITE } from "@/lib/i18n";
+import { SITE, type Locale } from "@/lib/i18n";
+import { translateHtml } from "@/assets/landing/locale-core.mjs";
 
 export const LANDING_STYLES = [
   "organization-scene.css", "c.css", "media-page.css", "social-work.css",
@@ -24,7 +25,7 @@ const escape = (value: string) => value.replace(/&/g, "&amp;").replace(/</g, "&l
 /** Trusted, committed HTML, shared by the production page and design preview.
  * This is never user-supplied HTML. The demos progressively enhance its text.
  */
-export function renderLandingHtml() {
+export function renderLandingHtml(locale: Locale = "en") {
   let html = readFileSync(join(process.cwd(), "content/en/landing.html"), "utf8");
   function fact(attribute: string, value: string) {
     const pattern = new RegExp(`(<p\\b[^>]*${attribute}[^>]*>)[\\s\\S]*?(</p>)`);
@@ -44,12 +45,13 @@ export function renderLandingHtml() {
   html = html.replace(founders, (_, open: string, close: string) => `${open}${people.people.map(p =>
     `<li><a href="${escape(p.linkedin)}" target="_blank" rel="noopener noreferrer">${escape(p.name)} <span aria-hidden="true">↗</span></a><span>Co-founder · ${escape(p.role)}</span></li>`
   ).join("\n")}${close}`);
-  return html;
+  if (locale === "ko") html = html.replace('href="/index.md"', 'href="/ko/index.md"');
+  return translateHtml(html, locale);
 }
 
 /** Preserve the actual page narrative in the AI mirror, including scopes. */
-export function renderLandingMarkdown() {
-  const readable = renderLandingHtml().match(/<main\b[\s\S]*?<\/footer>/)?.[0];
+export function renderLandingMarkdown(locale: Locale = "en") {
+  const readable = renderLandingHtml(locale).match(/<main\b[\s\S]*?<\/footer>/)?.[0];
   if (!readable) throw new Error("Landing page has no main-to-footer narrative");
   const text = (value: string) => value
     .replace(/<a\b[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g, (_, href: string, label: string) =>

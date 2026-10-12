@@ -1,3 +1,4 @@
+import { t, localize } from './locale.js';
 import * as THREE from './vendor/three/three.module.js';
 import { createAutoAdvance } from './auto-advance.js';
 
@@ -60,6 +61,7 @@ export function mountMemoryDemo(host) {
     host.querySelector('.mm-position').textContent = `0${step + 1} / 03`;
     host.querySelector('.mm-next').textContent = f.next;
     host.querySelector('.mm-spatial-caption').textContent = f.caption;
+    localize(host);
     updateDeck(step);
   };
   host.querySelectorAll('[data-memory-step]').forEach(button => button.addEventListener('click', () => { detail.open = false; step = Number(button.dataset.memoryStep); render(); }));
@@ -86,7 +88,7 @@ function spatialArchive(host) {
   renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
   renderer.setClearColor(0xf7f6f2, 0);
   renderer.domElement.setAttribute('role', 'img');
-  renderer.domElement.setAttribute('aria-label', 'Past sessions arranged in a spatial archive. The Rust CI session moves forward when its experience is retrieved.');
+  renderer.domElement.setAttribute('aria-label', t('Past sessions arranged in a spatial archive. The Rust CI session moves forward when its experience is retrieved.'));
   host.prepend(renderer.domElement);
   const scene = new THREE.Scene();
   const camera = new THREE.OrthographicCamera(-5, 5, 4, -4, .1, 60);
@@ -98,13 +100,13 @@ function spatialArchive(host) {
     const ctx = canvas.getContext('2d');
     ctx.fillStyle = index === 2 ? '#e8ece2' : '#fdfcf8'; ctx.fillRect(0,0,900,520);
     ctx.strokeStyle = index === 2 ? '#87957e' : '#c6c9bf'; ctx.lineWidth = 2; ctx.strokeRect(1,1,898,518);
-    ctx.fillStyle = index === 2 ? '#36472f' : '#242421'; ctx.font = '28px monospace'; ctx.fillText('Session / '+String(index+1).padStart(2,'0'),45,59);
+    ctx.fillStyle = index === 2 ? '#36472f' : '#242421'; ctx.font = '28px monospace'; ctx.fillText(t('Session / '+String(index+1).padStart(2,'0')),45,59);
     ctx.beginPath(); ctx.moveTo(45,83); ctx.lineTo(855,83); ctx.stroke();
-    ctx.font = 'bold 36px monospace'; ctx.fillText(name,45,163);
+    ctx.font = 'bold 36px monospace'; ctx.fillText(t(name),45,163);
     ctx.font = '31px monospace';
     const lines = index === 2 ? ['$ cargo build --release','linker `cc` not found','→ Recall the next action'] : index === 1 ? ['$ docker build','A past development session','Tools · context · result'] : ['$ pip install -r requirements.txt','A past development session','Tools · context · result'];
-    lines.forEach((text,i) => ctx.fillText(text,45,237+i*54));
-    ctx.font = '26px monospace'; ctx.fillText('Synthetic session / local archive',45,470);
+    lines.forEach((text,i) => ctx.fillText(t(text),45,237+i*54));
+    ctx.font = '26px monospace'; ctx.fillText(t('Synthetic session / local archive'),45,470);
     const texture = new THREE.CanvasTexture(canvas); texture.colorSpace = THREE.SRGBColorSpace;
     const mesh = new THREE.Mesh(new THREE.PlaneGeometry(6.2,3.58), new THREE.MeshBasicMaterial({ map:texture, side:THREE.DoubleSide }));
     world.add(mesh); return mesh;

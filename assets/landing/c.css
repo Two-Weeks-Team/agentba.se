@@ -1,5 +1,6 @@
 @font-face { font-family: 'Newsreader'; src: url('./fonts/Newsreader-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
 @font-face { font-family: 'Agent Inter'; src: url('./media-proposal/social-badges/inter-latin.woff2') format('woff2'); font-style: normal; font-weight: 100 900; font-display: swap; }
+@font-face { font-family: 'Agent Noto Serif KR'; src: url('./fonts/NotoSerifKR-Regular.woff2') format('woff2'); font-style: normal; font-weight: 400; font-display: swap; }
 :root {
   --page: #f7f6f2; --paper: #fdfcf9; --wash: #eeede7; --ink: #242421; --muted: #66665e; --line: #deddd6;
   --black: var(--ink); --white: var(--paper);
@@ -11,6 +12,9 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; scroll-padding-top: 108px; color: var(--ink); background: var(--page); }
 body { font: 16px/1.65 var(--font-body); -webkit-font-smoothing: antialiased; min-width: 320px; }
+html:lang(ko) { --font-display: 'Newsreader', 'Agent Noto Serif KR', serif; }
+html:lang(ko) body { word-break: keep-all; overflow-wrap: break-word; }
+html:lang(ko) :is(.hero-h1, .section-intro h2, .stage-title) { line-height: 1.25; letter-spacing: -.045em; }
 a { color: inherit; text-underline-offset: 5px; text-decoration-thickness: 1px; }
 button { font: inherit; }
 button, a { -webkit-tap-highlight-color: transparent; }

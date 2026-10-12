@@ -4,6 +4,7 @@ import company from "../data/company.json";
 import people from "../data/people.json";
 import sitemap from "../app/sitemap";
 import { renderLlmsTxt, renderMarkdown } from "../lib/machine";
+import { translateText } from "../assets/landing/locale-core.mjs";
 import { BROWSER_ICONS, serializeJsonLd } from "../lib/seo";
 
 const sources = [
@@ -31,12 +32,12 @@ function validateHead(html: string, canonical: string) {
   expect(links(head!, "canonical").map(tag => new URL(attr(tag, "href")).href)).toEqual([canonical]);
   expect(meta(head!, "og:url").map(url => new URL(url).href)).toEqual([canonical]);
   expect(meta(head!, "og:type")).toEqual(["website"]);
-  expect(meta(head!, "og:title")[0]).toContain("Deploy its workforce");
+  expect(meta(head!, "og:title")[0]).toContain(canonical.endsWith("/ko") ? "일할 에이전트를 배치하세요" : "Deploy its workforce");
   expect(meta(head!, "og:image")).toHaveLength(1);
   expect(meta(head!, "og:image")[0]).toMatch(/^https:\/\/agentba\.se\//);
   expect(meta(head!, "og:image:width")).toEqual(["1200"]);
   expect(meta(head!, "og:image:height")).toEqual(["630"]);
-  expect(meta(head!, "og:image:alt")[0]).toContain("A/B character symbol");
+  expect(meta(head!, "og:image:alt")[0]).toContain(canonical.endsWith("/ko") ? "A/B 캐릭터 심볼" : "A/B character symbol");
   expect(meta(head!, "twitter:card")).toEqual(["summary_large_image"]);
   expect(meta(head!, "twitter:image")[0]).toMatch(/^https:\/\/agentba\.se\//);
   expect(meta(head!, "robots")[0]).toContain("max-image-preview:large");
@@ -74,8 +75,10 @@ function validateCompany(html: string) {
     expect(html).toContain(`href="${person.linkedin}"`);
   }
   expect(html).toContain('href="mailto:contact@agentba.se"');
-  expect(html).toContain(company.identity);
-  expect(html).toContain(company.business);
+  const locale = html.includes('<html lang="ko"') ? "ko" : "en";
+  const visible = html.replace(/<script\b[\s\S]*?<\/script>/g, "");
+  expect(visible).toContain(translateText(company.identity, locale));
+  expect(visible).toContain(translateText(company.business, locale));
   expect(html).not.toContain("applying to build our next fleet generation on Claude");
 }
 function imageDimensions(path: string) {

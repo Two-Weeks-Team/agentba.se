@@ -59,7 +59,9 @@ cpSync("assets/landing", join(root, "assets"), { recursive: true });
 cpSync("public/icons", join(root, "icons"), { recursive: true });
 mkdirSync(join(root, "assets/og"), { recursive: true });
 copyFileSync(`public${OG_IMAGE_PATH}`, join(root, "assets/og/agentbase.png"));
-for (const path of ["app/(en)/opengraph-image.alt.txt", "app/(ko)/ko/opengraph-image.alt.txt"]) writeFileSync(path, meta.ogAlt);
+for (const [locale, path] of [["en", "app/(en)/opengraph-image.alt.txt"], ["ko", "app/(ko)/ko/opengraph-image.alt.txt"]] as const) {
+  writeFileSync(path, getContent(locale).meta.ogAlt);
+}
 writeBrandPreview(root);
 rmSync(join(root, "data"), { recursive: true, force: true });
 cpSync("data", join(root, "data"), { recursive: true });

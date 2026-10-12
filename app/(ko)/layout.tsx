@@ -1,20 +1,14 @@
 import type { Metadata, Viewport } from "next";
-import { fontVars } from "@/lib/fonts";
 import { metadataFor } from "@/lib/seo";
-import "../globals.css";
+import { LandingLayout } from "@/components/pages/landing-layout";
 
 export const metadata: Metadata = metadataFor("ko");
 
 export const viewport: Viewport = {
-  themeColor: "#0e0e0c",
-  colorScheme: "dark",
+  themeColor: "#f7f6f2",
+  colorScheme: "light",
 };
 
 export default function KoLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="ko" className={fontVars}>
-      <head><link rel="describedby" href="/llms.txt" type="text/plain" /></head>
-      <body>{children}</body>
-    </html>
-  );
+  return <LandingLayout locale="ko">{children}</LandingLayout>;
 }

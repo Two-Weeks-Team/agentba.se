@@ -1,3 +1,4 @@
+import { t, localize } from './locale.js';
 /**
  * Continuous product film beside a video → product → source walkthrough.
  * Load commerce-work.css separately. No production requests are made.
@@ -161,9 +162,9 @@ export function mountCommerceDemo(host) {
 
   function videoControls() {
     const playing = !video.paused && !video.ended;
-    videoToggle.textContent = video.error ? 'Unavailable' : playing ? 'Pause' : 'Play';
+    videoToggle.textContent = t(video.error ? 'Unavailable' : playing ? 'Pause' : 'Play');
     videoToggle.disabled = Boolean(video.error);
-    videoToggle.setAttribute('aria-label', video.error ? 'Illustrative film unavailable' : `${playing ? 'Pause' : 'Play'} illustrative product film`);
+    videoToggle.setAttribute('aria-label', t(video.error ? 'Illustrative film unavailable' : `${playing ? 'Pause' : 'Play'} illustrative product film`));
     root.dataset.videoState = video.error ? 'error' : playing ? 'playing' : 'paused';
   }
 
@@ -213,7 +214,7 @@ export function mountCommerceDemo(host) {
       panels[i].inert = !active;
       panels[i].style.visibility = active ? 'visible' : 'hidden';
     });
-    if (announce) status.textContent = `${views[index].label}. ${views[index].description}`;
+    if (announce) status.textContent = `${t(views[index].label)}. ${t(views[index].description)}`;
   }
 
   on(root, 'click', event => {
@@ -245,6 +246,7 @@ export function mountCommerceDemo(host) {
     tabs[next].focus({ preventScroll: true });
   });
 
+  localize(root);
   host.appendChild(root);
   const tour = createAutoAdvance({ host, label: 'Kbeauty', advance: () => select((selected + 1) % views.length, false) });
   const dispose = () => {

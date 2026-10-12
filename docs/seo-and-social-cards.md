@@ -8,8 +8,8 @@ agreement. Founding month is known; a day or street address is not.
 The selected C design is the production English homepage. Its source is
 `content/en/landing.html`, with company facts rendered by `lib/landing.ts` and
 runtime assets in `assets/landing`. The C review page under `design-previews`
-is a generated export, never a production input. The Korean route retains its
-existing layout and its updated company facts.
+is a generated export, never a production input. The Korean route uses the same landing renderer and layout, with translated
+copy from `assets/landing/locales/ko-*.mjs`.
 
 ## Brand assets and social artwork
 
@@ -17,8 +17,8 @@ existing layout and its updated company facts.
   Its manifest lists every approved source and published copy. Run
   `node scripts/generate-icons.mjs` to copy them byte-for-byte. Do not retrace,
   recolor, crop, distort, or replace the official outlined wordmark with text.
-- Headers and footers use the horizontal SVG: black on the English page's light
-  surface, white on the Korean page's dark surface. Keep the logo at least 140px
+- Headers and footers use the horizontal SVG: black on both language versions’ light
+  surface. Keep the logo at least 140px
   wide, with the kit's aspect ratio and clear space intact.
 - The new favicon intentionally uses the kit's default white A/B character on
   a black rounded square. This supersedes the previous transparent triangle.
@@ -55,8 +55,8 @@ Anthropic requires this file or uses it to decide program admission.
 The index links to fourteen internal resources: the homepage, two Markdown
 pages and eleven company/data documents. `landmask.json` is drawing geometry,
 not an AI reading reference. The English page and C preview share the same Markdown narrative and
-featured-work links. Its Korean mirror
-still represents the existing Korean application, not a translated C layout.
+featured-work links. The Korean mirror is generated from the same translated landing HTML and
+includes the same featured work and scope in Korean.
 
 `data/people.json` contains public names, roles and LinkedIn profiles only.
 Individual intake delivery addresses live in the server-side API route;

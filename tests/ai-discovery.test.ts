@@ -1,3 +1,4 @@
+import { translateText } from "../assets/landing/locale-core.mjs";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
@@ -111,9 +112,9 @@ describe("AI discovery across every published reading path", () => {
         }
         for (const id of products.featured) {
           const product = products.products.find(p => p.id === id)!;
-          expect(text).toContain(product.scope);
+          expect(text).toContain(translateText(product.scope, path.startsWith("/ko/") ? "ko" : "en"));
         }
-        expect(text).toContain("before AgentBase LLC");
+        expect(text).toContain(path.startsWith("/ko/") ? "AgentBase LLC 설립 전" : "before AgentBase LLC");
       }
     });
   }
