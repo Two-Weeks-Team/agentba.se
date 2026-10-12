@@ -46,16 +46,9 @@
   text-decoration: none;
 }
 .topbar__logo {
-  /* Sized against the cap height of the wordmark beside it, not the line box.
-     The mark's mass sits low — the triangle points down-left — so it is lifted
-     a hair to read as optically centred against the type. */
-  block-size: 1.35em;
-  inline-size: auto;
-  margin-block-start: -0.1em;
-  color: var(--color-paper);
-}
-.topbar__dot {
-  color: var(--color-sig-run);
+  display: block;
+  inline-size: clamp(140px, 20vw, 180px);
+  block-size: auto;
 }
 .topbar__locale {
   color: var(--color-chalk);
@@ -1274,11 +1267,13 @@
   grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
 }
 .foot__mark {
+  display: inline-flex;
   margin: 0;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1.125rem;
-  letter-spacing: -0.02em;
+}
+.foot__logo {
+  display: block;
+  inline-size: 200px;
+  block-size: auto;
 }
 .foot__line {
   margin: 0.5rem 0;

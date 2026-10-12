@@ -1,6 +1,7 @@
 import people from "@/data/people.json";
 import { CONTACT_EMAIL, getContent, type Locale } from "@/lib/i18n";
 import { NEWEST_SNAPSHOT } from "@/lib/snapshot";
+import { Logo } from "@/components/brand/logo";
 
 /**
  * Company verification lives in the footer, alongside the two founders and
@@ -16,7 +17,7 @@ export function Footer({ locale }: { locale: Locale }) {
       <hr className="rule" />
       <div className="foot__grid">
         <div>
-          <p className="foot__mark">{t.wordmark}</p>
+          <a href={locale === "ko" ? "/ko" : "/"} className="foot__mark"><Logo className="foot__logo" variant="white" /></a>
           <p className="foot__line" lang="en">{about.identity}</p>
           <p className="foot__line" lang="en">{about.business}</p>
         </div>

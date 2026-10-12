@@ -11,19 +11,25 @@ runtime assets in `assets/landing`. The C review page under `design-previews`
 is a generated export, never a production input. The Korean route retains its
 existing layout and its updated company facts.
 
-## Social artwork
+## Brand assets and social artwork
 
-- `components/og-card.tsx` renders the English artwork for both locales.
-- `public/og/agentbase.png` is the 1200 × 630 PNG used by explicit metadata.
-- Next.js also generates locale-specific Open Graph image routes from the same
-  component. All three image responses should be identical.
-- Fonts are local. Newsreader 400 and Inter 400 use pinned official Google Fonts
-  sources, with OFL licenses and reproducible conversion notes in `assets/fonts`.
-  The landing page preloads its Newsreader WOFF2 and existing Inter WOFF2. The OG
-  renderer uses static TTF instances of those families.
-- The static diagram uses the interactive hero's geometry. If geometry changes,
-  run `node scripts/render-og-organization.mjs` before regenerating the card.
-  Keep its olive/stone palette and wordmark aligned with the English page.
+- `assets/brand/ci-v1` contains the founder-supplied CI Kit v1.0 web assets.
+  Its manifest lists every approved source and published copy. Run
+  `node scripts/generate-icons.mjs` to copy them byte-for-byte. Do not retrace,
+  recolor, crop, distort, or replace the official outlined wordmark with text.
+- Headers and footers use the horizontal SVG: black on the English page's light
+  surface, white on the Korean page's dark surface. Keep the logo at least 140px
+  wide, with the kit's aspect ratio and clear space intact.
+- The new favicon intentionally uses the kit's default white A/B character on
+  a black rounded square. This supersedes the previous transparent triangle.
+  SVG, ICO, 16–128px PNG, Apple Touch, PWA and schema icons all come from the kit.
+  Metadata uses `/icons/agentbase-ci-v1/` to distinguish these from old cached
+  icons. Legacy icon endpoints also serve the new approved artwork.
+- `/og/agentbase-ci-v1.png` is the approved dark 1200 × 630 PNG. The two Next.js
+  file-based Open Graph images and the legacy `/og/agentbase.png` are exact
+  copies, with descriptive alt text synchronized for both locales.
+- `vision/brand-preview.html` is a local review sheet with both logo colors,
+  actual favicon sizes, app icons and OG artwork. It is never published.
 
 ```sh
 pnpm og:generate

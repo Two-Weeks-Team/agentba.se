@@ -1,0 +1,3 @@
+AgentBase CI Kit v1.0
+Created 2026-10-12
+Approved symbol traced from: AgentBase_selected_symbol_mask.png

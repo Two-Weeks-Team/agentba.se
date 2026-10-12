@@ -1,0 +1,23 @@
+import { copyFileSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
+import { BRAND_APPLE_ICON, BRAND_FAVICON, BRAND_ICON_ROOT, BRAND_LOGOS } from "../lib/brand";
+
+/** Local review artifact only. design-previews is never copied to public. */
+export function writeBrandPreview(root: string) {
+  copyFileSync("assets/brand/ci-v1/05_Social/AgentBase_OG_Light_1200x630.png", join(root, "assets/og/agentbase-light.png"));
+  const icon = BRAND_ICON_ROOT.slice(1);
+  const logo = (variant: "black" | "white") => BRAND_LOGOS[variant].replace("/landing/", "assets/");
+  writeFileSync(join(root, "brand-preview.html"), `<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><title>AgentBase · CI Kit preview</title>
+<link rel="icon" href="${BRAND_FAVICON.slice(1)}" type="image/svg+xml">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f5f5f3;color:#111;font:15px/1.6 system-ui,sans-serif}main{max-width:1200px;margin:auto;padding:40px 28px 64px}header{display:flex;justify-content:space-between;align-items:center;gap:24px;margin-bottom:40px}h1{font-size:30px;letter-spacing:-.03em;margin:0}h2{font-size:20px;margin:0 0 20px}p{margin:6px 0;color:#707477}a{color:inherit;text-underline-offset:4px}section{margin-top:36px}.logos{display:grid;grid-template-columns:1fr 1fr;gap:18px}.panel{border:1px solid #ddd;border-radius:16px;padding:30px;background:white}.dark{background:#111;color:white;border-color:#111}.lockup{display:block;width:260px;max-width:100%;height:auto;margin:24px auto}.label{font-size:12px;color:#707477}.dark .label{color:#aaa}.icons{display:flex;flex-wrap:wrap;gap:36px;align-items:end}.sample{display:grid;justify-items:center;gap:12px}.sample img{display:block}.tab{display:flex;align-items:center;gap:10px;margin-top:28px;padding:14px 18px;background:#f5f5f3;border:1px solid #ddd;border-radius:12px;width:min(100%,330px)}.tab img{width:16px;height:16px}.artwork{display:block;width:100%;height:auto;border-radius:12px}details{margin-top:22px}summary{cursor:pointer;padding:10px 0}@media(max-width:640px){main{padding:24px 16px}header{align-items:start;flex-direction:column;gap:12px}h1{font-size:25px}.logos{grid-template-columns:1fr}.panel{padding:22px}.icons{gap:24px}}
+</style></head><body><main>
+<header><div><h1>AgentBase / Brand preview</h1><p>CI Kit v1.0 · 12 October 2026 · Local review</p></div><a href="c.html">Open the landing page ↗</a></header>
+<section><h2>Official horizontal logo</h2><div class="logos"><div class="panel"><span class="label">Light surfaces · English page</span><img class="lockup" src="${logo("black")}" width="1080" height="293" alt="AgentBase black logo"></div><div class="panel dark"><span class="label">Dark surfaces · Korean page</span><img class="lockup" src="${logo("white")}" width="1080" height="293" alt="AgentBase white logo"></div></div></section>
+<section><h2>Browser icons / actual pixel sizes</h2><div class="panel"><div class="icons">${[16,32,48,64,128].map(size => `<div class="sample"><img src="${icon}/favicon-${size}x${size}.png" width="${size}" height="${size}" alt="AgentBase ${size}px favicon"><span class="label">${size} × ${size}</span></div>`).join("")}</div><div class="tab"><img src="${icon}/favicon-16x16.png" alt="">AgentBase — AI agent fleets</div><p class="label">Tab-size illustration · SVG and ICO use the same approved symbol.</p></div></section>
+<section><h2>Home screen and app icons</h2><div class="panel icons"><div class="sample"><img src="${BRAND_APPLE_ICON.slice(1)}" width="96" height="96" alt="Apple touch icon"><span class="label">Apple Touch · 180 × 180</span></div><div class="sample"><img src="${icon}/android-chrome-192x192.png" width="96" height="96" alt="Android icon"><span class="label">Android · 192 / 512</span></div><div class="sample"><img src="${icon}/pwa-maskable-512x512.png" width="96" height="96" alt="Maskable app icon" style="border-radius:50%"><span class="label">Maskable · circular crop</span></div><div class="sample"><img src="${icon}/social-avatar-512.png" width="96" height="96" alt="Company avatar"><span class="label">Organization · 512 × 512</span></div></div></section>
+<section><h2>Open Graph / active artwork</h2><img class="artwork" src="assets/og/agentbase.png" width="1200" height="630" alt="AgentBase — AI agents for human potential, on black"><p>Approved dark artwork · 1200 × 630 · English and Korean share the same image.</p><details><summary>Light artwork supplied in the kit</summary><img class="artwork" src="assets/og/agentbase-light.png" width="1200" height="630" alt="AgentBase light Open Graph artwork"></details></section>
+</main></body></html>`);
+}

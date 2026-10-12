@@ -36,7 +36,7 @@ function validateHead(html: string, canonical: string) {
   expect(meta(head!, "og:image")[0]).toMatch(/^https:\/\/agentba\.se\//);
   expect(meta(head!, "og:image:width")).toEqual(["1200"]);
   expect(meta(head!, "og:image:height")).toEqual(["630"]);
-  expect(meta(head!, "og:image:alt")[0]).toContain("agent departments");
+  expect(meta(head!, "og:image:alt")[0]).toContain("A/B character symbol");
   expect(meta(head!, "twitter:card")).toEqual(["summary_large_image"]);
   expect(meta(head!, "twitter:image")[0]).toMatch(/^https:\/\/agentba\.se\//);
   expect(meta(head!, "robots")[0]).toContain("max-image-preview:large");
@@ -101,7 +101,7 @@ describe("public SEO and company identity", () => {
   it("rejects missing social artwork, a lost founder, and stale company locations", () => {
     const html = readFileSync(sources[2]!.file, "utf8");
     expect(() => validateHead(html.replace(/<meta property="og:image"[^>]*>/, ""), sources[2]!.canonical)).toThrow();
-    expect(() => validateHead(html.replace(/<link\b(?=[^>]*rel="icon")(?=[^>]*agentbase-mark-v2-)[^>]*>/g, ""), sources[2]!.canonical)).toThrow();
+    expect(() => validateHead(html.replace(/<link\b(?=[^>]*rel="icon")(?=[^>]*agentbase-ci-v1\/favicon-)[^>]*>/g, ""), sources[2]!.canonical)).toThrow();
     expect(() => validateCompany(html.replace('"name":"Sejun Kim"', '"name":"Unknown"'))).toThrow();
     expect(() => validateCompany(html.replace('"identifier":"US"', '"identifier":"KR"'))).toThrow();
   });

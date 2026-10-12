@@ -17,7 +17,7 @@ export const home = {
     description:
       "AgentBase LLC builds and operates AI agent fleets for real business operations. A US company founded by Sangguen Chang and Sejun Kim.",
     ogTitle: "AgentBase — Build a company. Deploy its workforce.",
-    ogAlt: "AgentBase — Build a company. Deploy its workforce. An isometric model of human direction, agent departments and business operations.",
+    ogAlt: "AgentBase — AI agents for human potential. White A/B character symbol and AgentBase wordmark on a black background.",
   },
 
   nav: {

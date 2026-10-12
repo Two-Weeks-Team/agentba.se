@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import company from "@/data/company.json";
 import people from "@/data/people.json";
 import { alternatesFor, getContent, pathFor, SITE, type Locale } from "@/lib/i18n";
+import { BRAND_APPLE_ICON, BRAND_FAVICON, BRAND_ICON_ROOT, BRAND_MANIFEST, BRAND_SCHEMA_LOGO } from "@/lib/brand";
 
-export const OG_IMAGE_PATH = "/og/agentbase.png";
+export const OG_IMAGE_PATH = "/og/agentbase-ci-v1.png";
 export const OG_SIZE = { width: 1200, height: 630 };
 // Use path versions: Safari can keep the old ICO despite a new query string.
-export const BROWSER_ICONS = [32, 64].map(size => ({
-  url: `/icons/agentbase-mark-v2-${size}.png`,
+export const BROWSER_ICONS = [16, 32, 48, 64, 128].map(size => ({
+  url: `${BRAND_ICON_ROOT}/favicon-${size}x${size}.png`,
   type: "image/png",
   sizes: `${size}x${size}`,
 }));
@@ -22,10 +23,11 @@ export function metadataFor(locale: Locale): Metadata {
     description: meta.description,
     alternates: alternatesFor(locale),
     icons: {
-      icon: [{ url: "/icon.svg", type: "image/svg+xml", sizes: "any" }, ...BROWSER_ICONS],
-      shortcut: BROWSER_ICONS[0]!.url,
-      apple: { url: "/apple-icon.png", type: "image/png", sizes: "180x180" },
+      icon: [{ url: BRAND_FAVICON, type: "image/svg+xml", sizes: "any" }, ...BROWSER_ICONS],
+      shortcut: `${BRAND_ICON_ROOT}/favicon.ico`,
+      apple: { url: BRAND_APPLE_ICON, type: "image/png", sizes: "180x180" },
     },
+    manifest: BRAND_MANIFEST,
     openGraph: {
       type: "website",
       siteName: company.name,
@@ -54,7 +56,7 @@ export function companyGraph() {
       name: company.name,
       legalName: company.legalName,
       url: SITE,
-      logo: `${SITE}/logo-512.png`,
+      logo: `${SITE}${BRAND_SCHEMA_LOGO}`,
       description: company.identity,
       email: company.email,
       // Country-level location only: formation in Wyoming does not establish

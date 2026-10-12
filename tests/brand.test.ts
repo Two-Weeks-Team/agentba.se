@@ -1,103 +1,72 @@
-import { existsSync, readFileSync, statSync } from "node:fs";
+import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { MARK_ASPECT, MARK_PATH, MARK_VIEWBOX, markDataUri } from "../lib/brand";
+import manifest from "../assets/brand/ci-v1/manifest.json";
+import { BRAND_APPLE_ICON, BRAND_FAVICON, BRAND_ICON_ROOT, BRAND_LOGOS, BRAND_LOGO_SIZE, BRAND_MANIFEST, BRAND_SCHEMA_LOGO } from "../lib/brand";
 
-describe("mark", () => {
-  it("carries a real traced path", () => {
-    expect(MARK_PATH.length).toBeGreaterThan(1000);
-    expect(MARK_PATH.startsWith("M")).toBe(true);
-  });
+function approved(bytes: Buffer, sha256: string) {
+  if (createHash("sha256").update(bytes).digest("hex") !== sha256) throw new Error("Artwork differs from the approved CI kit");
+}
+const root = "assets/brand/ci-v1";
 
-  it("is a single line, because a TS string literal cannot span lines", () => {
-    // scripts/trace-mark.sh collapses potrace's line wrapping. If that ever
-    // regresses the file will not parse, so this fails first and says why.
-    expect(MARK_PATH).not.toContain("\n");
-  });
-
-  it("keeps the viewBox and the aspect in agreement", () => {
-    const [, , w, h] = MARK_VIEWBOX.split(/\s+/).map(Number);
-    expect(MARK_ASPECT).toBeCloseTo(w! / h!, 5);
-  });
-});
-
-describe("markDataUri", () => {
-  const decode = (uri: string) =>
-    Buffer.from(uri.replace("data:image/svg+xml;base64,", ""), "base64").toString();
-
-  it("declares intrinsic width and height", () => {
-    // Satori drops an <img> whose SVG has no intrinsic size, without an error.
-    // That is how the social card once shipped with a blank space where the
-    // mark should be, so it is asserted rather than remembered.
-    const svg = decode(markDataUri("#f2efe6", 120));
-    expect(svg).toMatch(/width="\d+"/);
-    expect(svg).toMatch(/height="120"/);
-  });
-
-  it("applies the requested fill", () => {
-    expect(decode(markDataUri("#0e0e0c"))).toContain('fill="#0e0e0c"');
-  });
-});
-
-describe("icon set", () => {
-  const files = [
-    ["app/icon.svg", 1000],
-    ["app/favicon.ico", 1000],
-    ["app/apple-icon.png", 1000],
-    ["public/logo-512.png", 1000],
-    ["assets/brand/agentbase-logo-source.png", 10000],
-  ] as const;
-
-  for (const [file, minBytes] of files) {
-    it(`ships ${file}`, () => {
-      expect(existsSync(file), `${file} is missing — run node scripts/generate-icons.mjs`).toBe(true);
-      expect(statSync(file).size).toBeGreaterThan(minBytes);
+describe("approved CI Kit v1.0", () => {
+  for (const asset of manifest.assets) {
+    it(`preserves ${asset.source} and every published copy`, () => {
+      approved(readFileSync(`${root}/${asset.source}`), asset.sha256);
+      for (const output of asset.outputs) approved(readFileSync(output), asset.sha256);
     });
   }
 
-  it("the generated icon really contains the mark", () => {
-    const svg = readFileSync("app/icon.svg", "utf8");
-    // A truncated path would still be valid SVG and would still render *something*.
-    expect(svg).toContain(MARK_PATH.slice(0, 80));
+  it("rejects corrupted or substituted artwork", () => {
+    const asset = manifest.assets[0]!;
+    const bytes = readFileSync(`${root}/${asset.source}`);
+    expect(() => approved(bytes.subarray(0, -1), asset.sha256)).toThrow("Artwork differs");
+    expect(() => approved(Buffer.from("old triangle mark"), asset.sha256)).toThrow("Artwork differs");
   });
 
-  it("keeps the original dark mark on a transparent browser icon", () => {
-    const svg = readFileSync("app/icon.svg", "utf8");
-    expect(svg).toContain('fill="#101113"');
-    expect(svg).not.toContain("<rect");
-    // Nested SVG offsets were ignored by the ICO rasterizer.
-    expect(svg.match(/<svg\b/g)).toHaveLength(1);
-  });
-
-  it("centers dark artwork on transparency in every ICO size", () => {
-    const ico = readFileSync("app/favicon.ico");
-    expect(ico.readUInt16LE(4)).toBe(3);
-    for (const [index, size] of [16, 32, 48].entries()) {
-      const entry = 6 + index * 16;
-      expect(ico[entry]).toBe(size);
-      expect(ico[entry + 1]).toBe(size);
-      const bitmap = ico.readUInt32LE(entry + 12);
-      expect(ico.readUInt32LE(bitmap)).toBe(40); // BITMAPINFOHEADER
-      expect(ico.readUInt16LE(bitmap + 14)).toBe(32); // BGRA
-      const ink: { x: number; y: number }[] = [];
-      let transparent = 0;
-      for (let y = 0; y < size; y++) {
-        for (let x = 0; x < size; x++) {
-          const pixel = bitmap + 40 + ((size - 1 - y) * size + x) * 4;
-          const alpha = ico[pixel + 3]!;
-          if (alpha === 0) transparent++;
-          if (alpha > 128) {
-            expect(Math.max(...ico.subarray(pixel, pixel + 3))).toBeLessThan(40);
-            ink.push({ x, y });
-          }
-        }
-      }
-      expect(transparent / (size * size)).toBeGreaterThan(0.4);
-      expect(ink.length).toBeGreaterThan(size * size * 0.2);
-      for (const axis of ["x", "y"] as const) {
-        const min = Math.min(...ink.map(point => point[axis]));
-        const max = Math.max(...ink.map(point => point[axis]));
-        expect(Math.abs((min + max) / 2 - (size - 1) / 2)).toBeLessThanOrEqual(1);
-      }
+  it("keeps the official outlined wordmark and its aspect ratio", () => {
+    for (const [color, path] of Object.entries(BRAND_LOGOS)) {
+      const svg = readFileSync(`assets${path}`, "utf8");
+      expect(svg).toContain(`viewBox="0 0 ${BRAND_LOGO_SIZE.width} ${BRAND_LOGO_SIZE.height}"`);
+      expect(svg).not.toContain("<text");
+      expect(svg).toContain(color === "black" ? '#111111' : '#FFFFFF');
     }
+  });
+
+  it("uses the complete logo in both headers and footers", () => {
+    for (const [file, logo] of [[".next/server/app/index.html", BRAND_LOGOS.black], [".next/server/app/ko.html", BRAND_LOGOS.white]]) {
+      const html = readFileSync(file!, "utf8");
+      expect((html.match(/<img\b[^>]*>/g) ?? []).filter(tag => tag.includes(`src="${logo}"`))).toHaveLength(2);
+      expect(html).not.toContain('src="/landing/mark-dark.svg"');
+      expect(html).not.toContain('class="brand-name"');
+    }
+  });
+
+  it("uses new URLs for SVG, Apple, schema and manifest in both locale heads", () => {
+    for (const file of [".next/server/app/index.html", ".next/server/app/ko.html"]) {
+      const html = readFileSync(file, "utf8");
+      const head = html.split("</head>")[0]!;
+      for (const path of [BRAND_FAVICON, BRAND_APPLE_ICON, BRAND_MANIFEST, BRAND_SCHEMA_LOGO]) expect(html).toContain(path);
+      expect(head).not.toContain("agentbase-mark-v2-");
+    }
+  });
+
+  it("serves valid PNG dimensions for all manifest icon purposes", () => {
+    const pwa = JSON.parse(readFileSync(`public${BRAND_MANIFEST}`, "utf8"));
+    expect(pwa.icons).toHaveLength(3);
+    expect(pwa.icons.some((icon: {purpose: string}) => icon.purpose === "maskable")).toBe(true);
+    for (const icon of pwa.icons) {
+      const png = readFileSync(`public${BRAND_ICON_ROOT}/${icon.src}`);
+      expect(png.subarray(0, 8).toString("hex")).toBe("89504e470d0a1a0a");
+      expect(`${png.readUInt32BE(16)}x${png.readUInt32BE(20)}`).toBe(icon.sizes);
+    }
+  });
+
+  it("preserves the supplied multi-resolution ICO", () => {
+    const ico = readFileSync("app/favicon.ico");
+    expect(ico.readUInt16LE(0)).toBe(0);
+    expect(ico.readUInt16LE(2)).toBe(1);
+    const sizes = Array.from({length:ico.readUInt16LE(4)}, (_, i) => ico[6 + i * 16]);
+    expect(sizes).toEqual([16, 32, 48]);
   });
 });

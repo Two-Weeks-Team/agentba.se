@@ -5,6 +5,8 @@ import { getContent, SITE } from "../lib/i18n";
 import { renderLlmsTxt, renderMarkdown } from "../lib/machine";
 import { LANDING_STYLES, landingStylesheetHref, renderLandingHtml } from "../lib/landing";
 import { BROWSER_ICONS, companyGraph, OG_IMAGE_PATH, OG_SIZE, serializeJsonLd } from "../lib/seo";
+import { BRAND_APPLE_ICON, BRAND_FAVICON, BRAND_MANIFEST } from "../lib/brand";
+import { writeBrandPreview } from "./write-brand-preview";
 
 // Export the production source for local design review. This file is generated;
 // the production page never reads from the design-previews directory.
@@ -46,15 +48,19 @@ const body = renderLandingHtml().replaceAll('/landing/', 'assets/').replace('hre
 const html = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 ${head}
-<link rel="icon" href="assets/mark-dark.svg" type="image/svg+xml">
+<link rel="icon" href="${BRAND_FAVICON.slice(1)}" type="image/svg+xml" sizes="any">
 ${BROWSER_ICONS.map(icon => `<link rel="icon" href="${icon.url.slice(1)}" type="${icon.type}" sizes="${icon.sizes}">`).join("\n")}
+<link rel="apple-touch-icon" href="${BRAND_APPLE_ICON.slice(1)}" sizes="180x180">
+<link rel="manifest" href="${BRAND_MANIFEST.slice(1)}">
 ${LANDING_STYLES.map(file => `<link rel="stylesheet" href="${landingStylesheetHref(file).replace('/landing/', 'assets/')}">`).join("\n")}
 </head><body>${body}<script type="module" src="assets/init.js"></script></body></html>`;
 writeFileSync(path, html);
 cpSync("assets/landing", join(root, "assets"), { recursive: true });
 cpSync("public/icons", join(root, "icons"), { recursive: true });
 mkdirSync(join(root, "assets/og"), { recursive: true });
-copyFileSync("public/og/agentbase.png", join(root, "assets/og/agentbase.png"));
+copyFileSync(`public${OG_IMAGE_PATH}`, join(root, "assets/og/agentbase.png"));
+for (const path of ["app/(en)/opengraph-image.alt.txt", "app/(ko)/ko/opengraph-image.alt.txt"]) writeFileSync(path, meta.ogAlt);
+writeBrandPreview(root);
 rmSync(join(root, "data"), { recursive: true, force: true });
 cpSync("data", join(root, "data"), { recursive: true });
 writeFileSync(join(root, "llms.txt"), renderLlmsTxt());

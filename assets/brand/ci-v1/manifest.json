@@ -1,0 +1,146 @@
+{
+  "version": "1.0",
+  "date": "2026-10-12",
+  "assets": [
+    {
+      "source": "01_Master_Vector/AgentBase_Horizontal_Black.svg",
+      "outputs": [
+        "assets/landing/brand/agentbase-horizontal-black.svg"
+      ],
+      "sha256": "8841cfaca1240d8063f24746a40ca5da8334cbc1ae8a48d9fa0f06ce0c24a5e8"
+    },
+    {
+      "source": "01_Master_Vector/AgentBase_Symbol_Black.svg",
+      "outputs": [
+        "assets/landing/mark-dark.svg"
+      ],
+      "sha256": "2f45877b947b89f68b93d127d13c9d1d326fd064f8979b44b09cddc03c729e15"
+    },
+    {
+      "source": "01_Master_Vector/AgentBase_Horizontal_White.svg",
+      "outputs": [
+        "assets/landing/brand/agentbase-horizontal-white.svg"
+      ],
+      "sha256": "865bbdcc12f8dc0b23e522f9c779b581757549168c9ebddf557732c503c3ee2b"
+    },
+    {
+      "source": "01_Master_Vector/AgentBase_Symbol_White.svg",
+      "outputs": [
+        "assets/landing/mark-light.svg"
+      ],
+      "sha256": "a05ddce93e7130434b93486e09112b1ba7c1e63122299a72488c71961d97aee6"
+    },
+    {
+      "source": "03_Favicon/favicon.svg",
+      "outputs": [
+        "app/icon.svg",
+        "public/icons/agentbase-ci-v1/favicon.svg"
+      ],
+      "sha256": "ab2f7649937092bd5a8ce85bec87cbf879ed8635352b3525da5d5f322c9cad34"
+    },
+    {
+      "source": "03_Favicon/favicon.ico",
+      "outputs": [
+        "app/favicon.ico",
+        "public/icons/agentbase-ci-v1/favicon.ico"
+      ],
+      "sha256": "3f34304bbe7924ab408e289fefb4bc27f9b02523db892bc552e2932f403cc423"
+    },
+    {
+      "source": "03_Favicon/favicon-16x16.png",
+      "outputs": [
+        "public/icons/agentbase-ci-v1/favicon-16x16.png"
+      ],
+      "sha256": "2bbcef1f92ddfc9695202920d37a093e9873e322e629c20fe4377d939688ce5a"
+    },
+    {
+      "source": "03_Favicon/favicon-32x32.png",
+      "outputs": [
+        "public/icons/agentbase-ci-v1/favicon-32x32.png",
+        "public/icons/agentbase-mark-v2-32.png"
+      ],
+      "sha256": "75924d23490e6a9fa89d5f4a92fced57f4d72079676b5e98e927b5fc47e564fe"
+    },
+    {
+      "source": "03_Favicon/favicon-48x48.png",
+      "outputs": [
+        "public/icons/agentbase-ci-v1/favicon-48x48.png"
+      ],
+      "sha256": "1b618f17a79717cb0538c0d523dca9dc587cdae623b3af7054892d034c57ada2"
+    },
+    {
+      "source": "03_Favicon/favicon-64x64.png",
+      "outputs": [
+        "public/icons/agentbase-ci-v1/favicon-64x64.png",
+        "public/icons/agentbase-mark-v2-64.png"
+      ],
+      "sha256": "60986541f2a6b037ddafa2d6dfe53058b128e72d0d8899f6e1fdb56845a51530"
+    },
+    {
+      "source": "03_Favicon/favicon-128x128.png",
+      "outputs": [
+        "public/icons/agentbase-ci-v1/favicon-128x128.png"
+      ],
+      "sha256": "47cc7bbcac8190850ccfc7487e539de4e59a2ab9e143f6b2038bdbe1133e1b70"
+    },
+    {
+      "source": "04_App_PWA/apple-touch-icon-180.png",
+      "outputs": [
+        "app/apple-icon.png",
+        "public/icons/agentbase-ci-v1/apple-touch-icon-180.png"
+      ],
+      "sha256": "1a638c5e062205b879571bacf4fc9bfe40a0f248cd8fb87fe66151fb67109483"
+    },
+    {
+      "source": "04_App_PWA/android-chrome-192x192.png",
+      "outputs": [
+        "public/icons/agentbase-ci-v1/android-chrome-192x192.png"
+      ],
+      "sha256": "5fdac672fade94b7c98782ae77b9c32b4111355cb2e8a16913a4835dea8f8703"
+    },
+    {
+      "source": "04_App_PWA/android-chrome-512x512.png",
+      "outputs": [
+        "public/icons/agentbase-ci-v1/android-chrome-512x512.png"
+      ],
+      "sha256": "d0597298ba363901c14d7f5e5247b0a6f514275e677df63908f7933abe552f49"
+    },
+    {
+      "source": "04_App_PWA/pwa-maskable-512x512.png",
+      "outputs": [
+        "public/icons/agentbase-ci-v1/pwa-maskable-512x512.png"
+      ],
+      "sha256": "e9ea5fef6f67bfa76ec7089daa15c2d20f7702edf352a19e4b69ffb4a285ca80"
+    },
+    {
+      "source": "04_App_PWA/site.webmanifest",
+      "outputs": [
+        "public/icons/agentbase-ci-v1/site.webmanifest"
+      ],
+      "sha256": "bb67a852f064ec1dcf2df6896bc8447d8ec40fe818bb5712505d9f71cfb03102"
+    },
+    {
+      "source": "04_App_PWA/social-avatar-512.png",
+      "outputs": [
+        "public/logo-512.png",
+        "public/icons/agentbase-ci-v1/social-avatar-512.png"
+      ],
+      "sha256": "d0597298ba363901c14d7f5e5247b0a6f514275e677df63908f7933abe552f49"
+    },
+    {
+      "source": "05_Social/AgentBase_OG_Dark_1200x630.png",
+      "outputs": [
+        "public/og/agentbase-ci-v1.png",
+        "public/og/agentbase.png",
+        "app/(en)/opengraph-image.png",
+        "app/(ko)/ko/opengraph-image.png"
+      ],
+      "sha256": "f10bfbd7f5f5537e1a811f48f1e0687b94aef7118311023e6d3debfa6f17c678"
+    },
+    {
+      "source": "05_Social/AgentBase_OG_Light_1200x630.png",
+      "outputs": [],
+      "sha256": "fa9eaa682261db354942740d0442df5893072d5c3902387e3fc42f1635b5527a"
+    }
+  ]
+}

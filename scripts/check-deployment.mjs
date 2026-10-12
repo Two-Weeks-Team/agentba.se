@@ -59,15 +59,16 @@ try {
   for (const bot of ['ClaudeBot', 'Claude-User', 'Claude-SearchBot']) assert(robots.includes(bot), `Missing bot rule: ${bot}`);
   assert((await get('/sitemap.xml')).text.includes('https://agentba.se'));
 
-  // The landing asset inventory does not include Next's file-based icons.
-  // Verify those explicitly so an old favicon cannot pass deployment QA.
+  // Check every published CI icon, including legacy aliases and PWA assets.
+  const brand = JSON.parse(readFileSync('assets/brand/ci-v1/manifest.json', 'utf8'));
+  const publicBrand = brand.assets.flatMap(asset => asset.outputs)
+    .filter(path => path.startsWith('public/') && !path.startsWith('public/og/'));
   for (const [path, source, mime] of [
     ['/favicon.ico', 'app/favicon.ico', /image\/(?:x-icon|vnd\.microsoft\.icon)/],
     ['/icon.svg', 'app/icon.svg', /image\/svg\+xml/],
     ['/apple-icon.png', 'app/apple-icon.png', /image\/png/],
-    ['/logo-512.png', 'public/logo-512.png', /image\/png/],
-    ['/icons/agentbase-mark-v2-32.png', 'public/icons/agentbase-mark-v2-32.png', /image\/png/],
-    ['/icons/agentbase-mark-v2-64.png', 'public/icons/agentbase-mark-v2-64.png', /image\/png/],
+    ...publicBrand.map(file => [file.slice('public'.length), file,
+      file.endsWith('.png') ? /image\/png/ : file.endsWith('.svg') ? /image\/svg\+xml/ : file.endsWith('.ico') ? /image\/(?:x-icon|vnd\.microsoft\.icon)/ : /(?:application\/manifest\+json|application\/json|application\/octet-stream)/]),
   ]) {
     const { bytes, type } = await get(path);
     assert.match(type, mime);
@@ -92,11 +93,11 @@ try {
     assert.deepEqual(bytes, readFileSync(`assets/landing/${file}`).subarray(0, 1024));
     report.checks.push({ path, range: 'bytes=0-1023', status: response.status, bytes: bytes.length });
   }
-  const imageRoutes = ['/og/agentbase.png', ...['', 'ko/'].flatMap(prefix =>
+  const imageRoutes = ['/og/agentbase-ci-v1.png', '/og/agentbase.png', ...['', 'ko/'].flatMap(prefix =>
     readdirSync(`.next/server/app/${prefix}`).filter(file => /^opengraph-image.*\.body$/.test(file))
       .map(file => `/${prefix}${file.replace(/\.body$/, '')}`)
   )];
-  assert.equal(imageRoutes.length, 3, 'The two generated OG image routes must also be checked');
+  assert.equal(imageRoutes.length, 4, 'The versioned, legacy and two file-based OG image routes must all be checked');
   for (const path of new Set(imageRoutes)) {
     const { bytes, type } = await get(path);
     assert.match(type, /image\/png/);

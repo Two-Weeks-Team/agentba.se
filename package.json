@@ -17,8 +17,8 @@
     "verify": "pnpm lint && pnpm typecheck && pnpm build && pnpm test",
     "og:generate": "tsx scripts/generate-og.tsx",
     "seo:preview": "tsx scripts/sync-preview-seo.ts",
-    "prebuild": "node scripts/copy-data.mjs && node scripts/copy-landing.mjs && tsx scripts/generate-og.tsx && tsx scripts/sync-preview-seo.ts",
-    "predev": "node scripts/copy-data.mjs && node scripts/copy-landing.mjs && tsx scripts/generate-og.tsx && tsx scripts/sync-preview-seo.ts"
+    "prebuild": "node scripts/generate-icons.mjs && node scripts/copy-data.mjs && node scripts/copy-landing.mjs && tsx scripts/sync-preview-seo.ts",
+    "predev": "node scripts/generate-icons.mjs && node scripts/copy-data.mjs && node scripts/copy-landing.mjs && tsx scripts/sync-preview-seo.ts"
   },
   "dependencies": {
     "next": "16.3.8",
