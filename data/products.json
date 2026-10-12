@@ -13,7 +13,7 @@
       "scope": "Closed beta. The V2 walkthrough shows agent roles at different stages of implementation; people review outreach drafts before sending.",
       "one": {
         "en": "Creator campaign operations built around specialist agent roles, a shared brief and human decision points. The workflow covers sourcing, outreach, replies and verification.",
-        "ko": "Creator campaign operations built around specialist agent roles, a shared brief and human decision points. The workflow covers sourcing, outreach, replies and verification."
+        "ko": "AI 담당자들이 같은 캠페인 정보를 보며 크리에이터 발굴, 제안 메일 작성, 답변 정리, 게시물 확인을 나눠 처리하도록 설계한 서비스입니다. 중요한 결정은 사람이 검토합니다."
       }
     },
     {
@@ -25,7 +25,7 @@
       "scope": "Storefront browsing preview. Own checkout is not yet enabled.",
       "one": {
         "en": "A video-first storefront that connects creator and brand clips, their original sources and product information.",
-        "ko": "A video-first storefront that connects creator and brand clips, their original sources and product information."
+        "ko": "크리에이터나 브랜드의 영상에서 제품을 발견하고, 제품 정보와 원본 영상을 함께 살펴볼 수 있는 쇼핑 서비스입니다."
       }
     },
     {

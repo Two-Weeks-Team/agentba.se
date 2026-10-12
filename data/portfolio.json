@@ -87,7 +87,7 @@
       "platform": "Claude Code",
       "one": {
         "en": "A Claude Code development workflow: explore visual options, record a person's choice, and carry that decision into specifications, implementation and tests.",
-        "ko": "A Claude Code development workflow: explore visual options, record a person's choice, and carry that decision into specifications, implementation and tests."
+        "ko": "Claude Code에서 여러 디자인 시안을 비교하고, 선택한 시안과 이유를 개발 요구사항으로 정리합니다. 그 결정을 바탕으로 구현과 테스트를 이어갑니다."
       },
       "links": [
         { "label": "video", "url": "https://www.youtube.com/watch?v=_xHL8SZqfyI" },
@@ -116,7 +116,7 @@
       "platform": "macOS",
       "one": {
         "en": "Local memory for Claude Code and Codex. MCP and session hooks make past coding sessions retrievable, so an agent can recover earlier work and inspect its source context.",
-        "ko": "Local memory for Claude Code and Codex. MCP and session hooks make past coding sessions retrievable, so an agent can recover earlier work and inspect its source context."
+        "ko": "Claude Code와 Codex의 작업 기록을 내 컴퓨터에 저장하고 다시 찾아보는 도구입니다. MCP와 세션 훅으로 연결해, AI가 이전 작업과 당시의 대화를 참고할 수 있게 합니다."
       },
       "links": [{ "label": "live", "url": "https://memex.quest" }]
     },

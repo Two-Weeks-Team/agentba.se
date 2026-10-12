@@ -3,10 +3,10 @@ import { home as en, type HomeContent } from "../en/home";
 /** A missing or misspelled key here is a compile error, not a silent fallback. */
 export const home: HomeContent = {
   meta: {
-    title: "AgentBase — 실제 비즈니스를 운영하는 AI 에이전트 조직",
-    description: "AgentBase LLC는 실제 비즈니스 업무를 수행하는 AI 에이전트 조직을 만들고 운영합니다. Sangguen Chang과 Sejun Kim이 설립한 미국 회사입니다.",
-    ogTitle: "AgentBase — 회사를 세우세요. 일할 에이전트를 배치하세요.",
-    ogAlt: "AgentBase — 인간의 가능성을 넓히는 AI 에이전트. 검은 배경 위 흰색 A/B 캐릭터 심볼과 AgentBase 워드마크.",
+    title: "AgentBase — 회사의 일을 맡는 AI 팀",
+    description: "여러 AI가 역할을 나눠 회사의 업무를 처리하는 시스템을 만들고 운영합니다. AgentBase LLC는 Sangguen Chang과 Sejun Kim이 설립한 미국 회사입니다.",
+    ogTitle: "AgentBase — 회사의 일을 맡는 AI 팀을 만듭니다.",
+    ogAlt: "검은 배경 위 흰색 AgentBase 로고와 A/B 캐릭터 심볼.",
   },
 
   nav: {

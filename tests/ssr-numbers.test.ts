@@ -37,8 +37,8 @@ const MUST_APPEAR_EN = [
 ];
 
 const MUST_APPEAR_KO = [
-  "회사를 세우세요.", "일할 에이전트를 배치하세요.",
-  "Social Seeding", "Memex", "kbeauty.market", "기술 역량", "AgentBase LLC",
+  "회사의 일을 맡는", "AI 팀을 만듭니다.",
+  "Social Seeding", "Memex", "kbeauty.market", "핵심 기술", "AgentBase LLC",
   "Sangguen Chang", "Sejun Kim", "contact@agentba.se", "2026년 8월", "와이오밍",
 ];
 
@@ -85,8 +85,8 @@ describe("server-rendered figures", () => {
     for (const id of ["hero-organization", "stage-organization", "social-demo", "commerce-demo", "memory-demo", "judgment-demo", "delivery-demo"]) {
       expect(doc).toContain(`id="${id}"`);
     }
-    expect(doc).toContain(locale === "en" ? "Conceptual company structure" : "회사 구조 개념도");
-    expect(doc).toContain(locale === "en" ? "Conceptual task structure" : "과업 구조 개념도");
+    expect(doc).toContain(locale === "en" ? "Conceptual company structure" : "AI가 실무를 맡는 회사의 구조");
+    expect(doc).toContain(locale === "en" ? "Conceptual task structure" : "한 가지 작업을 처리하는 구조");
     expect(doc).toContain("/landing/init.js");
     expect(doc).not.toContain("This company runs on agents");
     expect(doc).not.toContain("우린 사람을 뽑지 않습니다");

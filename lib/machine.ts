@@ -21,7 +21,7 @@ export function renderMarkdown(locale: Locale): string {
   return [
     renderLandingMarkdown(locale), renderFeaturedWork(locale), ko ? "## 창업자와 연락처" : "## Founders and contact",
     ...people.people.map(p => `- [${p.name}](${p.linkedin}) — ${ko ? "공동 창업자" : "Co-founder"} · ${p.role}`),
-    ko ? `이메일: [${company.email}](mailto:${company.email}) — 두 창업자가 모든 내용을 직접 읽습니다.`
+    ko ? `이메일: [${company.email}](mailto:${company.email}) — 보내주신 메일은 두 창업자가 직접 읽습니다.`
       : `Email: [${company.email}](mailto:${company.email}) — both founders read every line.`,
     `${ko ? "회사 정보" : "Company data"}: ${SITE}/data/company.json`, "",
   ].join("\n\n");

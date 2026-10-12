@@ -41,7 +41,7 @@ export function createAutoAdvance({ host, advance, label, hoverTarget = host, co
     if (button) {
       status.textContent = t(state === 'reduced' ? 'Manual walkthrough' : ['paused', 'focus', 'hover', 'expanded'].includes(state) ? 'Walkthrough paused' : 'Auto walkthrough · 2 sec');
       button.textContent = t(paused ? 'Resume' : 'Pause');
-      button.setAttribute('aria-label', document.documentElement.lang === 'ko' ? `${t(label)} 둘러보기 ${t(paused ? 'Resume' : 'Pause')}` : `${paused ? 'Resume' : 'Pause'} ${label} walkthrough`);
+      button.setAttribute('aria-label', document.documentElement.lang === 'ko' ? `${t(label)} 자동 전환 ${paused ? '다시 시작' : '멈추기'}` : `${paused ? 'Resume' : 'Pause'} ${label} walkthrough`);
       button.setAttribute('aria-pressed', String(paused));
       button.disabled = motion.matches;
     }

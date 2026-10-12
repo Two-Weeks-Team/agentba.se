@@ -32,6 +32,14 @@ server-rendered content and every demo state. Do not restore the legacy Korean
 `HomePage` route. The shared demo modules preserve readable text when JavaScript
 or WebGL is unavailable.
 
+Korean copy is adapted for Korean readers, not translated sentence by sentence.
+Use concrete work, actions and results: AI 팀, 캠페인 요청서, 담당 업무, 담당자 승인.
+Keep the English facts and product limitations, but write headings and calls to
+action in natural Korean. Read the page and all demo states without the English
+beside them; language coverage and layout tests cannot judge comprehension.
+`scripts/check-localization.mjs` catches previously rejected literal wording as
+well as untranslated UI. The Markdown's featured descriptions need the same review.
+
 ## Public facts and machine-readable documents
 
 - `data/company.json`: legal entity, founding month, mission and business model.

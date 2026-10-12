@@ -32,7 +32,7 @@ function validateHead(html: string, canonical: string) {
   expect(links(head!, "canonical").map(tag => new URL(attr(tag, "href")).href)).toEqual([canonical]);
   expect(meta(head!, "og:url").map(url => new URL(url).href)).toEqual([canonical]);
   expect(meta(head!, "og:type")).toEqual(["website"]);
-  expect(meta(head!, "og:title")[0]).toContain(canonical.endsWith("/ko") ? "일할 에이전트를 배치하세요" : "Deploy its workforce");
+  expect(meta(head!, "og:title")[0]).toContain(canonical.endsWith("/ko") ? "AI 팀을 만듭니다" : "Deploy its workforce");
   expect(meta(head!, "og:image")).toHaveLength(1);
   expect(meta(head!, "og:image")[0]).toMatch(/^https:\/\/agentba\.se\//);
   expect(meta(head!, "og:image:width")).toEqual(["1200"]);

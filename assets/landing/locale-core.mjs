@@ -33,6 +33,14 @@ const escape = value => value.replace(/&/g, '&amp;').replace(/</g, '&lt;')
  */
 export function translateHtml(html, locale = 'en') {
   if (locale !== 'ko') return html;
+  // A line break is a layout choice, not a sentence boundary. Allow a whole
+  // two-line heading to be rewritten without reusing its first line as nav copy.
+  html = html.replace(/>([^<>]+)(<br\s*\/?>)([^<>]+)</g, (source, first, br, second) => {
+    const translated = korean[normalizeText(`${decode(first)} ${decode(second)}`)];
+    if (!translated) return source;
+    const lines = translated.split('\n');
+    return lines.length === 2 ? `>${escape(lines[0])}${br}${escape(lines[1])}<` : source;
+  });
   const translate = value => {
     const decoded = decode(value);
     const translated = translateText(decoded, locale);

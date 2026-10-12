@@ -56,8 +56,8 @@ try {
   }
   const korean = (await get('/ko')).text;
   publicContent(korean);
-  assert(korean.includes('회사를 세우세요.'), '/ko still serves the old or English homepage');
-  assert(korean.includes('일할 에이전트를 배치하세요.'), '/ko is missing the translated hero');
+  assert(korean.includes('회사의 일을 맡는'), '/ko still serves the old or English homepage');
+  assert(korean.includes('AI 팀을 만듭니다.'), '/ko is missing the translated hero');
   for (const id of ['hero','work','commerce','memory','architecture','scale','capabilities','contact','company','social-demo','commerce-demo','memory-demo','judgment-demo','delivery-demo']) assert(korean.includes(`id="${id}"`), `/ko missing redesigned section: ${id}`);
   assert(korean.includes('/landing/init.js'), '/ko is missing the shared interactive demos');
   for (const file of ['c.css','media-page.css','memory-work.css']) {
@@ -121,7 +121,7 @@ try {
       publicContent(result.text);
       assert(result.text.includes('AgentBase LLC'), `${bot}: no company identity`);
       if (path === '/') assert(result.text.includes('Build a company.'), `${bot}: wrong homepage`);
-      else if (path === '/ko') assert(result.text.includes('회사를 세우세요.'), `${bot}: wrong Korean homepage`);
+      else if (path === '/ko') assert(result.text.includes('회사의 일을 맡는'), `${bot}: wrong Korean homepage`);
       else assert.equal(result.text, expectedIndex);
     }
   }
